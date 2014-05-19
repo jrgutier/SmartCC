@@ -407,6 +407,8 @@ namespace HREngine.Bots
                     {
                         foreach (Card ennemy in MinionEnnemy)
                         {
+                            if (!ennemy.IsTargetable)
+                                continue;
                             Action a = null;
                             a = new Action(Action.ActionType.CAST_ABILITY, Ability, ennemy);
                             availableActions.Add(a);
@@ -417,6 +419,8 @@ namespace HREngine.Bots
                     {
                         foreach (Card friend in MinionFriend)
                         {
+                            if (!friend.IsTargetable)
+                                continue;
                             Action a = null;
                             a = new Action(Action.ActionType.CAST_ABILITY, Ability, friend);
                             availableActions.Add(a);
