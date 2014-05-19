@@ -121,7 +121,7 @@ namespace HREngine.Bots
                     bool containsCast = false;
                     foreach (Action a in actions)
                     {
-                        if (a.Type == Action.ActionType.CAST_ABILITY || a.Type == Action.ActionType.CAST_MINION )
+                        if (a.Type == Action.ActionType.CAST_ABILITY || a.Type == Action.ActionType.CAST_MINION)
                         {
                             containsCast = true;
                         }
@@ -137,15 +137,16 @@ namespace HREngine.Bots
                         }
                     }
 
-                    
+
 
                     foreach (Action a in actions)
                     {
                         Board bb = b.ExecuteAction(a);
-                        Console.WriteLine(a.ToString());
-                        Console.WriteLine("**************************************");
+                        // Console.WriteLine(a.ToString());
+                        // Console.WriteLine("**************************************");
 
-                        Console.WriteLine(bb.ToString());
+
+                        //Console.WriteLine(bb.ToString());
 
                         if (bb != null)
                         {

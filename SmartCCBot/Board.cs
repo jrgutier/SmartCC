@@ -388,13 +388,13 @@ namespace HREngine.Bots
 
         public List<Action> CalculateAvailableActions()
         {
-            if(ActionsStack.Count > 0)
+            /*if(ActionsStack.Count > 0)
             {
                 if (ActionsStack[ActionsStack.Count - 1].Type == Action.ActionType.RESIMULATE)
                 {
                     return new List<Action>();
                 }
-            }
+            }*/
             
             List<Action> availableActions = new List<Action>();
 

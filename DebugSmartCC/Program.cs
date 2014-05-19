@@ -19,6 +19,8 @@ namespace DebugSmartCC
     {
         static void Main(string[] args)
         {
+            Console.BufferHeight = Int16.MaxValue - 1; // ***** Alters the BufferHeight *****
+
             CardTemplate.DatabasePath = "";
             CardTemplate.LoadAll();
 
@@ -28,7 +30,7 @@ namespace DebugSmartCC
             Simulation s = new Simulation();
 
             Board root = new Board();
-           
+          /* 
               root.HeroEnnemy = Card.Create("HERO_04", false, 0);
                 root.HeroFriend = Card.Create("HERO_04", true, 1);
                 root.HeroFriend.CurrentHealth = 30;
@@ -48,14 +50,14 @@ namespace DebugSmartCC
                 root.MinionFriend.Add(Card.Create("EX1_008", false, 54, 0));
 
                 //root.MinionFriend.Add(Card.Create("EX1_393", false, 96, 1));
-               
+               */
 
-            /*
+            
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream("seed.seed", FileMode.Open, FileAccess.Read, FileShare.None);
             root  = formatter.Deserialize(stream) as Board;
             stream.Close();
-            */
+            
             s.CreateLogFolder();
             s.SeedSimulation(root);
 

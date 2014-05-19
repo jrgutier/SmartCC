@@ -1,2 +1,4 @@
 DebugSmartCC/obj/
 DebugSmartCC/bin/
+*.dll
+SmartCCBot/obj/Release/SmartCC.csproj.FileListAbsolute.txt
