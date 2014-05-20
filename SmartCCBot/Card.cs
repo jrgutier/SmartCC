@@ -2891,7 +2891,8 @@ namespace HREngine.Bots
                 if (Index != c.Index)
                     return false;
             }
-
+            if (CanAttack != c.CanAttack)
+                return false;
             /*if (template != c.template)
                 return false;*/
             if (CurrentAtk != c.CurrentAtk)

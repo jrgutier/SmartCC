@@ -89,7 +89,7 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 10;
-            int maxWide = 3000000;
+            int maxWide = 4000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -121,9 +121,12 @@ namespace HREngine.Bots
                     bool containsCast = false;
                     foreach (Action a in actions)
                     {
-                        if (a.Type == Action.ActionType.CAST_ABILITY || a.Type == Action.ActionType.CAST_MINION)
+                        if (a.Type == Action.ActionType.CAST_ABILITY || a.Type == Action.ActionType.CAST_MINION || a.Type == Action.ActionType.CAST_SPELL)
                         {
-                            containsCast = true;
+                            if(a.Actor.template.Id != "GAME_005")
+                            {
+                                containsCast = true;
+                            }
                         }
                     }
                     if (containsCast)
@@ -140,11 +143,11 @@ namespace HREngine.Bots
                     foreach (Action a in actions)
                     {
                         Board bb = b.ExecuteAction(a);
-                        
+                       /* 
                         Console.WriteLine(a.ToString());
                         Console.WriteLine("**************************************");
                         Console.WriteLine(bb.ToString());
-                        
+                        */
                         if (bb != null)
                         {
                             if (bb.GetValue() > 10000)

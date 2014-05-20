@@ -1164,6 +1164,10 @@ namespace HREngine.Bots
                 return false;
             if (Secret.Count != b.Secret.Count)
                 return false;
+            if (HeroEnnemy.CurrentHealth + HeroEnnemy.CurrentArmor != b.HeroEnnemy.CurrentArmor + b.HeroEnnemy.CurrentHealth)
+                return false;
+            if (HeroFriend.CurrentHealth + HeroFriend.CurrentArmor != b.HeroFriend.CurrentArmor + b.HeroFriend.CurrentHealth)
+                return false;
 
             if (HeroEnnemy != null)
             {
