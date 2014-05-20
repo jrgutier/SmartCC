@@ -50,6 +50,28 @@ public class CS2_049 : Card
         {
             if (board.MinionFriend.Count > 6)
                 return false;
+
+            bool hasHealTotem = false;
+            bool hasIncenTotem = false;
+            bool hasSpellTotem = false;
+            bool hasTauntTotem = false;
+
+            foreach(Card c in board.MinionFriend)
+            {
+                if (c.template.Id == "CS2_052")
+                    hasSpellTotem = true;
+                if (c.template.Id == "CS2_051")
+                    hasTauntTotem = true;
+                if (c.template.Id == "NEW1_009")
+                    hasHealTotem = true;
+                if (c.template.Id == "CS2_050")
+                    hasIncenTotem = true;
+            }
+
+
+            if (hasHealTotem && hasIncenTotem && hasSpellTotem && hasTauntTotem)
+                return false;
+
             return true;
         }
 

@@ -106,7 +106,7 @@ namespace HREngine.Bots
                     board.PlayMinion(Id);
 
                 }
-                else
+                else if(Type == CType.SPELL || Type == CType.WEAPON)
                 {
                     board.PlayCardFromHand(Id);
 

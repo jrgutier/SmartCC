@@ -118,36 +118,41 @@ namespace HREngine.Bots
 
                     List<Action> actions = b.CalculateAvailableActions();
 
-                    bool containsCast = false;
-                    foreach (Action a in actions)
+                    /*if(depth == 0)
                     {
-                        if (a.Type == Action.ActionType.CAST_ABILITY || a.Type == Action.ActionType.CAST_MINION || a.Type == Action.ActionType.CAST_SPELL)
+                        bool containsCast = false;
+                        foreach (Action a in actions)
                         {
-                            if(a.Actor.template.Id != "GAME_005")
+                            if (a.Type == Action.ActionType.CAST_ABILITY || a.Type == Action.ActionType.CAST_MINION || a.Type == Action.ActionType.CAST_SPELL)
                             {
-                                containsCast = true;
+                                if (a.Actor.template.Id != "GAME_005")
+                                {
+                                    containsCast = true;
+                                }
+                            }
+                        }
+                        if (containsCast)
+                        {
+                            foreach (Action a in actions.ToArray())
+                            {
+                                if (a.Type != Action.ActionType.CAST_ABILITY && a.Type != Action.ActionType.CAST_MINION && a.Type != Action.ActionType.CAST_SPELL && a.Type != Action.ActionType.RESIMULATE)
+                                {
+                                    actions.Remove(a);
+                                }
                             }
                         }
                     }
-                    if (containsCast)
-                    {
-                        foreach (Action a in actions.ToArray())
-                        {
-                            if (a.Type != Action.ActionType.CAST_ABILITY && a.Type != Action.ActionType.CAST_MINION && a.Type != Action.ActionType.CAST_SPELL && a.Type != Action.ActionType.RESIMULATE)
-                            {
-                                actions.Remove(a);
-                            }
-                        }
-                    }
-
+                   
+ */
+                    
                     foreach (Action a in actions)
                     {
                         Board bb = b.ExecuteAction(a);
-                       /* 
-                        Console.WriteLine(a.ToString());
+                       
+                        /*Console.WriteLine(a.ToString());
                         Console.WriteLine("**************************************");
-                        Console.WriteLine(bb.ToString());
-                        */
+                        Console.WriteLine(bb.ToString());*/
+                        
                         if (bb != null)
                         {
                             if (bb.GetValue() > 10000)
