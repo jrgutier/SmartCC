@@ -33,7 +33,7 @@ public class EX1_391 : Card
             base.OnPlay(ref board, target, index);
             if (target != null)
             {
-                if (target.CurrentHealth - 2 <= 0)
+                if (target.CurrentHealth - 2 > 0)
                 {
                     board.FriendCardDraw++;
                     board.Resimulate();

@@ -129,6 +129,10 @@ namespace HREngine.Bots
             {
                 if (c.Id == id)
                 {
+                    if (SecretEnnemy)
+                    {
+                        Resimulate();
+                    }
                     Hand.Remove(c);
                     FriendCardDraw--;
                     ManaAvailable -= c.CurrentCost;
@@ -136,10 +140,7 @@ namespace HREngine.Bots
                     {
                         WeaponFriend = c;
                     }
-                    if (SecretEnnemy)
-                    {
-                        Resimulate();
-                    }
+                   
                     return true;
                 }
             }
@@ -154,6 +155,10 @@ namespace HREngine.Bots
             {
                 if (c.Id == id)
                 {
+                    if (SecretEnnemy)
+                    {
+                        Resimulate();
+                    }
                     Hand.Remove(c);
                     ManaAvailable -= c.CurrentCost;
                     if (c.Type == Card.CType.MINION)
@@ -176,10 +181,7 @@ namespace HREngine.Bots
                         MinionFriend.Add(c);
 
                     }
-                    if (SecretEnnemy)
-                    {
-                        Resimulate();
-                    }
+                    
                     return true;
                 }
             }
@@ -780,33 +782,35 @@ namespace HREngine.Bots
             {
                 if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack)
                 {
-                    Console.WriteLine("CannAttackwithWeapon");
-                    if (taunts.Count == 0)
+                    if(HeroFriend.CanAttack)
                     {
-                        foreach (Card ennemy in MinionEnnemy)
+                        if (taunts.Count == 0)
                         {
-                            if (ennemy.IsStealth)
-                                continue;
-                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, ennemy);
-                            availableActions.Add(a);
+                            foreach (Card ennemy in MinionEnnemy)
+                            {
+                                if (ennemy.IsStealth)
+                                    continue;
+                                Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, ennemy);
+                                availableActions.Add(a);
+                            }
+                            Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnnemy);
+                            availableActions.Add(ac);
                         }
-                        Console.WriteLine("Attack hero");
-
-                        Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnnemy);
-                        availableActions.Add(ac);
-                    }
-                    else
-                    {
-                        foreach (Card taunt in taunts)
+                        else
                         {
-                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, taunt);
-                            availableActions.Add(a);
+                            foreach (Card taunt in taunts)
+                            {
+                                Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, taunt);
+                                availableActions.Add(a);
+                            }
                         }
                     }
+                   
                 }
             }
             if (HeroFriend.CurrentAtk > 0 && HeroFriend.CanAttack)
             {
+               
                 if (taunts.Count == 0)
                 {
                     foreach (Card ennemy in MinionEnnemy)
@@ -1099,6 +1103,7 @@ namespace HREngine.Bots
 
             ret += "Board --- (" + HeroFriend.CurrentHealth.ToString() + "-" + HeroEnnemy.CurrentHealth.ToString() + "): " + Environment.NewLine;
             ret += "Mana : " + ManaAvailable.ToString() + Environment.NewLine;
+            ret += "Ennemy secret: " + SecretEnnemy.ToString() + Environment.NewLine;
 
             ret += "Friends : " + Environment.NewLine;
 

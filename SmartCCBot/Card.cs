@@ -196,7 +196,7 @@ namespace HREngine.Bots
 
                 board.HeroFriend.OnHit(ref board, tar);
                 tar.OnHit(ref board, board.HeroFriend);
-                tar.OnHit(ref board, me);
+               // tar.OnHit(ref board, me);
 
             }
             else if (me.Type == CType.HERO)

@@ -95,7 +95,7 @@ namespace HREngine.Bots
                 if (weaponFriendCard != null)
                 {
                     root.WeaponFriend = Card.Create(weaponFriendCard.GetEntity().GetCardId(), true, weaponFriendCard.GetEntity().GetEntityId());
-                    root.WeaponFriend.IsTired = !weaponFriendCard.GetEntity().CanAttack();
+                    root.WeaponFriend.IsTired = (weaponFriendCard.GetEntity().IsExhausted() || HeroFriend.IsExhausted());
                 }
             }
 

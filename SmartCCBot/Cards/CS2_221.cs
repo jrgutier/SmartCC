@@ -8,16 +8,18 @@ using System.Text;
 namespace HREngine.Bots
 {
     [Serializable]
-public class CS2_221 : Card
+    public class CS2_221 : Card
     {
-		public CS2_221() : base()
+        public CS2_221()
+            : base()
         {
-            
+
         }
-		
-        public CS2_221(CardTemplate newTemplate, bool isFriend, int id) : base(newTemplate,isFriend,id)
+
+        public CS2_221(CardTemplate newTemplate, bool isFriend, int id)
+            : base(newTemplate, isFriend, id)
         {
-            
+
         }
 
         public override void Init()
@@ -26,16 +28,11 @@ public class CS2_221 : Card
             HasEnrage = true;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnUpdate(Board board)
         {
-            base.OnPlay(ref board, target,index);
-        }
-
-        public override void OnEnrage(bool enraged,ref Board board)
-        {
-            if(enraged)
+            if (IsEnraged)
             {
-                if(board.WeaponFriend != null)
+                if (board.WeaponFriend != null)
                 {
                     board.WeaponFriend.currentAtk += 2;
                 }
@@ -47,12 +44,23 @@ public class CS2_221 : Card
                     board.WeaponFriend.currentAtk -= 2;
                 }
             }
+            base.OnUpdate(board);
+        }
+
+        public override void OnPlay(ref Board board, Card target = null, int index = 0)
+        {
+            base.OnPlay(ref board, target, index);
+        }
+
+        public override void OnEnrage(bool enraged, ref Board board)
+        {
+
         }
 
         public override void OnDeath(ref Board board)
         {
             base.OnDeath(ref board);
-            if(IsEnraged)
+            if (IsEnraged)
             {
                 if (board.WeaponFriend != null)
                 {
@@ -68,10 +76,10 @@ public class CS2_221 : Card
 
         public override void OnCastSpell(ref Board board, Card Spell)
         {
-		    base.OnCastSpell(ref board, Spell);
+            base.OnCastSpell(ref board, Spell);
         }
-		
-		public override bool ShouldBePlayed(Board board)
+
+        public override bool ShouldBePlayed(Board board)
         {
             return true;
         }
@@ -90,6 +98,6 @@ public class CS2_221 : Card
         {
             return 1;
         }
-		
+
     }
 }
