@@ -18,7 +18,7 @@ namespace HREngine.Bots
             value += valueHealth * CurrentHealth;
             value += valueAttack * CurrentAtk;
 
-            if (IsTaunt)
+            if (IsTaunt && IsFriend)
             {
                 if(board.HeroFriend.CurrentHealth  > 15 && board.HeroFriend.CurrentHealth < 25)
                 {
@@ -29,6 +29,10 @@ namespace HREngine.Bots
                     value += 6;
                 }
 
+            }
+            else if(!IsFriend)
+            {
+                value += 2;
             }
 
             if (IsDivineShield)
