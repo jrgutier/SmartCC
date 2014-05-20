@@ -56,6 +56,12 @@ namespace HREngine.Bots
             value += MinionFriend.Count;
 
 
+            if(WeaponFriend != null)
+            {
+                value += WeaponFriend.GetValue(this);
+            }
+
+
             if (HeroEnnemy.CurrentHealth < 1)
                 value += 100000;
 

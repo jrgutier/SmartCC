@@ -11,37 +11,47 @@ namespace HREngine.Bots
         public int GetValue(Board board)
         {
             int value = 0;
-
+            int valueDurability = 2;
             int valueHealth = 2;
             int valueAttack = 3;
 
-            value += valueHealth * CurrentHealth;
-            value += valueAttack * CurrentAtk;
-
-            if (IsTaunt && IsFriend)
+            if (Type == CType.MINION)
             {
-                if(board.HeroFriend.CurrentHealth  > 15 && board.HeroFriend.CurrentHealth < 25)
+                value += valueHealth * CurrentHealth;
+                value += valueAttack * CurrentAtk;
+
+                if (IsTaunt && IsFriend)
                 {
-                    value += 3;
+                    if (board.HeroFriend.CurrentHealth > 15 && board.HeroFriend.CurrentHealth < 25)
+                    {
+                        value += 3;
+                    }
+                    else if (board.HeroFriend.CurrentHealth < 15)
+                    {
+                        value += 6;
+                    }
+
                 }
-                else if (board.HeroFriend.CurrentHealth < 15)
+                else if (!IsFriend)
                 {
-                    value += 6;
+                    value += 2;
                 }
 
+                if (IsDivineShield)
+                    value += 4;
+
+                if (IsFrozen)
+                    value -= 3;
             }
-            else if(!IsFriend)
+            else if (Type == CType.WEAPON)
             {
-                value += 2;
+                value += valueDurability * CurrentDurability;
+                value += valueAttack * CurrentAtk;
             }
 
-            if (IsDivineShield)
-                value += 4;
 
-            if (IsFrozen)
-                value -= 3;
 
-     
+
 
             return value;
         }
@@ -110,7 +120,7 @@ namespace HREngine.Bots
                     board.PlayMinion(Id);
 
                 }
-                else if(Type == CType.SPELL || Type == CType.WEAPON)
+                else if (Type == CType.SPELL || Type == CType.WEAPON)
                 {
                     board.PlayCardFromHand(Id);
 
@@ -152,7 +162,7 @@ namespace HREngine.Bots
 
         public virtual void OnCastSpell(ref Board board, Card Spell)
         {
-            
+
             if (Type == CType.MINION)
             {
                 if (CurrentHealth <= 0)
@@ -541,22 +551,22 @@ namespace HREngine.Bots
 
         public Card()
         {
-            
+
         }
 
         public void AddBuff(Buff b)
         {
             buffs.Add(b);
-          
+
             currentAtk += b.Atk;
             CurrentHealth += b.Hp;
         }
 
         public void RemoveBuffById(int id)
         {
-            foreach(Buff b in buffs.ToArray())
+            foreach (Buff b in buffs.ToArray())
             {
-                if(b.OwnerId == id)
+                if (b.OwnerId == id)
                 {
                     buffs.Remove(b);
                     currentAtk -= b.Atk;
@@ -2909,12 +2919,12 @@ namespace HREngine.Bots
                 return false;
             if (CurrentHealth != c.CurrentHealth)
                 return false;
-          /*  if (MaxHealth != c.MaxHealth)
-                return false;
-            /* if (IsTaunt != c.IsTaunt)
-                 return false;
-             if (IsCharge != c.IsCharge)
-                 return false;*/
+            /*  if (MaxHealth != c.MaxHealth)
+                  return false;
+              /* if (IsTaunt != c.IsTaunt)
+                   return false;
+               if (IsCharge != c.IsCharge)
+                   return false;*/
             if (IsDivineShield != c.IsDivineShield)
                 return false;
             /* if (IsEnraged != c.IsEnraged)
