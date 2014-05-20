@@ -137,15 +137,11 @@ namespace HREngine.Bots
                         }
                     }
 
-
-
                     foreach (Action a in actions)
                     {
                         Board bb = b.ExecuteAction(a);
                         /* Console.WriteLine(a.ToString());
                         Console.WriteLine("**************************************");
-
-
                         Console.WriteLine(bb.ToString());
                         */
                         if (bb != null)
@@ -196,12 +192,8 @@ namespace HREngine.Bots
                     {
                         Board endBoard = Board.Clone(baa);
                         endBoard.EndTurn();
-                        // Console.WriteLine(baa.GetValue().ToString() + " " + bestBoard.GetValue().ToString());
                         if (endBoard.GetValue() > bestBoard.GetValue())
                         {
-                            /* Console.WriteLine("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB : " + endBoard.GetValue().ToString());
-                             Console.WriteLine(endBoard.ToString());
-                             */
                             bestBoard = endBoard;
                         }
                     }
@@ -240,42 +232,13 @@ namespace HREngine.Bots
                 }
                 if (actionPrior != null && acc.Actor != null)
                 {
-                    if (actionPrior.Actor.GetPriorityPlay() < acc.Actor.GetPriorityPlay())
+                    if (actionPrior.Actor.GetPriorityPlay() < acc.Actor.GetPriorityPlay() && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
                     {
                         actionPrior = acc;
                     }
                 }
             }
-            
-
-
-
-
-            /*   Action actionPrior = null;
-               for(int i = 0 ; i < bestBoard.ActionsStack.Count ; i++)
-               {
-                   Console.WriteLine(bestBoard.ActionsStack[i].ToString());
-                   if(bestBoard.ActionsStack[i].Type == Action.ActionType.RESIMULATE && i != 0)
-                   {
-                    
-                       if (bestBoard.ActionsStack[i - 1].Type != Action.ActionType.RESIMULATE)
-                       {
-                           if(actionPrior == null)
-                           {
-                               Console.WriteLine("Action priori found");
-                               actionPrior = bestBoard.ActionsStack[i - 1];
-                           }
-                           else
-                           {
-                               if( actionPrior.Actor.GetPriorityPlay() < bestBoard.ActionsStack[i - 1].Actor.GetPriorityPlay())
-                               {
-                                   actionPrior = bestBoard.ActionsStack[i - 1];
-                               }
-                           }
-                       }
-                   }
-               }
-             */
+           
 
             List<Action> finalStack = new List<Action>();
             if (actionPrior != null)
