@@ -142,12 +142,12 @@ namespace HREngine.Bots
                     foreach (Action a in actions)
                     {
                         Board bb = b.ExecuteAction(a);
-                        // Console.WriteLine(a.ToString());
-                        // Console.WriteLine("**************************************");
+                        /* Console.WriteLine(a.ToString());
+                        Console.WriteLine("**************************************");
 
 
-                        //Console.WriteLine(bb.ToString());
-
+                        Console.WriteLine(bb.ToString());
+                        */
                         if (bb != null)
                         {
                             if (bb.GetValue() > 10000)
@@ -221,12 +221,17 @@ namespace HREngine.Bots
                 depth++;
             }
 
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine(bestBoard.ToString());
+            Console.WriteLine("---------------------------------");
+
+
             Action actionPrior = null;
             foreach (Action acc in bestBoard.ActionsStack)
             {
                 if (actionPrior == null && acc.Actor != null)
                 {
-                    if (acc.Actor.GetPriorityPlay() > 1)
+                    if (acc.Actor.GetPriorityPlay() > 1 && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
                     {
                         Console.WriteLine("Action priori found");
                         actionPrior = acc;
@@ -241,7 +246,7 @@ namespace HREngine.Bots
                     }
                 }
             }
-
+            
 
 
 
