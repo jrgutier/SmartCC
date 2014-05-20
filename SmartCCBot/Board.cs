@@ -52,8 +52,8 @@ namespace HREngine.Bots
             value -= EnnemyCardDraw * 5;
 
             // value += MinionFriend.Count * 10;
-            value -= MinionEnnemy.Count *3;
-            value += MinionFriend.Count ;
+            value -= MinionEnnemy.Count * 3;
+            value += MinionFriend.Count;
 
 
             if (HeroEnnemy.CurrentHealth < 1)
@@ -395,7 +395,7 @@ namespace HREngine.Bots
                     return new List<Action>();
                 }
             }*/
-            
+
             List<Action> availableActions = new List<Action>();
 
             if (Ability != null)
@@ -463,9 +463,10 @@ namespace HREngine.Bots
                             {
                                 if (!ennemy.IsTargetable)
                                     continue;
-                                if (ennemy.IsStealth)
-                                    continue;
                             }
+
+                            if (ennemy.IsStealth)
+                                continue;
                             Action a = null;
                             if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                             {
@@ -528,9 +529,8 @@ namespace HREngine.Bots
                             {
                                 if (!friend.IsTargetable)
                                     continue;
-                                if (friend.IsStealth)
-                                    continue;
                             }
+
                             Action a = null;
                             if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                             {
@@ -810,7 +810,7 @@ namespace HREngine.Bots
                 }
             }
 
-            
+
 
             return availableActions;
         }
@@ -826,11 +826,11 @@ namespace HREngine.Bots
                 c.OnEndTurn(this);
             }
 
-          /*  if(ActionsStack.Count == 1)
-            {
-                if (ActionsStack[0].Type == Action.ActionType.RESIMULATE)
-                    ActionsStack.Clear();
-            }*/
+            /*  if(ActionsStack.Count == 1)
+              {
+                  if (ActionsStack[0].Type == Action.ActionType.RESIMULATE)
+                      ActionsStack.Clear();
+              }*/
         }
         public void Update()
         {
@@ -1079,7 +1079,7 @@ namespace HREngine.Bots
             string ret = "";
 
             ret += "Board --- (" + HeroFriend.CurrentHealth.ToString() + "-" + HeroEnnemy.CurrentHealth.ToString() + "): " + Environment.NewLine;
-            ret += "Mana : " +ManaAvailable.ToString() +  Environment.NewLine;
+            ret += "Mana : " + ManaAvailable.ToString() + Environment.NewLine;
 
             ret += "Friends : " + Environment.NewLine;
 
