@@ -28,6 +28,7 @@ public class EX1_335 : Card
         public override void OnUpdate(Board board)
         {
             base.OnUpdate(board);
+            currentAtk = 0;
             foreach(Buff b in buffs)
             {
                 b.Atk = 0;

@@ -140,10 +140,11 @@ namespace HREngine.Bots
                     foreach (Action a in actions)
                     {
                         Board bb = b.ExecuteAction(a);
-                        /* Console.WriteLine(a.ToString());
+                        
+                        Console.WriteLine(a.ToString());
                         Console.WriteLine("**************************************");
                         Console.WriteLine(bb.ToString());
-                        */
+                        
                         if (bb != null)
                         {
                             if (bb.GetValue() > 10000)
@@ -212,11 +213,6 @@ namespace HREngine.Bots
                 boards = childs;
                 depth++;
             }
-
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine(bestBoard.ToString());
-            Console.WriteLine("---------------------------------");
-
 
             Action actionPrior = null;
             foreach (Action acc in bestBoard.ActionsStack)
