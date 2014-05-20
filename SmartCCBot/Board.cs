@@ -130,6 +130,10 @@ namespace HREngine.Bots
                     {
                         WeaponFriend = c;
                     }
+                    if (SecretEnnemy)
+                    {
+                        Resimulate();
+                    }
                     return true;
                 }
             }
@@ -139,6 +143,7 @@ namespace HREngine.Bots
 
         public bool PlayMinion(int id)
         {
+            
             foreach (Card c in Hand.ToArray())
             {
                 if (c.Id == id)
@@ -165,6 +170,10 @@ namespace HREngine.Bots
                         MinionFriend.Add(c);
 
                     }
+                    if (SecretEnnemy)
+                    {
+                        Resimulate();
+                    }
                     return true;
                 }
             }
@@ -176,6 +185,10 @@ namespace HREngine.Bots
         {
             ManaAvailable -= Ability.CurrentCost;
             Ability = null;
+            if (SecretEnnemy)
+            {
+                Resimulate();
+            }
         }
 
         public void Resimulate()

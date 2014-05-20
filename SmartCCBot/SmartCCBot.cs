@@ -75,6 +75,11 @@ namespace HREngine.Bots
             root.HeroFriend.CurrentArmor = HeroFriend.GetArmor();
             root.HeroFriend.CurrentAtk = HeroFriend.GetATK();
 
+            if(HRCard.GetCards(HRPlayer.GetEnemyPlayer(), HRCardZone.SECRET).Count > 0)
+            {
+                root.SecretEnnemy = true;
+            }
+            
             if (HRPlayer.GetEnemyPlayer().HasWeapon())
             {
                 HRCard weaponEnnemyCard = HRPlayer.GetEnemyPlayer().GetWeaponCard();
