@@ -28,7 +28,15 @@ public class EX1_575 : Card
         public override void OnEndTurn(Board board)
         {
             base.OnEndTurn(board);
-            board.FriendCardDraw++;
+            if(IsFriend)
+            {
+                board.FriendCardDraw++;
+
+            }
+            else
+            {
+                board.EnnemyCardDraw++;
+            }
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)

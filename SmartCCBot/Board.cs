@@ -49,14 +49,14 @@ namespace HREngine.Bots
             value += (HeroFriend.CurrentHealth + HeroFriend.CurrentArmor) * valueHealth;
 
             value += FriendCardDraw * 7;
-            value -= EnnemyCardDraw * 5;
+            value -= EnnemyCardDraw * 10;
 
             // value += MinionFriend.Count * 10;
             value -= MinionEnnemy.Count * 3;
             value += MinionFriend.Count;
 
 
-            if(WeaponFriend != null)
+            if (WeaponFriend != null)
             {
                 value += WeaponFriend.GetValue(this);
             }
@@ -140,7 +140,7 @@ namespace HREngine.Bots
                     {
                         WeaponFriend = c;
                     }
-                   
+
                     return true;
                 }
             }
@@ -150,7 +150,7 @@ namespace HREngine.Bots
 
         public bool PlayMinion(int id)
         {
-            
+
             foreach (Card c in Hand.ToArray())
             {
                 if (c.Id == id)
@@ -181,7 +181,7 @@ namespace HREngine.Bots
                         MinionFriend.Add(c);
 
                     }
-                    
+
                     return true;
                 }
             }
@@ -791,7 +791,7 @@ namespace HREngine.Bots
             {
                 if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack)
                 {
-                    if(HeroFriend.CanAttack)
+                    if (HeroFriend.CanAttack)
                     {
                         if (taunts.Count == 0)
                         {
@@ -814,12 +814,12 @@ namespace HREngine.Bots
                             }
                         }
                     }
-                   
+
                 }
             }
             if (HeroFriend.CurrentAtk > 0 && HeroFriend.CanAttack)
             {
-               
+
                 if (taunts.Count == 0)
                 {
                     foreach (Card ennemy in MinionEnnemy)
@@ -851,11 +851,13 @@ namespace HREngine.Bots
         {
             foreach (Card c in MinionEnnemy)
             {
-                c.OnEndTurn(this);
+                if (!c.IsSilenced)
+                    c.OnEndTurn(this);
             }
             foreach (Card c in MinionFriend)
             {
-                c.OnEndTurn(this);
+                if (!c.IsSilenced)
+                    c.OnEndTurn(this);
             }
 
             /*  if(ActionsStack.Count == 1)
