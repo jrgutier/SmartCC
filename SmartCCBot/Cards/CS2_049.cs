@@ -8,16 +8,18 @@ using System.Text;
 namespace HREngine.Bots
 {
     [Serializable]
-public class CS2_049 : Card
+    public class CS2_049 : Card
     {
-		public CS2_049() : base()
+        public CS2_049()
+            : base()
         {
-            
+
         }
-		
-        public CS2_049(CardTemplate newTemplate, bool isFriend, int id) : base(newTemplate,isFriend,id)
+
+        public CS2_049(CardTemplate newTemplate, bool isFriend, int id)
+            : base(newTemplate, isFriend, id)
         {
-            
+
         }
 
         public override void Init()
@@ -25,10 +27,32 @@ public class CS2_049 : Card
             base.Init();
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null, int index = 0)
         {
-            base.OnPlay(ref board, target,index);
-            board.AddCardToBoard("CS2_052", true);
+            base.OnPlay(ref board, target, index);
+
+            bool hasHealTotem = false;
+            bool hasIncenTotem = false;
+            bool hasSpellTotem = false;
+            bool hasTauntTotem = false;
+
+            foreach (Card c in board.MinionFriend)
+            {
+                if (c.template.Id == "CS2_052")
+                    hasSpellTotem = true;
+                if (c.template.Id == "CS2_051")
+                    hasTauntTotem = true;
+                if (c.template.Id == "NEW1_009")
+                    hasHealTotem = true;
+                if (c.template.Id == "CS2_050")
+                    hasIncenTotem = true;
+            }
+
+            if (!hasSpellTotem)
+                board.AddCardToBoard("CS2_052", true);
+            else
+                board.AddCardToBoard("CS2_051", true);
+
         }
 
         public override void OnDeath(ref Board board)
@@ -43,10 +67,10 @@ public class CS2_049 : Card
 
         public override void OnCastSpell(ref Board board, Card Spell)
         {
-		    base.OnCastSpell(ref board, Spell);
+            base.OnCastSpell(ref board, Spell);
         }
-		
-		public override bool ShouldBePlayed(Board board)
+
+        public override bool ShouldBePlayed(Board board)
         {
             if (board.MinionFriend.Count > 6)
                 return false;
@@ -56,7 +80,7 @@ public class CS2_049 : Card
             bool hasSpellTotem = false;
             bool hasTauntTotem = false;
 
-            foreach(Card c in board.MinionFriend)
+            foreach (Card c in board.MinionFriend)
             {
                 if (c.template.Id == "CS2_052")
                     hasSpellTotem = true;
@@ -89,6 +113,6 @@ public class CS2_049 : Card
         {
             return 10;
         }
-		
+
     }
 }
