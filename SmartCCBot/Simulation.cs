@@ -144,15 +144,15 @@ namespace HREngine.Bots
                     }
                    
  */
-                    
+
                     foreach (Action a in actions)
                     {
                         Board bb = b.ExecuteAction(a);
-                       /*
-                        Console.WriteLine(a.ToString());
-                        Console.WriteLine("**************************************");
-                        Console.WriteLine(bb.ToString());
-                        */
+                        /*
+                         Console.WriteLine(a.ToString());
+                         Console.WriteLine("**************************************");
+                         Console.WriteLine(bb.ToString());
+                         */
                         if (bb != null)
                         {
                             if (bb.GetValue() > 10000)
@@ -230,7 +230,17 @@ namespace HREngine.Bots
                     if (acc.Actor.GetPriorityPlay() > 1 && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
                     {
                         Console.WriteLine("Action priori found");
-                        actionPrior = acc;
+                        if (acc.Type == Action.ActionType.CAST_MINION)
+                        {
+                            if (bestBoard.MinionFriend.Count < 7)
+                                actionPrior = acc;
+
+                        }
+                        else
+                        {
+                            actionPrior = acc;
+
+                        }
                     }
 
                 }
@@ -242,7 +252,7 @@ namespace HREngine.Bots
                     }
                 }
             }
-           
+
 
             List<Action> finalStack = new List<Action>();
             if (actionPrior != null)

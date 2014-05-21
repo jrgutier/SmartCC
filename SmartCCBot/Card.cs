@@ -225,13 +225,16 @@ namespace HREngine.Bots
             if (IsImmune)
                 return;
 
-            foreach (Card c in board.MinionFriend)
+            if(Type != CType.HERO)
             {
-                c.OnOtherMinionDamage();
-            }
-            foreach (Card c in board.MinionEnnemy)
-            {
-                c.OnOtherMinionDamage();
+                foreach (Card c in board.MinionFriend)
+                {
+                    c.OnOtherMinionDamage();
+                }
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    c.OnOtherMinionDamage();
+                }
             }
 
             OnDamage();
@@ -334,15 +337,19 @@ namespace HREngine.Bots
 
         public void Damage(int amount, ref Board board)
         {
-            foreach (Card c in board.MinionFriend)
+            if(Type != CType.HERO)
             {
-                c.OnOtherMinionDamage();
-            }
+                foreach (Card c in board.MinionFriend)
+                {
+                    c.OnOtherMinionDamage();
+                }
 
-            foreach (Card c in board.MinionEnnemy)
-            {
-                c.OnOtherMinionDamage();
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    c.OnOtherMinionDamage();
+                }
             }
+            
 
             OnDamage();
             if (IsDivineShield && amount > 0)

@@ -386,6 +386,11 @@ namespace HREngine.Bots
                         a.Actor.OnAttack(ref child, child.GetCard(a.Target.Id));
                     else
                         a.Actor.OnAttack(ref child, null);
+
+                    if (SecretEnnemy)
+                    {
+                        child.Resimulate();
+                    }
                     break;
 
                 case Action.ActionType.MINION_ATTACK:
@@ -393,6 +398,10 @@ namespace HREngine.Bots
                         a.Actor.OnAttack(ref child, child.GetCard(a.Target.Id));
                     else
                         a.Actor.OnAttack(ref child, null);
+                    if (SecretEnnemy)
+                    {
+                        child.Resimulate();
+                    }
                     break;
 
                 case Action.ActionType.CAST_ABILITY:
