@@ -38,13 +38,15 @@ public class EX1_614 : Card
         public override void OnPlayOtherMinion(ref Board board, Card Minion)
         {
             base.OnPlayOtherMinion(ref board, Minion);
-            board.AddCardToBoard("EX1_614t", true);
+            if(IsFriend)
+                board.AddCardToBoard("EX1_614t", true);
         }
 
         public override void OnCastSpell(ref Board board, Card Spell)
         {
 		    base.OnCastSpell(ref board, Spell);
-            board.AddCardToBoard("EX1_614t", true);
+            if (IsFriend)
+                board.AddCardToBoard("EX1_614t", true);
         }
 		
 		public override bool ShouldBePlayed(Board board)

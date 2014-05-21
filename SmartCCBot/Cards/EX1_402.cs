@@ -28,7 +28,30 @@ public class EX1_402 : Card
         public override void OnHit(ref Board board, Card actor)
         {
             base.OnHit(ref board, actor);
-            board.HeroFriend.CurrentArmor++;
+            if(IsFriend)
+            {
+                board.HeroFriend.CurrentArmor++;
+
+            }
+            else
+            {
+                board.HeroEnnemy.CurrentArmor++;
+
+            }
+        }
+        public override void OnOtherMinionDamage( ref Board board)
+        {
+            base.OnOtherMinionDamage(ref board);
+            if (IsFriend)
+            {
+                board.HeroFriend.CurrentArmor++;
+
+            }
+            else
+            {
+                board.HeroEnnemy.CurrentArmor++;
+
+            }
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)

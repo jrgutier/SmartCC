@@ -232,6 +232,16 @@ namespace HREngine.Bots
             Resimulate();
         }
 
+        public bool HasFriendBuffer()
+        {
+            foreach(Card c in MinionFriend)
+            {
+                if(c.TestAllIndexOnPlay)
+                    return true;
+            }
+            return false;
+        }
+
         public void ReplaceWeapon(string id)
         {
             Random random = new Random();
@@ -500,7 +510,7 @@ namespace HREngine.Bots
                             Action a = null;
                             if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                             {
-                                if (c.TestAllIndexOnPlay)
+                                if (c.TestAllIndexOnPlay || HasFriendBuffer())
                                 {
                                     for (int i = 0; i < MinionFriend.Count; i++)
                                     {
@@ -564,7 +574,7 @@ namespace HREngine.Bots
                             Action a = null;
                             if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                             {
-                                if (c.TestAllIndexOnPlay)
+                                if (c.TestAllIndexOnPlay || HasFriendBuffer())
                                 {
                                     for (int i = 0; i < MinionFriend.Count; i++)
                                     {
@@ -617,7 +627,7 @@ namespace HREngine.Bots
                         Action a = null;
                         if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                         {
-                            if (c.TestAllIndexOnPlay)
+                            if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
                                 for (int i = 0; i < MinionFriend.Count; i++)
                                 {
@@ -667,7 +677,7 @@ namespace HREngine.Bots
                         Action a = null;
                         if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                         {
-                            if (c.TestAllIndexOnPlay)
+                            if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
                                 for (int i = 0; i < MinionFriend.Count; i++)
                                 {
@@ -717,7 +727,7 @@ namespace HREngine.Bots
                         Action a = null;
                         if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                         {
-                            if (c.TestAllIndexOnPlay)
+                            if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
                                 for (int i = 0; i < MinionFriend.Count; i++)
                                 {

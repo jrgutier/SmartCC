@@ -211,7 +211,7 @@ namespace HREngine.Bots
             }
         }
 
-        public virtual void OnOtherMinionDamage()
+        public virtual void OnOtherMinionDamage(ref Board board)
         {
 
         }
@@ -229,11 +229,11 @@ namespace HREngine.Bots
             {
                 foreach (Card c in board.MinionFriend)
                 {
-                    c.OnOtherMinionDamage();
+                    c.OnOtherMinionDamage(ref board);
                 }
                 foreach (Card c in board.MinionEnnemy)
                 {
-                    c.OnOtherMinionDamage();
+                    c.OnOtherMinionDamage(ref board);
                 }
             }
 
@@ -341,12 +341,12 @@ namespace HREngine.Bots
             {
                 foreach (Card c in board.MinionFriend)
                 {
-                    c.OnOtherMinionDamage();
+                    c.OnOtherMinionDamage(ref board);
                 }
 
                 foreach (Card c in board.MinionEnnemy)
                 {
-                    c.OnOtherMinionDamage();
+                    c.OnOtherMinionDamage(ref board);
                 }
             }
             

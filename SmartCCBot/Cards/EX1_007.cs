@@ -33,7 +33,15 @@ public class EX1_007 : Card
         public override void OnHit(ref Board board, Card actor)
         {
             base.OnHit(ref board, actor);
-            board.FriendCardDraw++;
+            if(IsFriend)
+            {
+                board.FriendCardDraw++;
+
+            }
+            else
+            {
+                board.EnnemyCardDraw++;
+            }
         }
         public override void OnDeath(ref Board board)
         {

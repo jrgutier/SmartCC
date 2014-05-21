@@ -33,7 +33,15 @@ public class EX1_029 : Card
         public override void OnDeath(ref Board board)
         {
             base.OnDeath(ref board);
-            board.HeroEnnemy.Damage(2,ref board);
+            if(IsFriend)
+            {
+                board.HeroEnnemy.Damage(2, ref board);
+
+            }
+            else
+            {
+                board.HeroFriend.Damage(2, ref board);
+            }
         }
 
         public override void OnPlayOtherMinion(ref Board board, Card Minion)

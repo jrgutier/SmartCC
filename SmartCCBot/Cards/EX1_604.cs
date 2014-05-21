@@ -30,7 +30,7 @@ public class EX1_604 : Card
             base.OnPlay(ref board, target,index);
         }
 
-        public override void OnOtherMinionDamage()
+        public override void OnOtherMinionDamage(ref Board board)
         {
             AddBuff(new Buff(1, 0, Id));
         }
