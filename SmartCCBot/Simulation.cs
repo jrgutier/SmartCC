@@ -248,7 +248,17 @@ namespace HREngine.Bots
                 {
                     if (actionPrior.Actor.GetPriorityPlay() < acc.Actor.GetPriorityPlay() && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
                     {
-                        actionPrior = acc;
+                        if (acc.Type == Action.ActionType.CAST_MINION)
+                        {
+                            if (bestBoard.MinionFriend.Count < 7)
+                                actionPrior = acc;
+
+                        }
+                        else
+                        {
+                            actionPrior = acc;
+
+                        }
                     }
                 }
             }
