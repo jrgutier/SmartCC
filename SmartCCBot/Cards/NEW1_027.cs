@@ -32,6 +32,20 @@ public class NEW1_027 : Card
                     }
                 }
             }
+            else
+            {
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    c.RemoveBuffById(Id);
+
+                    if (c.Race == CRace.PIRATE && !IsSilenced)
+                    {
+                        if (c.Id == Id)
+                            continue;
+                        c.AddBuff(new Buff(1, 1, Id));
+                    }
+                }
+            }
         }
         public NEW1_027(CardTemplate newTemplate, bool isFriend, int id) : base(newTemplate,isFriend,id)
         {

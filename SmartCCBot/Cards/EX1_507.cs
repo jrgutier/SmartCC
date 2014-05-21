@@ -19,17 +19,36 @@ namespace HREngine.Bots
         public override void OnUpdate(Board board)
         {
             base.OnUpdate(board);
-            foreach (Card c in board.MinionFriend)
+            if(IsFriend)
             {
-                c.RemoveBuffById(Id);
-
-                if (c.Race == CRace.MURLOC && !IsSilenced)
+                foreach (Card c in board.MinionFriend)
                 {
-                    if (c.Id == Id)
-                        continue;
-                    c.AddBuff(new Buff(2, 1, Id));
+                    c.RemoveBuffById(Id);
+
+                    if (c.Race == CRace.MURLOC && !IsSilenced)
+                    {
+                        if (c.Id == Id)
+                            continue;
+                        c.AddBuff(new Buff(2, 1, Id));
+                    }
                 }
             }
+            else
+            {
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    c.RemoveBuffById(Id);
+
+                    if (c.Race == CRace.MURLOC && !IsSilenced)
+                    {
+                        if (c.Id == Id)
+                            continue;
+                        c.AddBuff(new Buff(2, 1, Id));
+                    }
+                }
+            }
+            
+            
         }
 
         public EX1_507(CardTemplate newTemplate, bool isFriend, int id)

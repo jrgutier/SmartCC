@@ -31,6 +31,19 @@ namespace HREngine.Bots
                     c.AddBuff(new Buff(1, 0, Id));
                 }
             }
+            else
+            {
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    c.RemoveBuffById(Id);
+
+                    if (c.Id == Id || IsSilenced)
+                        continue;
+                    
+                    c.AddBuff(new Buff(1, 0, Id));
+                }
+            
+            }
 
         }
 

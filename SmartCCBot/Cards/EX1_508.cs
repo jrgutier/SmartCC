@@ -33,6 +33,17 @@ public class EX1_508 : Card
                         c.AddBuff(new Buff(1, 0, Id));
                 }
             }
+            else
+            {
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    if (c.Id == Id)
+                        continue;
+                    c.RemoveBuffById(Id);
+                    if (c.Race == CRace.MURLOC && !IsSilenced)
+                        c.AddBuff(new Buff(1, 0, Id));
+                }
+            }
         }
 
         public override void Init()

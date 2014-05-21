@@ -33,6 +33,20 @@ namespace HREngine.Bots
                     }
                 }
             }
+            else
+            {
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    c.RemoveBuffById(Id);
+
+                    if (c.Race == CRace.BEAST && !IsSilenced)
+                    {
+                        if (c.Id == Id)
+                            continue;
+                        c.AddBuff(new Buff(1, 0, Id));
+                    }
+                }
+            }
         }
 
         public DS1_175(CardTemplate newTemplate, bool isFriend, int id)

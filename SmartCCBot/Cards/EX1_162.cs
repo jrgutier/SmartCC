@@ -37,6 +37,24 @@ public class EX1_162 : Card
                     right.AddBuff(new Buff(1, 0, Id));
 
             }
+            else
+            {
+                Card left = null;
+                Card right = null;
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    c.RemoveBuffById(Id);
+                    if (c.Index == Index - 1)
+                        left = c;
+                    if (c.Index == Index + 1)
+                        right = c;
+                }
+
+                if (left != null && !IsSilenced)
+                    left.AddBuff(new Buff(1, 0, Id));
+                if (right != null && !IsSilenced)
+                    right.AddBuff(new Buff(1, 0, Id));
+            }
         }
         public EX1_162(CardTemplate newTemplate, bool isFriend, int id) : base(newTemplate,isFriend,id)
         {

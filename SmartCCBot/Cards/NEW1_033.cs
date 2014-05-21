@@ -22,17 +22,35 @@ public class NEW1_033 : Card
 
         public override void OnUpdate(Board board)
         {
-            foreach(Card c in board.MinionFriend)
+            if(IsFriend)
             {
-                c.RemoveBuffById(Id);
-
-                if (c.Race == CRace.BEAST && !IsSilenced)
+                foreach (Card c in board.MinionFriend)
                 {
-                    if (c.Id == Id)
-                        continue;
-                    c.AddBuff(new Buff(1, 0, Id));
+                    c.RemoveBuffById(Id);
+
+                    if (c.Race == CRace.BEAST && !IsSilenced)
+                    {
+                        if (c.Id == Id)
+                            continue;
+                        c.AddBuff(new Buff(1, 0, Id));
+                    }
                 }
             }
+            else
+            {
+                foreach (Card c in board.MinionEnnemy)
+                {
+                    c.RemoveBuffById(Id);
+
+                    if (c.Race == CRace.BEAST && !IsSilenced)
+                    {
+                        if (c.Id == Id)
+                            continue;
+                        c.AddBuff(new Buff(1, 0, Id));
+                    }
+                }
+            }
+            
         }
 
         public override void Init()

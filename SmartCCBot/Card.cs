@@ -46,7 +46,7 @@ namespace HREngine.Bots
             else if (Type == CType.WEAPON)
             {
                 value += valueDurability * CurrentDurability;
-                value += valueAttack * CurrentAtk;
+                value += valueAttack * CurrentAtk *2;
             }
 
 
@@ -191,13 +191,16 @@ namespace HREngine.Bots
             else if (me.Type == CType.WEAPON)
             {
                 me.CurrentDurability--;
+                
+                    
                 me.CountAttack++;
                 board.HeroFriend.CountAttack++;
 
                 board.HeroFriend.OnHit(ref board, tar);
                 tar.OnHit(ref board, board.HeroFriend);
                // tar.OnHit(ref board, me);
-
+                if (me.CurrentDurability < 1)
+                    board.WeaponFriend = null;
             }
             else if (me.Type == CType.HERO)
             {
