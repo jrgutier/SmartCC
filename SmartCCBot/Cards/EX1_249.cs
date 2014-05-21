@@ -28,7 +28,7 @@ public class EX1_249 : Card
         public override void OnEndTurn(Board board)
         {
             base.OnEndTurn(board);
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 c.Damage(2, ref board);
             }
@@ -36,7 +36,7 @@ public class EX1_249 : Card
             {
                 c.Damage(2, ref board);
             }
-            board.HeroEnnemy.Damage(2, ref board);
+            board.HeroEnemy.Damage(2, ref board);
             board.HeroFriend.Damage(2, ref board);
         }
 

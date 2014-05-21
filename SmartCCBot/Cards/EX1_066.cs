@@ -28,8 +28,8 @@ public class EX1_066 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            if (board.WeaponEnnemy != null)
-                board.WeaponEnnemy = null;
+            if (board.WeaponEnemy != null)
+                board.WeaponEnemy = null;
         }
 
         public override void OnDeath(ref Board board)

@@ -29,7 +29,7 @@ public class EX1_617 : Card
         {
             base.OnPlay(ref board, target,index);
             Random r = new Random();
-            board.RemoveCardFromBoard(board.MinionEnnemy[r.Next(0, board.MinionEnnemy.Count-1)].Id);
+            board.RemoveCardFromBoard(board.MinionEnemy[r.Next(0, board.MinionEnemy.Count-1)].Id);
             board.Resimulate();
         }
 

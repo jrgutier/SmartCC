@@ -32,7 +32,7 @@ public class EX1_621 : Card
             {
                 c.Heal(4 * board.HealFactor, ref board);
             }
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 c.Heal(4 * board.HealFactor, ref board);
             }

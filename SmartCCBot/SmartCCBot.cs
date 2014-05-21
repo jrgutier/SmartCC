@@ -57,18 +57,18 @@ namespace HREngine.Bots
             SmartCc.SimuCount++;
             Board root = new Board();
 
-            HREntity HeroEnnemy = HRPlayer.GetEnemyPlayer().GetHero();
+            HREntity HeroEnemy = HRPlayer.GetEnemyPlayer().GetHero();
 
-            Card ce = Card.Create(HeroEnnemy.GetCardId(), false, HeroEnnemy.GetEntityId());
-            root.HeroEnnemy = ce;
+            Card ce = Card.Create(HeroEnemy.GetCardId(), false, HeroEnemy.GetEntityId());
+            root.HeroEnemy = ce;
 
             HREntity HeroFriend = HRPlayer.GetLocalPlayer().GetHero();
             root.HeroFriend = Card.Create(HeroFriend.GetCardId(), true, HeroFriend.GetEntityId());
 
-            root.HeroEnnemy.CurrentHealth = HeroEnnemy.GetHealth() - HeroEnnemy.GetDamage();
-            root.HeroEnnemy.MaxHealth = 30;
+            root.HeroEnemy.CurrentHealth = HeroEnemy.GetHealth() - HeroEnemy.GetDamage();
+            root.HeroEnemy.MaxHealth = 30;
 
-            root.HeroEnnemy.CurrentArmor = HeroEnnemy.GetArmor();
+            root.HeroEnemy.CurrentArmor = HeroEnemy.GetArmor();
             root.HeroFriend.CurrentHealth = HeroFriend.GetHealth() - HeroFriend.GetDamage();
             root.HeroFriend.MaxHealth = 30;
 
@@ -77,15 +77,15 @@ namespace HREngine.Bots
 
             if(HRCard.GetCards(HRPlayer.GetEnemyPlayer(), HRCardZone.SECRET).Count > 0)
             {
-                root.SecretEnnemy = true;
+                root.SecretEnemy = true;
             }
             
             if (HRPlayer.GetEnemyPlayer().HasWeapon())
             {
-                HRCard weaponEnnemyCard = HRPlayer.GetEnemyPlayer().GetWeaponCard();
-                if (weaponEnnemyCard != null)
+                HRCard weaponEnemyCard = HRPlayer.GetEnemyPlayer().GetWeaponCard();
+                if (weaponEnemyCard != null)
                 {
-                    root.WeaponEnnemy = Card.Create(weaponEnnemyCard.GetEntity().GetCardId(), false, weaponEnnemyCard.GetEntity().GetEntityId());
+                    root.WeaponEnemy = Card.Create(weaponEnemyCard.GetEntity().GetCardId(), false, weaponEnemyCard.GetEntity().GetEntityId());
                 }
             }
 
@@ -101,7 +101,7 @@ namespace HREngine.Bots
 
             root.ManaAvailable = HRPlayer.GetLocalPlayer().GetNumAvailableResources();
 
-            foreach (HREntity e in GetEnnemyEntitiesOnBoard())
+            foreach (HREntity e in GetEnemyEntitiesOnBoard())
             {
                 Card newc = Card.Create(e.GetCardId(), false, e.GetEntityId());
                 newc.CurrentAtk = e.GetATK();
@@ -132,7 +132,7 @@ namespace HREngine.Bots
                 newc.IsTaunt = e.HasTaunt();
                 newc.Index = e.GetTag(HRGameTag.ZONE_POSITION) - 1;
                 // HRLog.Write(e.GetName() + " at " + newc.Index.ToString());
-                root.MinionEnnemy.Add(newc);
+                root.MinionEnemy.Add(newc);
             }
             foreach (HREntity e in GetFriendEntitiesOnBoard())
             {
@@ -338,8 +338,8 @@ namespace HREngine.Bots
             HREntity HeroFriend = HRPlayer.GetLocalPlayer().GetHero();
             ret.Add(HeroFriend);
 
-            HREntity HeroEnnemy = HRPlayer.GetEnemyPlayer().GetHero();
-            ret.Add(HeroEnnemy);
+            HREntity HeroEnemy = HRPlayer.GetEnemyPlayer().GetHero();
+            ret.Add(HeroEnemy);
 
             HREntity HeroAbility = HRPlayer.GetLocalPlayer().GetHeroPower();
             ret.Add(HeroAbility);
@@ -354,7 +354,7 @@ namespace HREngine.Bots
             }
             return ret;
         }
-        private List<HREntity> GetEnnemyEntitiesOnBoard()
+        private List<HREntity> GetEnemyEntitiesOnBoard()
         {
             List<HREntity> ret = new List<HREntity>();
             foreach (HRCard c in HRCard.GetCards(HRPlayer.GetEnemyPlayer(), HRCardZone.PLAY))

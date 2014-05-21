@@ -28,7 +28,7 @@ public class EX1_384 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.HeroEnnemy.Damage(8, ref board);
+            board.HeroEnemy.Damage(8, ref board);
             board.Resimulate();
         }
 
@@ -49,7 +49,7 @@ public class EX1_384 : Card
 		
 		public override bool ShouldBePlayed(Board board)
         {
-            if (board.MinionEnnemy.Count == 0 && board.HeroEnnemy.CurrentHealth > 15)
+            if (board.MinionEnemy.Count == 0 && board.HeroEnemy.CurrentHealth > 15)
                 return false;
             return true;
         }

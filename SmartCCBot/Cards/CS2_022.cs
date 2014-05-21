@@ -23,7 +23,7 @@ public class CS2_022 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_ENNEMY;
+            TargetTypeOnPlay = TargetType.MINION_Enemy;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
@@ -31,8 +31,8 @@ public class CS2_022 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                board.MinionEnnemy.Remove(target);
-                board.MinionEnnemy.Add(Card.Create("CS2_tk1", false, target.Id));
+                board.MinionEnemy.Remove(target);
+                board.MinionEnemy.Add(Card.Create("CS2_tk1", false, target.Id));
                 board.Resimulate();
             }
         }

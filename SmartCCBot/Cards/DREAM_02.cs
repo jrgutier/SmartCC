@@ -28,7 +28,7 @@ public class DREAM_02 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 c.Damage(5, ref board);
             }
@@ -38,7 +38,7 @@ public class DREAM_02 : Card
                     continue;
                 c.Damage(5, ref board);
             }
-            board.HeroEnnemy.Damage(5, ref board);
+            board.HeroEnemy.Damage(5, ref board);
             board.HeroFriend.Damage(5, ref board);
         }
 

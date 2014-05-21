@@ -38,7 +38,7 @@ public class NEW1_019 : Card
         public override void OnPlayOtherMinion(ref Board board, Card Minion)
         {
             base.OnPlayOtherMinion(ref board, Minion);
-            board.HeroEnnemy.Damage(1,ref board);
+            board.HeroEnemy.Damage(1,ref board);
             board.Resimulate();
         }
 

@@ -28,10 +28,10 @@ public class EX1_558 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            if(board.WeaponEnnemy != null)
+            if(board.WeaponEnemy != null)
             {
-                board.FriendCardDraw += board.WeaponEnnemy.CurrentDurability;
-                board.WeaponEnnemy = null;
+                board.FriendCardDraw += board.WeaponEnemy.CurrentDurability;
+                board.WeaponEnemy = null;
                 board.Resimulate();
             }
         }

@@ -29,7 +29,7 @@ public class EX1_312 : Card
         {
             base.OnPlay(ref board, target,index);
             board.MinionFriend.Clear();
-            board.MinionEnnemy.Clear();
+            board.MinionEnemy.Clear();
         }
 
         public override void OnDeath(ref Board board)

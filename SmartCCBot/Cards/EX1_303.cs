@@ -32,7 +32,7 @@ public class EX1_303 : Card
             if(target != null)
             {
                 board.MinionFriend.Remove(target);
-                foreach(Card c in board.MinionEnnemy)
+                foreach(Card c in board.MinionEnemy)
                 {
                     c.Damage(target.CurrentAtk, ref board);
                 }

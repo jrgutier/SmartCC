@@ -23,7 +23,7 @@ public class EX1_581 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_ENNEMY;
+            TargetTypeOnPlay = TargetType.MINION_Enemy;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
@@ -31,8 +31,8 @@ public class EX1_581 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                board.MinionEnnemy.Remove(target);
-                board.EnnemyCardDraw++;
+                board.MinionEnemy.Remove(target);
+                board.EnemyCardDraw++;
             }
         }
 

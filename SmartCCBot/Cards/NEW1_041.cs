@@ -30,7 +30,7 @@ public class NEW1_041 : Card
             base.OnPlay(ref board, target,index);
 
             List<Card> targets = new List<Card>();
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 if (c.CurrentAtk <= 2)
                     targets.Add(c);

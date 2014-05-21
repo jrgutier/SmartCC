@@ -35,7 +35,7 @@ public class EX1_508 : Card
             }
             else
             {
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     if (c.Id == Id)
                         continue;
@@ -69,7 +69,7 @@ public class EX1_508 : Card
             }
             else
             {
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     if (c.Race == CRace.MURLOC)
                         c.RemoveBuffById(Id);

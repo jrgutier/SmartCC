@@ -28,8 +28,8 @@ public class EX1_251 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.MinionEnnemy[0].Damage(2 + board.GetSpellPower(), ref board);
-            board.MinionEnnemy[1].Damage(2 + board.GetSpellPower(), ref board);
+            board.MinionEnemy[0].Damage(2 + board.GetSpellPower(), ref board);
+            board.MinionEnemy[1].Damage(2 + board.GetSpellPower(), ref board);
             board.Resimulate();
         }
 
@@ -50,7 +50,7 @@ public class EX1_251 : Card
 		
 		public override bool ShouldBePlayed(Board board)
         {
-            if (board.MinionEnnemy.Count < 2)
+            if (board.MinionEnemy.Count < 2)
                 return false;
             return true;
         }

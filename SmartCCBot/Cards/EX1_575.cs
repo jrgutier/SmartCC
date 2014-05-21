@@ -20,6 +20,7 @@ public class EX1_575 : Card
             
         }
 
+
         public override void Init()
         {
             base.Init();
@@ -35,7 +36,7 @@ public class EX1_575 : Card
             }
             else
             {
-                board.EnnemyCardDraw++;
+                board.EnemyCardDraw++;
             }
         }
 

@@ -40,7 +40,7 @@ public class NEW1_003 : Card
             {
                 if(target.Race == CRace.DEMON)
                 {
-                    board.MinionEnnemy.Remove(target);
+                    board.MinionEnemy.Remove(target);
                     board.HeroFriend.Heal(5, ref board);
                 }
             }

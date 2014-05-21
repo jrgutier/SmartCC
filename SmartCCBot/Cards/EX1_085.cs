@@ -28,7 +28,7 @@ public class EX1_085 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            if (board.MinionEnnemy.Count > 3)
+            if (board.MinionEnemy.Count > 3)
                 board.Resimulate();
         }
 

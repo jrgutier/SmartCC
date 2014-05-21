@@ -29,7 +29,7 @@ public class EX1_137 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.HeroEnnemy.Damage(2 + board.GetSpellPower(),ref board);
+            board.HeroEnemy.Damage(2 + board.GetSpellPower(),ref board);
             if (board.IsCombo())
                 board.Hand.Add(Card.Create("EX1_137", true, Id));
         }

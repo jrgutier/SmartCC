@@ -38,8 +38,8 @@ public class DS1_183 : Card
         public override void OnPlayOtherMinion(ref Board board, Card Minion)
         {
             base.OnPlayOtherMinion(ref board, Minion);
-            board.MinionEnnemy[0].Damage(3, ref board);
-            board.MinionEnnemy[1].Damage(3, ref board);
+            board.MinionEnemy[0].Damage(3, ref board);
+            board.MinionEnemy[1].Damage(3, ref board);
             board.Resimulate();
         }
 
@@ -50,7 +50,7 @@ public class DS1_183 : Card
 		
 		public override bool ShouldBePlayed(Board board)
         {
-            if(board.MinionEnnemy.Count < 2)
+            if(board.MinionEnemy.Count < 2)
             {
                 return false;
             }

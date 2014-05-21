@@ -33,7 +33,7 @@ public class EX1_619 : Card
             {
                 c.CurrentHealth = 1;
             }
-            foreach (Card c in board.MinionEnnemy)
+            foreach (Card c in board.MinionEnemy)
             {
                 c.CurrentHealth = 1;
             }

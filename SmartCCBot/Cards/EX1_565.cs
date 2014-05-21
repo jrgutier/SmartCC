@@ -44,7 +44,7 @@ public class EX1_565 : Card
             {
                 Card left = null;
                 Card right = null;
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     c.RemoveBuffById(Id);
                     if (c.Index == Index - 1)
@@ -83,7 +83,7 @@ public class EX1_565 : Card
             }
             else
             {
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     c.RemoveBuffById(Id);
                 }

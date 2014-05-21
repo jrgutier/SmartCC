@@ -61,7 +61,7 @@ public class CS2_222 : Card
             }
             else
             {
-                foreach(Card c in board.MinionEnnemy)
+                foreach(Card c in board.MinionEnemy)
                 {
                     c.RemoveBuffById(Id);
                 }

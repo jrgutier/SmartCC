@@ -25,7 +25,7 @@ public class EX1_334 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_ENNEMY;
+            TargetTypeOnPlay = TargetType.MINION_Enemy;
         }
 
         public override bool ShouldBePlayedOnTarget(Card target)
@@ -41,7 +41,7 @@ public class EX1_334 : Card
             base.OnPlay(ref board, target, index);
             if (target != null)
             {
-                board.MinionEnnemy.Remove(target);
+                board.MinionEnemy.Remove(target);
                 board.MinionFriend.Add(target);
             }
             board.Resimulate();

@@ -29,7 +29,7 @@ public class DS1_233 : Card
         {
             base.OnPlay(ref board, target,index);
 
-            board.HeroEnnemy.Damage(5 + board.GetSpellPower(), ref board);
+            board.HeroEnemy.Damage(5 + board.GetSpellPower(), ref board);
         }
 
         public override void OnDeath(ref Board board)

@@ -28,7 +28,7 @@ public class EX1_014 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.EnnemyCardDraw += 2;
+            board.EnemyCardDraw += 2;
         }
 
         public override void OnDeath(ref Board board)

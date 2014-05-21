@@ -29,7 +29,7 @@ public class NEW1_030 : Card
         {
             base.OnPlay(ref board, target,index);
             board.Hand.Clear();
-            board.MinionEnnemy.Clear();
+            board.MinionEnemy.Clear();
             board.MinionFriend.Clear();
             board.Resimulate();
         }

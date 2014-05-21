@@ -23,7 +23,7 @@ public class DREAM_04 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_ENNEMY;
+            TargetTypeOnPlay = TargetType.MINION_Enemy;
 
         }
 
@@ -32,8 +32,8 @@ public class DREAM_04 : Card
             base.OnPlay(ref board, target,index);
             if (target != null)
             {
-                board.MinionEnnemy.Remove(target);
-                board.EnnemyCardDraw++;
+                board.MinionEnemy.Remove(target);
+                board.EnemyCardDraw++;
             }
         }
 

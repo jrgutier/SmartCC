@@ -35,7 +35,7 @@ public class EX1_402 : Card
             }
             else
             {
-                board.HeroEnnemy.CurrentArmor++;
+                board.HeroEnemy.CurrentArmor++;
 
             }
         }
@@ -49,7 +49,7 @@ public class EX1_402 : Card
             }
             else
             {
-                board.HeroEnnemy.CurrentArmor++;
+                board.HeroEnemy.CurrentArmor++;
 
             }
         }

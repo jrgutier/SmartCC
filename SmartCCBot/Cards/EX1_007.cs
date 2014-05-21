@@ -40,7 +40,7 @@ public class EX1_007 : Card
             }
             else
             {
-                board.EnnemyCardDraw++;
+                board.EnemyCardDraw++;
             }
         }
         public override void OnDeath(ref Board board)

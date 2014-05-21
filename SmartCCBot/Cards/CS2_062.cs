@@ -28,7 +28,7 @@ public class CS2_062 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 c.Damage(3 + board.GetSpellPower(), ref board);
             }
@@ -36,7 +36,7 @@ public class CS2_062 : Card
             {
                 c.Damage(3 + board.GetSpellPower(), ref board);
             }
-            board.HeroEnnemy.Damage(3 + board.GetSpellPower(), ref board);
+            board.HeroEnemy.Damage(3 + board.GetSpellPower(), ref board);
             board.HeroFriend.Damage(3 + board.GetSpellPower(), ref board);
 
         }

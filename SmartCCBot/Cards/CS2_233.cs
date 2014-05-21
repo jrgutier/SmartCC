@@ -31,11 +31,11 @@ public class CS2_233 : Card
             
             if(board.WeaponFriend != null)
             {
-                foreach(Card c in board.MinionEnnemy)
+                foreach(Card c in board.MinionEnemy)
                 {
                     c.Damage(board.WeaponFriend.CurrentAtk, ref board);
                 }
-                board.HeroEnnemy.Damage(board.WeaponFriend.CurrentAtk, ref board);
+                board.HeroEnemy.Damage(board.WeaponFriend.CurrentAtk, ref board);
 
                 board.WeaponFriend = null;
             }

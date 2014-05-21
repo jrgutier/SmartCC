@@ -28,7 +28,7 @@ public class EX1_259 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 c.Damage(2 + board.GetSpellPower(), ref board);
             }
@@ -53,7 +53,7 @@ public class EX1_259 : Card
 		
 		public override bool ShouldBePlayed(Board board)
         {
-            if (board.MinionEnnemy.Count < 2)
+            if (board.MinionEnemy.Count < 2)
                 return false;
             return true;
         }

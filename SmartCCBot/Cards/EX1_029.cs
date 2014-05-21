@@ -35,7 +35,7 @@ public class EX1_029 : Card
             base.OnDeath(ref board);
             if(IsFriend)
             {
-                board.HeroEnnemy.Damage(2, ref board);
+                board.HeroEnemy.Damage(2, ref board);
 
             }
             else

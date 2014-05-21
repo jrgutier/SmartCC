@@ -43,7 +43,7 @@ public class EX1_100 : Card
         public override void OnCastSpell(ref Board board, Card Spell)
         {
 		    base.OnCastSpell(ref board, Spell);
-            board.EnnemyCardDraw++;
+            board.EnemyCardDraw++;
         }
 		
 		public override bool ShouldBePlayed(Board board)

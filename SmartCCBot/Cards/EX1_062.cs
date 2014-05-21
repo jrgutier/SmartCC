@@ -35,7 +35,7 @@ public class EX1_062 : Card
                 if(c.Race == CRace.MURLOC)
                     AddBuff(new Buff(1, 0, Id));
             }
-            foreach (Card c in board.MinionEnnemy)
+            foreach (Card c in board.MinionEnemy)
             {
                 if (c.Race == CRace.MURLOC)
                     AddBuff(new Buff(1, 0, Id));
@@ -58,7 +58,7 @@ public class EX1_062 : Card
                     RemoveBuffById(Id);
 
             }
-            foreach (Card c in board.MinionEnnemy)
+            foreach (Card c in board.MinionEnemy)
             {
                 if (c.Race == CRace.MURLOC)
                     RemoveBuffById(Id);

@@ -30,7 +30,7 @@ public class EX1_590 : Card
             base.OnPlay(ref board, target,index);
             int shields = 0;
 
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 if(c.IsDivineShield)
                 {

@@ -34,7 +34,7 @@ public class NEW1_027 : Card
             }
             else
             {
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     c.RemoveBuffById(Id);
 
@@ -78,7 +78,7 @@ public class NEW1_027 : Card
             }
             else
             {
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     if (c.Race == CRace.PIRATE)
                     {

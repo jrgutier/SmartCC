@@ -29,7 +29,7 @@ public class CS2_114 : Card
         {
             base.OnPlay(ref board, target,index);
 
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 c.Damage(2, ref board);
             }
@@ -53,7 +53,7 @@ public class CS2_114 : Card
 		
 		public override bool ShouldBePlayed(Board board)
         {
-            if (board.MinionEnnemy.Count > 4)
+            if (board.MinionEnemy.Count > 4)
                 return false;
             return true;
         }

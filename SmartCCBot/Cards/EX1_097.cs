@@ -39,11 +39,11 @@ public class EX1_097 : Card
             {
                 c.Damage(2, ref board);
             }
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 c.Damage(2, ref board);
             }
-            board.HeroEnnemy.Damage(2, ref board);
+            board.HeroEnemy.Damage(2, ref board);
             board.HeroFriend.Damage(2, ref board);
 
 

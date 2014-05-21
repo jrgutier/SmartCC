@@ -40,7 +40,7 @@ public class EX1_595 : Card
             if (friend)
                 board.FriendCardDraw++;
             else
-                board.EnnemyCardDraw++;
+                board.EnemyCardDraw++;
         }
 
         public override void OnPlayOtherMinion(ref Board board, Card Minion)

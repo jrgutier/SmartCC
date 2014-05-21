@@ -23,7 +23,7 @@ public class EX1_622 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_ENNEMY;
+            TargetTypeOnPlay = TargetType.MINION_Enemy;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
@@ -33,7 +33,7 @@ public class EX1_622 : Card
             {
                 if(target.CurrentAtk > 4)
                 {
-                    board.MinionEnnemy.Remove(target);
+                    board.MinionEnemy.Remove(target);
                 }
             }
         }

@@ -28,7 +28,7 @@ public class EX1_538 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 if (board.MinionFriend.Count < 7)
                     board.AddCardToBoard("EX1_538t", true);

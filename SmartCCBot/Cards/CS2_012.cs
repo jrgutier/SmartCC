@@ -23,7 +23,7 @@ public class CS2_012 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.BOTH_ENNEMY;
+            TargetTypeOnPlay = TargetType.BOTH_Enemy;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
@@ -33,8 +33,8 @@ public class CS2_012 : Card
             {
                 if(target.Type == CType.HERO)
                 {
-                    board.HeroEnnemy.Damage(4 + board.GetSpellPower(), ref board);
-                    foreach(Card c in board.MinionEnnemy)
+                    board.HeroEnemy.Damage(4 + board.GetSpellPower(), ref board);
+                    foreach(Card c in board.MinionEnemy)
                     {
                         c.Damage(1 + board.GetSpellPower(), ref board);
                     }
@@ -42,7 +42,7 @@ public class CS2_012 : Card
                 else
                 {
                     target.Damage(4 + board.GetSpellPower(), ref board);
-                    foreach (Card c in board.MinionEnnemy)
+                    foreach (Card c in board.MinionEnemy)
                     {
                         if (c.Id == target.Id)
                             continue;

@@ -35,7 +35,7 @@ namespace HREngine.Bots
             }
             else
             {
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     c.RemoveBuffById(Id);
 
@@ -80,7 +80,7 @@ namespace HREngine.Bots
             }
             else
             {
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     c.RemoveBuffById(Id);
                 }

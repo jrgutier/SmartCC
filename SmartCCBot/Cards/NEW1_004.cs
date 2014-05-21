@@ -28,10 +28,10 @@ public class NEW1_004 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.EnnemyCardDraw += board.MinionEnnemy.Count;
+            board.EnemyCardDraw += board.MinionEnemy.Count;
             board.FriendCardDraw += board.MinionFriend.Count;
 
-            board.MinionEnnemy.Clear();
+            board.MinionEnemy.Clear();
             board.MinionFriend.Clear();
 
             board.Resimulate();

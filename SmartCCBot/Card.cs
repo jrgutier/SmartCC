@@ -22,17 +22,17 @@ namespace HREngine.Bots
 
                 if (IsTaunt && IsFriend)
                 {
-                    if (board.HeroFriend.CurrentHealth > 15 && board.HeroFriend.CurrentHealth < 25)
+                    if (board.HeroFriend.CurrentHealth > 20 && board.HeroFriend.CurrentHealth < 25)
                     {
-                        value += 3;
+                        value += 4;
                     }
-                    else if (board.HeroFriend.CurrentHealth < 15)
+                    else if (board.HeroFriend.CurrentHealth < 20)
                     {
                         value += 6;
                     }
 
                 }
-                else if (!IsFriend)
+                else if (IsTaunt && !IsFriend)
                 {
                     value += 2;
                 }
@@ -42,6 +42,9 @@ namespace HREngine.Bots
 
                 if (IsFrozen)
                     value -= 3;
+
+                if (currentAtk == 0)
+                    value -= valueAttack;
             }
             else if (Type == CType.WEAPON)
             {
@@ -136,7 +139,7 @@ namespace HREngine.Bots
                 c.OnOtherMinionDeath(ref board, IsFriend, this);
             }
 
-            foreach (Card c in board.MinionEnnemy)
+            foreach (Card c in board.MinionEnemy)
             {
                 c.OnOtherMinionDeath(ref board, IsFriend, this);
             }
@@ -231,7 +234,7 @@ namespace HREngine.Bots
                 {
                     c.OnOtherMinionDamage(ref board);
                 }
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     c.OnOtherMinionDamage(ref board);
                 }
@@ -301,7 +304,7 @@ namespace HREngine.Bots
                     c.OnOtherMinionHeal();
                 }
 
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     c.OnOtherMinionHeal();
                 }
@@ -344,7 +347,7 @@ namespace HREngine.Bots
                     c.OnOtherMinionDamage(ref board);
                 }
 
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     c.OnOtherMinionDamage(ref board);
                 }
@@ -411,13 +414,13 @@ namespace HREngine.Bots
         {
             NONE = 0,
             HERO_FRIEND = 1,
-            HERO_ENNEMY = 2,
+            HERO_Enemy = 2,
             HERO_BOTH = 3,
             MINION_FRIEND = 4,
-            MINION_ENNEMY = 5,
+            MINION_Enemy = 5,
             MINION_BOTH = 6,
             BOTH_FRIEND = 7,
-            BOTH_ENNEMY = 8,
+            BOTH_Enemy = 8,
             ALL = 9
         }
 
@@ -429,20 +432,20 @@ namespace HREngine.Bots
                     return "NONE";
                 case TargetType.HERO_FRIEND:
                     return "HERO_FRIEND";
-                case TargetType.HERO_ENNEMY:
-                    return "HERO_ENNEMY";
+                case TargetType.HERO_Enemy:
+                    return "HERO_Enemy";
                 case TargetType.HERO_BOTH:
                     return "HERO_BOTH";
                 case TargetType.MINION_FRIEND:
                     return "MINION_FRIEND";
-                case TargetType.MINION_ENNEMY:
-                    return "MINION_ENNEMY";
+                case TargetType.MINION_Enemy:
+                    return "MINION_Enemy";
                 case TargetType.MINION_BOTH:
                     return "MINION_BOTH";
                 case TargetType.BOTH_FRIEND:
                     return "BOTH_FRIEND";
-                case TargetType.BOTH_ENNEMY:
-                    return "BOTH_ENNEMY";
+                case TargetType.BOTH_Enemy:
+                    return "BOTH_Enemy";
                 case TargetType.ALL:
                     return "ALL";
             }

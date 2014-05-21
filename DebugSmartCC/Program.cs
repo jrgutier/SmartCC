@@ -31,10 +31,10 @@ namespace DebugSmartCC
 
             Board root = new Board();
           /*
-              root.HeroEnnemy = Card.Create("HERO_04", false, 0);
+              root.HeroEnemy = Card.Create("HERO_04", false, 0);
                 root.HeroFriend = Card.Create("HERO_04", true, 1);
                 root.HeroFriend.CurrentHealth = 30;
-                root.HeroEnnemy.CurrentHealth = 7;
+                root.HeroEnemy.CurrentHealth = 7;
 
               //  root.Ability = Card.Create("CS2_049", true, 545);
 
@@ -46,8 +46,8 @@ namespace DebugSmartCC
                 root.ManaAvailable = 20;
                 Card c = Card.Create("NEW1_033", false, 3, 0);
                 c.Silence();
-                 root.MinionEnnemy.Add(c);
-                 root.MinionEnnemy.Add(Card.Create("CS2_203", false, 4, 0));
+                 root.MinionEnemy.Add(c);
+                 root.MinionEnemy.Add(Card.Create("CS2_203", false, 4, 0));
             //    root.MinionFriend.Add(Card.Create("EX1_008", false, 54, 0));
 
                 //root.MinionFriend.Add(Card.Create("EX1_393", false, 96, 1));

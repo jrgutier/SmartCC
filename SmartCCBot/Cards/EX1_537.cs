@@ -23,7 +23,7 @@ public class EX1_537 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_ENNEMY;
+            TargetTypeOnPlay = TargetType.MINION_Enemy;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
@@ -34,7 +34,7 @@ public class EX1_537 : Card
                 Card left = null;
                 Card right = null;
 
-                foreach (Card c in board.MinionEnnemy)
+                foreach (Card c in board.MinionEnemy)
                 {
                     if (c.Index == target.Index - 1)
                         left = c;

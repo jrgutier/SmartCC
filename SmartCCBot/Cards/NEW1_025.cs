@@ -28,12 +28,12 @@ public class NEW1_025 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            if(board.WeaponEnnemy != null)
+            if(board.WeaponEnemy != null)
             {
-                if (board.WeaponEnnemy.CurrentDurability > 1)
-                    board.WeaponEnnemy.CurrentDurability--;
+                if (board.WeaponEnemy.CurrentDurability > 1)
+                    board.WeaponEnemy.CurrentDurability--;
                 else
-                    board.WeaponEnnemy = null;
+                    board.WeaponEnemy = null;
             }
         }
 

@@ -32,7 +32,7 @@ public class EX1_400 : Card
             {
                 c.Damage(1, ref board);
             }
-            foreach(Card c in board.MinionEnnemy)
+            foreach(Card c in board.MinionEnemy)
             {
                 c.Damage(1, ref board);
             }
