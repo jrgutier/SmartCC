@@ -442,8 +442,8 @@ namespace HREngine.Bots
             {
                 if (Ability.CurrentCost <= ManaAvailable && Ability.ShouldBePlayed(this))
                 {
-                    if (Ability.TargetTypeOnPlay == Card.TargetType.MINION_Enemy || Ability.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
-                           || Ability.TargetTypeOnPlay == Card.TargetType.BOTH_Enemy || Ability.TargetTypeOnPlay == Card.TargetType.ALL)
+                    if (Ability.TargetTypeOnPlay == Card.TargetType.MINION_ENEMY || Ability.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
+                           || Ability.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || Ability.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
                         foreach (Card Enemy in MinionEnemy)
                         {
@@ -466,8 +466,8 @@ namespace HREngine.Bots
                             availableActions.Add(a);
                         }
                     }
-                    if (Ability.TargetTypeOnPlay == Card.TargetType.HERO_Enemy || Ability.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
-                        || Ability.TargetTypeOnPlay == Card.TargetType.BOTH_Enemy || Ability.TargetTypeOnPlay == Card.TargetType.ALL)
+                    if (Ability.TargetTypeOnPlay == Card.TargetType.HERO_ENEMY || Ability.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
+                        || Ability.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || Ability.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
                         Action a = null;
                         a = new Action(Action.ActionType.CAST_ABILITY, Ability, HeroEnemy);
@@ -494,8 +494,8 @@ namespace HREngine.Bots
             {
                 if (c.CurrentCost <= ManaAvailable && c.ShouldBePlayed(this))
                 {
-                    if (c.TargetTypeOnPlay == Card.TargetType.MINION_Enemy || c.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
-                        || c.TargetTypeOnPlay == Card.TargetType.BOTH_Enemy || c.TargetTypeOnPlay == Card.TargetType.ALL)
+                    if (c.TargetTypeOnPlay == Card.TargetType.MINION_ENEMY || c.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
+                        || c.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || c.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
                         foreach (Card Enemy in MinionEnemy)
                         {
@@ -620,8 +620,8 @@ namespace HREngine.Bots
                             }
                         }
                     }
-                    if (c.TargetTypeOnPlay == Card.TargetType.HERO_Enemy || c.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
-                        || c.TargetTypeOnPlay == Card.TargetType.BOTH_Enemy || c.TargetTypeOnPlay == Card.TargetType.ALL)
+                    if (c.TargetTypeOnPlay == Card.TargetType.HERO_ENEMY || c.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
+                        || c.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || c.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
 
                         Action a = null;

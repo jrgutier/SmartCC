@@ -23,7 +23,7 @@ public class CS2_084 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_Enemy;
+            TargetTypeOnPlay = TargetType.MINION_ENEMY;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)

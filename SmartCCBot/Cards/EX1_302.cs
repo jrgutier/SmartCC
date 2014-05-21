@@ -23,7 +23,7 @@ public class EX1_302 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_Enemy;
+            TargetTypeOnPlay = TargetType.MINION_ENEMY;
         }
 
         public override bool ShouldBePlayedOnTarget(Card target)

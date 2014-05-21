@@ -414,13 +414,13 @@ namespace HREngine.Bots
         {
             NONE = 0,
             HERO_FRIEND = 1,
-            HERO_Enemy = 2,
+            HERO_ENEMY = 2,
             HERO_BOTH = 3,
             MINION_FRIEND = 4,
-            MINION_Enemy = 5,
+            MINION_ENEMY = 5,
             MINION_BOTH = 6,
             BOTH_FRIEND = 7,
-            BOTH_Enemy = 8,
+            BOTH_ENEMY = 8,
             ALL = 9
         }
 
@@ -432,20 +432,20 @@ namespace HREngine.Bots
                     return "NONE";
                 case TargetType.HERO_FRIEND:
                     return "HERO_FRIEND";
-                case TargetType.HERO_Enemy:
-                    return "HERO_Enemy";
+                case TargetType.HERO_ENEMY:
+                    return "HERO_ENEMY";
                 case TargetType.HERO_BOTH:
                     return "HERO_BOTH";
                 case TargetType.MINION_FRIEND:
                     return "MINION_FRIEND";
-                case TargetType.MINION_Enemy:
-                    return "MINION_Enemy";
+                case TargetType.MINION_ENEMY:
+                    return "MINION_ENEMY";
                 case TargetType.MINION_BOTH:
                     return "MINION_BOTH";
                 case TargetType.BOTH_FRIEND:
                     return "BOTH_FRIEND";
-                case TargetType.BOTH_Enemy:
-                    return "BOTH_Enemy";
+                case TargetType.BOTH_ENEMY:
+                    return "BOTH_ENEMY";
                 case TargetType.ALL:
                     return "ALL";
             }
