@@ -45,7 +45,7 @@ namespace HREngine.Bots
             {
                 value += c.GetValue(this);
             }
-            value -= (HeroFriend.CurrentHealth * ValuesInterface.ValueHealthFriend) + HeroFriend.CurrentArmor * ValuesInterface.ValueArmorFriend;
+            value += (HeroFriend.CurrentHealth * ValuesInterface.ValueHealthFriend) + HeroFriend.CurrentArmor * ValuesInterface.ValueArmorFriend;
 
             value += FriendCardDraw * ValuesInterface.ValueFriendCardDraw;
             value -= EnemyCardDraw * ValuesInterface.ValueEnemyCardDraw;
