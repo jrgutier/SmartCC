@@ -61,9 +61,9 @@ namespace HREngine.Bots
 
         public void SerializeRoot()
         {
-            IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(CurrentFolder + "/Turn" + TurnCount.ToString() + "_" + SimuCount.ToString() + ".seed", FileMode.Create, FileAccess.Write, FileShare.None);
-            formatter.Serialize(stream, root);
+            byte[] mem = Debugger.Serialize(root);
+            stream.Write(mem,0,mem.GetLength(0));
             stream.Close();
         }
 

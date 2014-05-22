@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace SmartCompiler
 {
-    internal class CodeCompiler : IDisposable
+    public class CodeCompiler : IDisposable
     {
         public CodeCompiler(string FilePath, string BotDirectory)
         {

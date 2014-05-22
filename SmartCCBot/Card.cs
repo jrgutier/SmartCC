@@ -43,8 +43,6 @@ namespace HREngine.Bots
                 if (IsFrozen)
                     value -= 3;
 
-                if (currentAtk == 0)
-                    value -= valueAttack;
             }
             else if (Type == CType.WEAPON)
             {
@@ -787,7 +785,6 @@ namespace HREngine.Bots
             }
 
             Card c = null;
-
             Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath+ "Bots/SmartCC/Profile.dll");
             Type type = assembly.GetType("HREngine.Bots." + cardId);
                 //                HREngine.API.Utilities.HRLog.Write("AAAAA "+type.ToString());

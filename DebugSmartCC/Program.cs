@@ -10,8 +10,9 @@ using HREngine.Bots;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.IO;
-
-namespace DebugSmartCC
+using System.Windows.Forms;
+using SmartCompiler;
+namespace HREngine.Bots
 {
 
 
@@ -21,12 +22,35 @@ namespace DebugSmartCC
         {
             Console.BufferHeight = Int16.MaxValue - 1; // ***** Alters the BufferHeight *****
 
-            CardTemplate.DatabasePath = "";
+            CardTemplate.DatabasePath = System.IO.Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) +"/";
+
             CardTemplate.LoadAll();
 
             Console.ReadLine();
 
+            StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/useProfiles");
+            string useDefaut = str.ReadLine();
 
+            str.Close();
+
+            if (useDefaut == "true")
+            {
+                Application.EnableVisualStyles();
+                Application.Run(new ProfileSelector(CardTemplate.DatabasePath));
+            }
+            else
+            {
+
+                using (CodeCompiler compiler = new CodeCompiler(CardTemplate.DatabasePath + "Bots\\SmartCC\\Profiles\\Defaut\\", CardTemplate.DatabasePath))
+                {
+                    if (compiler.Compile())
+                    {
+                    }
+                }
+
+            }            
+
+        
             Simulation s = new Simulation();
 
             Board root = new Board();
@@ -53,11 +77,8 @@ namespace DebugSmartCC
                 //root.MinionFriend.Add(Card.Create("EX1_393", false, 96, 1));
                
             */
-            
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream("seed.seed", FileMode.Open, FileAccess.Read, FileShare.None);
-            root  = formatter.Deserialize(stream) as Board;
-            stream.Close();
+            Assembly.LoadFile(CardTemplate.DatabasePath + "Bots/SmartCC/Profile.dll");
+            root = HREngine.Bots.Debugger.BinaryDeSerialize(File.ReadAllBytes(CardTemplate.DatabasePath+"seed.Seed")) as Board;
             
             s.CreateLogFolder();
             s.SeedSimulation(root);

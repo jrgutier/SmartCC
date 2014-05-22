@@ -62,6 +62,7 @@
     <Compile Include="Action.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Buff.cs" />
+    <Compile Include="Debugger.cs" />
     <Compile Include="SmartCCBot.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="CardTemplate.cs" />

@@ -12,6 +12,7 @@ namespace SmartCompiler
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("AAA");
             if (args[1] == "true")
             {
                 Application.EnableVisualStyles();
@@ -19,14 +20,16 @@ namespace SmartCompiler
             }
             else
             {
-                using (CodeCompiler compiler = new CodeCompiler(args[0] + "Bots\\SmartCC\\Profiles\\Defaut\\", args[0]))
+                if (args[0] == "null")
+                    args[0] = "";
+                    using (CodeCompiler compiler = new CodeCompiler(args[0] + "Bots\\SmartCC\\Profiles\\Defaut\\", args[0]))
                 {
                     if (compiler.Compile())
                     {
                     }
                 }
             }
-           
+            Console.ReadKey();
         }
     }
 }
