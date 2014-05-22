@@ -41,7 +41,6 @@ namespace HREngine.Bots
             while(!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
-                Console.WriteLine(line);
                 if (line.Contains("ValueHealthEnemy"))
                 {
                     ValueHealthEnemy = int.Parse(line.Split('=')[1]);

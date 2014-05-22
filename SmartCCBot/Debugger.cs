@@ -47,8 +47,6 @@ namespace HREngine.Bots
                     List<Assembly> Assemblies = new List<Assembly>();
                     Assemblies.Add(Assembly.LoadFile(CardTemplate.DatabasePath + "Bots/SmartCC/Profile.dll"));
 
-                    Console.WriteLine(typeName);
-
                     foreach (Assembly ass in Assemblies)
                     {
                         foreach(Type t in ass.GetTypes())
