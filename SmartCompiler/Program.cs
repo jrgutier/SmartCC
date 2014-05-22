@@ -12,7 +12,6 @@ namespace SmartCompiler
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("AAA");
             if (args[1] == "true")
             {
                 Application.EnableVisualStyles();
@@ -29,7 +28,6 @@ namespace SmartCompiler
                     }
                 }
             }
-            Console.ReadKey();
         }
     }
 }

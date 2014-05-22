@@ -514,7 +514,7 @@ namespace HREngine.Bots
                                 {
                                     for (int i = 0; i < MinionFriend.Count; i++)
                                     {
-                                        if (MinionFriend.Count > 1)
+                                        if (MinionFriend.Count > 1 && !HasFriendBuffer())
                                         {
                                             if (i == 0)
                                                 continue;
@@ -578,7 +578,7 @@ namespace HREngine.Bots
                                 {
                                     for (int i = 0; i < MinionFriend.Count; i++)
                                     {
-                                        if (MinionFriend.Count > 1)
+                                        if (MinionFriend.Count > 1 && !HasFriendBuffer())
                                         {
                                             if (i == 0)
                                                 continue;
@@ -631,7 +631,7 @@ namespace HREngine.Bots
                             {
                                 for (int i = 0; i < MinionFriend.Count; i++)
                                 {
-                                    if (MinionFriend.Count > 1)
+                                    if (MinionFriend.Count > 1 && !HasFriendBuffer())
                                     {
                                         if (i == 0)
                                             continue;
@@ -681,7 +681,7 @@ namespace HREngine.Bots
                             {
                                 for (int i = 0; i < MinionFriend.Count; i++)
                                 {
-                                    if (MinionFriend.Count > 1)
+                                    if (MinionFriend.Count > 1 && !HasFriendBuffer())
                                     {
                                         if (i == 0)
                                             continue;
@@ -731,7 +731,7 @@ namespace HREngine.Bots
                             {
                                 for (int i = 0; i < MinionFriend.Count; i++)
                                 {
-                                    if (MinionFriend.Count > 1)
+                                    if (MinionFriend.Count > 1 && !HasFriendBuffer())
                                     {
                                         if (i == 0)
                                             continue;

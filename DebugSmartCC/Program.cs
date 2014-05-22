@@ -22,7 +22,7 @@ namespace HREngine.Bots
         {
             Console.BufferHeight = Int16.MaxValue - 1; // ***** Alters the BufferHeight *****
 
-            CardTemplate.DatabasePath = System.IO.Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) +"/";
+            CardTemplate.DatabasePath = System.IO.Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) + "/";
 
             CardTemplate.LoadAll();
 
@@ -48,38 +48,38 @@ namespace HREngine.Bots
                     }
                 }
 
-            }            
+            }
 
-        
+
             Simulation s = new Simulation();
 
             Board root = new Board();
-          /*
-              root.HeroEnemy = Card.Create("HERO_04", false, 0);
-                root.HeroFriend = Card.Create("HERO_04", true, 1);
-                root.HeroFriend.CurrentHealth = 30;
-                root.HeroEnemy.CurrentHealth = 7;
+            /*
+                root.HeroEnemy = Card.Create("HERO_04", false, 0);
+                  root.HeroFriend = Card.Create("HERO_04", true, 1);
+                  root.HeroFriend.CurrentHealth = 30;
+                  root.HeroEnemy.CurrentHealth = 7;
 
-              //  root.Ability = Card.Create("CS2_049", true, 545);
+                //  root.Ability = Card.Create("CS2_049", true, 545);
 
-                //root.Hand.Add(Card.Create("CS2_112", true, 2));
-                //root.Hand.Add(Card.Create("EX1_408", true, 3));
-                //root.Hand.Add(Card.Create("EX1_575", true, 4));
-                //root.Hand.Add(Card.Create("GAME_005", true, 5));
+                  //root.Hand.Add(Card.Create("CS2_112", true, 2));
+                  //root.Hand.Add(Card.Create("EX1_408", true, 3));
+                  //root.Hand.Add(Card.Create("EX1_575", true, 4));
+                  //root.Hand.Add(Card.Create("GAME_005", true, 5));
 
-                root.ManaAvailable = 20;
-                Card c = Card.Create("NEW1_033", false, 3, 0);
-                c.Silence();
-                 root.MinionEnemy.Add(c);
-                 root.MinionEnemy.Add(Card.Create("CS2_203", false, 4, 0));
-            //    root.MinionFriend.Add(Card.Create("EX1_008", false, 54, 0));
+                  root.ManaAvailable = 20;
+                  Card c = Card.Create("NEW1_033", false, 3, 0);
+                  c.Silence();
+                   root.MinionEnemy.Add(c);
+                   root.MinionEnemy.Add(Card.Create("CS2_203", false, 4, 0));
+              //    root.MinionFriend.Add(Card.Create("EX1_008", false, 54, 0));
 
-                //root.MinionFriend.Add(Card.Create("EX1_393", false, 96, 1));
+                  //root.MinionFriend.Add(Card.Create("EX1_393", false, 96, 1));
                
-            */
+              */
             Assembly.LoadFile(CardTemplate.DatabasePath + "Bots/SmartCC/Profile.dll");
-            root = HREngine.Bots.Debugger.BinaryDeSerialize(File.ReadAllBytes(CardTemplate.DatabasePath+"seed.Seed")) as Board;
-            
+            root = HREngine.Bots.Debugger.BinaryDeSerialize(File.ReadAllBytes(CardTemplate.DatabasePath + "seed.Seed")) as Board;
+
             s.CreateLogFolder();
             s.SeedSimulation(root);
 

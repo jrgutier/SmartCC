@@ -7,7 +7,7 @@ namespace HREngine.Bots
     [Serializable]
     public class Card : IEquatable<Card>
     {
-
+        static Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath+ "Bots/SmartCC/Profile.dll");
         public int GetValue(Board board)
         {
             int value = 0;
@@ -785,14 +785,10 @@ namespace HREngine.Bots
             }
 
             Card c = null;
-            Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath+ "Bots/SmartCC/Profile.dll");
+            
+                
             Type type = assembly.GetType("HREngine.Bots." + cardId);
-                //                HREngine.API.Utilities.HRLog.Write("AAAAA "+type.ToString());
 
-            
-                //HREngine.API.Utilities.HRLog.Write("loaded "+cardId);
-
-            
             c = (Card)Activator.CreateInstance(type);
 
             /*
