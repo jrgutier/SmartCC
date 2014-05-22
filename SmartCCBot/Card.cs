@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Reflection;
 namespace HREngine.Bots
 {
     [Serializable]
@@ -590,10 +590,88 @@ namespace HREngine.Bots
 
         public void InitInstance(CardTemplate newTemplate, bool isFriend, int id)
         {
+            buffs = new List<Buff>();
             Id = id;
             IsFriend = isFriend;
             template = newTemplate;
-            buffs = new List<Buff>();
+            CurrentCost = template.Cost;
+            Index = 0;
+            SpellPower = 0;
+            TempAtk = 0;
+            TestAllIndexOnPlay = false;
+            if (template.Type.Contains("Minion"))
+            {
+                Type = CType.MINION;
+            }
+            else if (template.Type.Contains("Spell"))
+            {
+                Type = CType.SPELL;
+            }
+            else if (template.Type.Contains("Weapon"))
+            {
+                Type = CType.WEAPON;
+            }
+            else if (template.Type.Contains("Hero") && !template.Type.Contains("Power"))
+            {
+                Type = CType.HERO;
+            }
+            else if (template.Type.Contains("Hero Power"))
+            {
+                Type = CType.HERO_POWER;
+            }
+
+            if (template.Race == string.Empty)
+            {
+                Race = Card.CRace.NONE;
+            }
+            else if (template.Race.Contains("Murloc"))
+            {
+                Race = Card.CRace.MURLOC;
+            }
+            else if (template.Race.Contains("Beast"))
+            {
+                Race = Card.CRace.BEAST;
+            }
+            else if (template.Race.Contains("Demon"))
+            {
+                Race = Card.CRace.DEMON;
+            }
+            else if (template.Race.Contains("Pirate"))
+            {
+                Race = Card.CRace.PIRATE;
+            }
+            else if (template.Race.Contains("Totem"))
+            {
+                Race = Card.CRace.TOTEM;
+            }
+            else if (template.Race.Contains("Dragon"))
+            {
+                Race = Card.CRace.DRAGON;
+            }
+
+            CurrentAtk = template.Atk;
+            CurrentHealth = template.Health;
+            MaxHealth = template.Health;
+            CurrentDurability = template.Durability;
+            CurrentArmor = 0;
+            TargetTypeOnPlay = TargetType.NONE;
+            IsTaunt = false;
+            IsCharge = false;
+            IsDestroyed = false;
+            IsDivineShield = false;
+            IsEnraged = false;
+            IsFrozen = false;
+            IsSilenced = false;
+            IsStealth = false;
+            IsTired = false;
+            IsWindfury = false;
+            IsTargetable = true;
+            HasEnrage = false;
+            HasFreeze = false;
+            HasPoison = false;
+            IsImmune = false;
+            CountAttack = 0;
+            Init();
         }
         public Card(CardTemplate newTemplate, bool isFriend, int id)
         {
@@ -710,6 +788,17 @@ namespace HREngine.Bots
 
             Card c = null;
 
+            Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath+ "Bots/SmartCC/Profile.dll");
+            Type type = assembly.GetType("HREngine.Bots." + cardId);
+                //                HREngine.API.Utilities.HRLog.Write("AAAAA "+type.ToString());
+
+            
+                //HREngine.API.Utilities.HRLog.Write("loaded "+cardId);
+
+            
+            c = (Card)Activator.CreateInstance(type);
+
+            /*
             if (cardId == "EX1_129")
             {
                 c = new EX1_129(template, isFriend, id);
@@ -2806,12 +2895,12 @@ namespace HREngine.Bots
             {
                 c = new CS2_024(template, isFriend, id);
             }
-
+            */
             if (c == null)
             {
                 HREngine.API.Utilities.HRLog.Write("CARD null");
             }
-
+            c.InitInstance(template, isFriend, id);
             c.Index = index;
             return c;
         }

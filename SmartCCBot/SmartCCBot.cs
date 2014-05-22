@@ -2,6 +2,8 @@
 using HREngine.API.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace HREngine.Bots
 {
@@ -12,8 +14,40 @@ namespace HREngine.Bots
         {
             try
             {
+
+                string path = (HRSettings.Get.CustomRuleFilePath).Split(new string[] { "Common" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                CardTemplate.DatabasePath = path;
+                CardTemplate.LoadAll();
+
                 OnBattleStateUpdate = HandleOnBattleStateUpdate;
                 OnMulliganStateUpdate = HandleBattleMulliganPhase;
+
+
+                // Use ProcessStartInfo class
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.CreateNoWindow = false;
+                startInfo.UseShellExecute = false;
+                startInfo.FileName = CardTemplate.DatabasePath + "Bots/SmartCC/SmartCompiler.exe";
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+                StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/useProfiles");
+                startInfo.Arguments = CardTemplate.DatabasePath + " "+str.ReadLine();
+                str.Close();
+
+                try
+                {
+                    // Start the process with the info we specified.
+                    // Call WaitForExit and then the using statement will close.
+                    using (Process exeProcess = Process.Start(startInfo))
+                    {
+                        exeProcess.WaitForExit();
+                    }
+                }
+                catch
+                {
+                    // Log error.
+                }
+
             }
 
             catch (Exception Exception)
@@ -26,9 +60,7 @@ namespace HREngine.Bots
         private HREngine.API.Actions.ActionBase HandleBattleMulliganPhase()
         {
             SmartCc = new Simulation();
-            string path = (HRSettings.Get.CustomRuleFilePath).Split(new string[] { "Common" }, StringSplitOptions.RemoveEmptyEntries)[0];
-            CardTemplate.DatabasePath = path;
-            CardTemplate.LoadAll();
+           
 
             SmartCc.CreateLogFolder();
             SmartCc.TurnCount = 0;
@@ -189,9 +221,7 @@ namespace HREngine.Bots
             if(SmartCc == null)
             {
                 SmartCc = new Simulation();
-                string path = (HRSettings.Get.CustomRuleFilePath).Split(new string[] { "Common" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                CardTemplate.DatabasePath = path;
-                CardTemplate.LoadAll();
+
 
                 SmartCc.CreateLogFolder();
                 SmartCc.TurnCount = 0;
