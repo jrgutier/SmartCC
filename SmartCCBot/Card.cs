@@ -763,9 +763,20 @@ namespace HREngine.Bots
             IsSilenced = true;
 
             buffs.Clear();
-            maxHealth = template.Health;
-            if (CurrentHealth > MaxHealth)
+
+
+            if(maxHealth > template.Health)
+            {
+                maxHealth = template.Health;
+                if (CurrentHealth > MaxHealth)
+                    CurrentHealth = MaxHealth;
+            }
+            else if (maxHealth < template.Health)
+            {
+                maxHealth = template.Health;
                 CurrentHealth = MaxHealth;
+            }
+            
 
             CurrentAtk = template.Atk;
         }
