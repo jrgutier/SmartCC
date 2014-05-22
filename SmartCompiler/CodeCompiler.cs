@@ -25,6 +25,8 @@ namespace SmartCompiler
 
                 foreach (string s in sourcesPath)
                 {
+                    if (!s.Contains(".cs"))
+                        continue;
                    // Console.WriteLine(s);
 
                     sources.Add(File.ReadAllText(s));

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CSharp;
 using System.Windows.Forms;
-
+using System.IO;
 namespace SmartCompiler
 {
     class Program
@@ -27,6 +27,16 @@ namespace SmartCompiler
                     {
                     }
                 }
+                    String path = args[0] + "Bots/SmartCC/Profile.current";
+                    using (var stream = new FileStream(path, FileMode.Truncate))
+                    {
+                        using (var writer = new StreamWriter(stream))
+                        {
+                            writer.WriteLine("Defaut");
+                            writer.Close();
+
+                        }
+                    }
             }
         }
     }

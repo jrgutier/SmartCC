@@ -32,28 +32,26 @@ namespace HREngine.Bots
         {
             float value = 0;
 
-            int valueHealth = 1;
             foreach (Card c in MinionEnemy)
             {
                 value -= c.GetValue(this);
             }
 
-            value += Secret.Count * 6;
+            value += Secret.Count * ValuesInterface.ValueSecret;
 
-            value -= (HeroEnemy.CurrentHealth + HeroEnemy.CurrentArmor) * valueHealth;
+            value -= (HeroEnemy.CurrentHealth  * ValuesInterface.ValueHealthEnemy)+ HeroEnemy.CurrentArmor * ValuesInterface.ValueArmorEnemy;
 
             foreach (Card c in MinionFriend)
             {
                 value += c.GetValue(this);
             }
-            value += (HeroFriend.CurrentHealth + HeroFriend.CurrentArmor) * valueHealth;
+            value -= (HeroFriend.CurrentHealth * ValuesInterface.ValueHealthFriend) + HeroFriend.CurrentArmor * ValuesInterface.ValueArmorFriend;
 
-            value += FriendCardDraw * 7;
-            value -= EnemyCardDraw * 10;
+            value += FriendCardDraw * ValuesInterface.ValueFriendCardDraw;
+            value -= EnemyCardDraw * ValuesInterface.ValueEnemyCardDraw;
 
-            // value += MinionFriend.Count * 10;
-            value -= MinionEnemy.Count * 3;
-            value += MinionFriend.Count;
+            value -= MinionEnemy.Count * ValuesInterface.ValueEnemyMinionCount;
+            value += MinionFriend.Count * ValuesInterface.ValueFriendMinionCount;
 
 
             if (WeaponFriend != null)

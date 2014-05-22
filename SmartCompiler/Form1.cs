@@ -42,6 +42,9 @@ namespace SmartCompiler
                 }
             }
             Close();
+            StreamWriter writer = new StreamWriter(BotDirectory + "Bots\\SmartCC\\Profile.current");
+            writer.WriteLine(comboBox1.SelectedItem.ToString().Substring(1));
+            writer.Close();
         }
 
     }

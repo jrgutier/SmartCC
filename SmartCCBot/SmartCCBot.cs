@@ -55,6 +55,9 @@ namespace HREngine.Bots
                 HRLog.Write(Exception.Message);
                 HRLog.Write(Environment.StackTrace);
             }
+
+            ValuesInterface.LoadValuesFromFile();
+
         }
 
         private HREngine.API.Actions.ActionBase HandleBattleMulliganPhase()

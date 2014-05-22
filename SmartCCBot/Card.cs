@@ -7,52 +7,47 @@ namespace HREngine.Bots
     [Serializable]
     public class Card : IEquatable<Card>
     {
-        static Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath+ "Bots/SmartCC/Profile.dll");
+        static Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath + "Bots/SmartCC/Profile.dll");
         public int GetValue(Board board)
         {
             int value = 0;
-            int valueDurability = 2;
-            int valueHealth = 2;
-            int valueAttack = 3;
-
             if (Type == CType.MINION)
             {
-                value += valueHealth * CurrentHealth;
-                value += valueAttack * CurrentAtk;
+                value += ValuesInterface.ValueHealthMinion * CurrentHealth;
+                value += ValuesInterface.ValueAttackMinion * CurrentAtk;
 
                 if (IsTaunt && IsFriend)
                 {
                     if (board.HeroFriend.CurrentHealth > 20 && board.HeroFriend.CurrentHealth < 25)
                     {
-                        value += 4;
+                        value += ValuesInterface.ValueTaunt * 2;
                     }
                     else if (board.HeroFriend.CurrentHealth < 20)
                     {
-                        value += 6;
+                        value += ValuesInterface.ValueTaunt * 3;
                     }
 
                 }
                 else if (IsTaunt && !IsFriend)
                 {
-                    value += 2;
+                    value += ValuesInterface.ValueTaunt;
                 }
 
                 if (IsDivineShield)
-                    value += 4;
+                    value += ValuesInterface.ValueDivineShield;
 
                 if (IsFrozen)
-                    value -= 3;
+                    value -= ValuesInterface.ValueFrozen;
+
+                if (currentAtk == 0)
+                    value -= 2;
 
             }
             else if (Type == CType.WEAPON)
             {
-                value += valueDurability * CurrentDurability;
-                value += valueAttack * CurrentAtk *2;
+                value += ValuesInterface.ValueDurabilityWeapon * CurrentDurability;
+                value += ValuesInterface.ValueAttackWeapon * CurrentAtk;
             }
-
-
-
-
 
             return value;
         }
@@ -192,14 +187,14 @@ namespace HREngine.Bots
             else if (me.Type == CType.WEAPON)
             {
                 me.CurrentDurability--;
-                
-                    
+
+
                 me.CountAttack++;
                 board.HeroFriend.CountAttack++;
 
                 board.HeroFriend.OnHit(ref board, tar);
                 tar.OnHit(ref board, board.HeroFriend);
-               // tar.OnHit(ref board, me);
+                // tar.OnHit(ref board, me);
                 if (me.CurrentDurability < 1)
                     board.WeaponFriend = null;
             }
@@ -226,7 +221,7 @@ namespace HREngine.Bots
             if (IsImmune)
                 return;
 
-            if(Type != CType.HERO)
+            if (Type != CType.HERO)
             {
                 foreach (Card c in board.MinionFriend)
                 {
@@ -338,7 +333,7 @@ namespace HREngine.Bots
 
         public void Damage(int amount, ref Board board)
         {
-            if(Type != CType.HERO)
+            if (Type != CType.HERO)
             {
                 foreach (Card c in board.MinionFriend)
                 {
@@ -350,7 +345,7 @@ namespace HREngine.Bots
                     c.OnOtherMinionDamage(ref board);
                 }
             }
-            
+
 
             OnDamage();
             if (IsDivineShield && amount > 0)
@@ -785,8 +780,8 @@ namespace HREngine.Bots
             }
 
             Card c = null;
-            
-                
+
+
             Type type = assembly.GetType("HREngine.Bots." + cardId);
 
             c = (Card)Activator.CreateInstance(type);

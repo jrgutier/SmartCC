@@ -47,6 +47,16 @@ namespace HREngine.Bots
                     {
                     }
                 }
+                String path = CardTemplate.DatabasePath + "Bots/SmartCC/Profile.current";
+                using (var stream = new FileStream(path, FileMode.Truncate))
+                {
+                    using (var writer = new StreamWriter(stream))
+                    {
+                        writer.WriteLine("Defaut");
+                        writer.Close();
+
+                    }
+                }
 
             }
 
@@ -85,7 +95,7 @@ namespace HREngine.Bots
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-
+            ValuesInterface.LoadValuesFromFile();
             s.Simulate();
 
             stopWatch.Stop();
