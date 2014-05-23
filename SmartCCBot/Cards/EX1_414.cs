@@ -33,11 +33,11 @@ public class EX1_414 : Card
         {
             if (enraged)
             {
-                AddBuff(new Buff(6, 0, Id));
+                currentAtk += 6;
             }
             else
             {
-                RemoveBuffById(Id);
+                currentAtk -= 6;
             }
         }
 

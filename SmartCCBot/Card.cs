@@ -154,6 +154,7 @@ namespace HREngine.Bots
 
         public virtual void OnAttack(ref Board board, Card target)
         {
+           
             Card me = board.GetCard(Id);
             Card tar = board.GetCard(target.Id);
 
@@ -212,7 +213,7 @@ namespace HREngine.Bots
                     c.OnOtherMinionDamage(ref board);
                 }
             }
-
+            
             OnDamage();
 
             if (actor.HasFreeze)
@@ -226,11 +227,13 @@ namespace HREngine.Bots
             {
                 if (CurrentArmor <= 0)
                 {
+
                     CurrentHealth -= actor.CurrentAtk;
 
                 }
                 else
                 {
+                    
                     CurrentHealth -= (actor.CurrentAtk - CurrentArmor);
                     CurrentArmor -= (actor.CurrentAtk);
                     if (CurrentArmor <= 0)
@@ -238,6 +241,7 @@ namespace HREngine.Bots
                         CurrentArmor = 0;
                     }
                 }
+
                 if (CurrentHealth < MaxHealth)
                 {
                     if (HasEnrage && !IsEnraged)
@@ -546,6 +550,7 @@ namespace HREngine.Bots
 
             currentAtk += b.Atk;
             CurrentHealth += b.Hp;
+            
         }
 
         public void RemoveBuffById(int id)
@@ -556,7 +561,8 @@ namespace HREngine.Bots
                 {
                     buffs.Remove(b);
                     currentAtk -= b.Atk;
-                    CurrentHealth -= b.Hp;
+                    if(CurrentHealth > MaxHealth)
+                        CurrentHealth -= b.Hp;
                 }
             }
         }
@@ -2945,7 +2951,7 @@ namespace HREngine.Bots
             ret += template.Name + "[" + template.Id + "]";
             if (Type == CType.MINION)
             {
-                ret += "-T[" + IsTaunt.ToString() + "]CA[" + CountAttack.ToString() + "][" + CurrentAtk.ToString() + "/" + CurrentHealth.ToString() + "]CAN[" + CanAttack.ToString() + "]IDX[" + Index.ToString() + "]SP[" + SpellPower.ToString() + "]BUF[" + buffs.Count.ToString() + "]";
+                ret += "-T[" + IsTired.ToString() + "]CA[" + CountAttack.ToString() + "][" + CurrentAtk.ToString() + "/" + CurrentHealth.ToString() + "]CAN[" + CanAttack.ToString() + "]IDX[" + Index.ToString() + "]SP[" + SpellPower.ToString() + "]BUF[" + buffs.Count.ToString() + "]";
 
             }
             else if (Type == CType.WEAPON)

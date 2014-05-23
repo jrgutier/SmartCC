@@ -28,7 +28,13 @@ public class EX1_274 : Card
         public override void OnEndTurn(Board board)
         {
             if (board.Secret.Count > 0)
-                board.GetCard(Id).AddBuff(new Buff(2, 2, Id));
+            {
+                board.GetCard(Id).currentAtk += 2;
+                board.GetCard(Id).maxHealth += 2;
+                board.GetCard(Id).CurrentHealth += 2;
+
+            }
+               
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)

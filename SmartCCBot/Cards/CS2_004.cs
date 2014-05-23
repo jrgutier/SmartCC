@@ -31,7 +31,8 @@ public class CS2_004 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.AddBuff(new Buff(0, 2, Id));
+                target.CurrentHealth++;
+                target.maxHealth++;
                 board.FriendCardDraw++;
                 board.Resimulate();
             }

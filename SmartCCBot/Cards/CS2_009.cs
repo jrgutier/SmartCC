@@ -30,7 +30,9 @@ public class CS2_009 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.AddBuff(new Buff(2, 2, Id));
+                target.currentAtk += 2;
+                target.CurrentHealth += 2;
+                target.maxHealth += 2;
                 target.IsTaunt = true;
             }
         }

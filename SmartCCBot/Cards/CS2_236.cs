@@ -31,7 +31,10 @@ public class CS2_236 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.AddBuff(new Buff(0, target.CurrentHealth, Id));
+                
+                target.CurrentHealth = (target.CurrentHealth * 2);
+                target.maxHealth = (target.CurrentHealth * 2);
+
             }
         }
 

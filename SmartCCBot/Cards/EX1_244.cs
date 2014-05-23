@@ -32,7 +32,8 @@ public class EX1_244 : Card
             {
                 if(c.Race == CRace.TOTEM)
                 {
-                    c.AddBuff(new Buff(0, 2, Id));
+                    c.maxHealth += 2;
+                    c.CurrentHealth += 2;
                 }
             }
         }

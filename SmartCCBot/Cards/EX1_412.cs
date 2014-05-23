@@ -31,12 +31,13 @@ public class EX1_412 : Card
             if(enraged)
             {
                 IsWindfury = true;
-                AddBuff(new Buff(1, 0, Id));
+                currentAtk += 1;
             }
             else
             {
                 IsWindfury = false;
-                RemoveBuffById(Id);
+                currentAtk -= 1;
+
             }
         }
 

@@ -42,7 +42,9 @@ public class EX1_366 : Card
             {
                 if(board.WeaponFriend.CurrentDurability > 0)
                 {
-                    Minion.AddBuff(new Buff(1, 1, Id));
+                    Minion.currentAtk += 1;
+                    Minion.CurrentHealth += 1;
+                    Minion.maxHealth += 1;
                     board.WeaponFriend.CurrentDurability--;
                 }
             }

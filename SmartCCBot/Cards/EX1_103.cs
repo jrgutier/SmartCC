@@ -32,7 +32,10 @@ public class EX1_103 : Card
             foreach(Card c in board.MinionFriend)
             {
                 if (c.Race == CRace.MURLOC)
-                    c.AddBuff(new Buff(0, 2, Id));
+                {
+                    c.CurrentHealth += 2;
+                    c.maxHealth += 2;
+                }
             }
         }
 

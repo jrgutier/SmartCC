@@ -188,7 +188,7 @@ namespace HREngine.Bots
                         foreach (Action a in actions)
                         {
                             Board bb = b.ExecuteAction(a);
-                            /*
+                           /* 
                              Console.WriteLine(a.ToString());
                              Console.WriteLine("**************************************");
                              Console.WriteLine(bb.ToString());
@@ -265,14 +265,6 @@ namespace HREngine.Bots
                     depth++;
                 }
             }
-
-
-
-
-
-
-
-
 
 
             Action actionPrior = null;
@@ -361,7 +353,7 @@ namespace HREngine.Bots
             Console.WriteLine("---------------------------------");
             Console.WriteLine(bestBoard.ToString());
             Console.WriteLine("---------------------------------");
-
+            
             Log("");
             Log("Actions:");
 
@@ -371,7 +363,6 @@ namespace HREngine.Bots
 
                 Console.WriteLine(a.ToString());
             }
-
 
         }
     }

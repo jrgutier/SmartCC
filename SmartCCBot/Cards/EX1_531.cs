@@ -28,7 +28,11 @@ public class EX1_531 : Card
         public override void OnOtherMinionDeath(ref Board board, bool friend,Card minion)
         {
             if (minion.Race == CRace.BEAST)
-                board.GetCard(Id).AddBuff(new Buff(2, 1, Id));
+            {
+                board.GetCard(Id).currentAtk += 2;
+                board.GetCard(Id).maxHealth += 1;
+                board.GetCard(Id).CurrentHealth += 1;
+            }
         }
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {

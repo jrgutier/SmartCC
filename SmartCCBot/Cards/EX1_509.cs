@@ -40,9 +40,7 @@ public class EX1_509 : Card
         {
             base.OnPlayOtherMinion(ref board, Minion);
             if (Minion.Race == CRace.MURLOC)
-                board.GetCard(Id).AddBuff(new Buff(1, 0, Id));
-
-           // Console.WriteLine("Onotjer");
+                board.GetCard(Id).currentAtk++;
         }
 
         public override void OnCastSpell(ref Board board, Card Spell)

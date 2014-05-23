@@ -31,15 +31,7 @@ public class CS1_129 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                foreach(Buff b in target.buffs)
-                {
-                    b.Atk = 0;
-                }
-                target.CurrentAtk = 0;
-                Buff ba = new Buff();
-                ba.Atk = CurrentHealth;
-                ba.OwnerId = Id;
-                target.AddBuff(ba);
+                target.CurrentAtk = CurrentHealth;
             }
 
         }

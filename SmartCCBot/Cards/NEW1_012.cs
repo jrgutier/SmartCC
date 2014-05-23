@@ -44,7 +44,7 @@ public class NEW1_012 : Card
         {
             if(IsFriend)
             {
-                board.GetCard(Id).AddBuff(new Buff(1, 0, Id));
+                board.GetCard(Id).currentAtk++;
             }
             base.OnCastSpell(ref board, Spell);
 

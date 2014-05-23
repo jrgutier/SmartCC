@@ -32,7 +32,9 @@ public class CS2_103 : Card
             if(target != null)
             {
                 target.IsCharge = true;
-                target.AddBuff(new Buff(2, 2, Id));
+                target.currentAtk += 2;
+                target.CurrentHealth += 2;
+                target.maxHealth += 2;
             }
         }
 

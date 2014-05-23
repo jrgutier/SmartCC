@@ -47,7 +47,9 @@ public class EX1_590 : Card
                 }
             }
 
-            board.GetCard(Id).AddBuff(new Buff(3 * shields, 3 * shields, Id));
+            board.GetCard(Id).currentAtk += 3 * shields;
+            board.GetCard(Id).CurrentHealth += 3 * shields;
+            board.GetCard(Id).maxHealth += 3 * shields;
         }
 
         public override void OnDeath(ref Board board)

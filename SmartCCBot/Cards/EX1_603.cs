@@ -32,7 +32,7 @@ public class EX1_603 : Card
             if(target != null)
             {
                 target.Damage(1, ref board);
-                target.AddBuff(new Buff(2, 0, Id));
+                target.currentAtk += 2;
             }
         }
 

@@ -36,11 +36,11 @@ public class CS2_073 : Card
             {
                 if (board.IsCombo())
                 {
-                    target.AddBuff(new Buff(4, 0, Id));
+                    target.currentAtk += 4;
                 }
                 else
                 {
-                    target.AddBuff(new Buff(2, 0, Id));
+                    target.currentAtk += 2;
                 }
 
             }

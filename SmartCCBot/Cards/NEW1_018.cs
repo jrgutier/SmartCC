@@ -30,7 +30,7 @@ public class NEW1_018 : Card
             base.OnPlay(ref board, target,index);
             if(board.WeaponFriend != null)
             {
-                board.GetCard(Id).AddBuff(new Buff(board.WeaponFriend.CurrentAtk, 0, Id));
+                board.GetCard(Id).currentAtk += board.WeaponFriend.CurrentAtk;
             }
         }
 

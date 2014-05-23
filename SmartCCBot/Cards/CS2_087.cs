@@ -31,7 +31,7 @@ public class CS2_087 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.AddBuff(new Buff(3, 0, Id));
+                target.currentAtk += 3;
             }
         }
 

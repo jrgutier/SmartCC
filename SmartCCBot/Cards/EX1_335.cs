@@ -30,12 +30,8 @@ public class EX1_335 : Card
             base.OnUpdate(board);
             if (IsSilenced)
                 return;
-            currentAtk = 0;
-            foreach(Buff b in buffs)
-            {
-                b.Atk = 0;
-            }
-            AddBuff(new Buff(CurrentHealth, 0, Id));
+
+            currentAtk = CurrentHealth;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)

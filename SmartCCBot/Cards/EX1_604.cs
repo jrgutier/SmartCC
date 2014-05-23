@@ -32,7 +32,7 @@ public class EX1_604 : Card
 
         public override void OnOtherMinionDamage(ref Board board)
         {
-            AddBuff(new Buff(1, 0, Id));
+            currentAtk++;
         }
 
         public override void OnDeath(ref Board board)

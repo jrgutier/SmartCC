@@ -58,7 +58,10 @@ public class EX1_304 : Card
 
             }
 
-            board.GetCard(Id).AddBuff(new Buff(atkBuff, healBuff, Id));
+            board.GetCard(Id).currentAtk += atkBuff;
+            board.GetCard(Id).maxHealth += healBuff;
+            board.GetCard(Id).CurrentHealth += healBuff;
+
         }
 
         public override void OnDeath(ref Board board)

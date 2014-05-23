@@ -27,7 +27,7 @@ public class tt_004 : Card
 
         public override void OnOtherMinionDeath(ref Board board, bool friend, Card minion)
         {
-            board.GetCard(Id).AddBuff(new Buff(1, 0, Id));
+            board.GetCard(Id).currentAtk++;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)

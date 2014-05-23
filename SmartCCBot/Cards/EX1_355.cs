@@ -31,7 +31,7 @@ public class EX1_355 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.AddBuff(new Buff(target.CurrentAtk, 0, Id));
+                target.currentAtk = target.CurrentAtk*2;
             }
         }
 

@@ -28,7 +28,9 @@ public class EX1_043 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.GetCard(Id).AddBuff(new Buff(0, board.Hand.Count, Id));
+            board.GetCard(Id).CurrentHealth += board.Hand.Count;
+            board.GetCard(Id).maxHealth += board.Hand.Count;
+
         }
 
         public override void OnDeath(ref Board board)

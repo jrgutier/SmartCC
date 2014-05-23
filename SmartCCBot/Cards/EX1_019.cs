@@ -31,7 +31,9 @@ public class EX1_019 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.AddBuff(new Buff(1, 1, Id));
+                target.currentAtk += 1;
+                target.maxHealth += 1;
+                target.CurrentHealth += 1;
             }
         }
 

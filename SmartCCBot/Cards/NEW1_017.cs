@@ -34,7 +34,10 @@ public class NEW1_017 : Card
                 if(target.Race == CRace.MURLOC)
                 {
                     board.RemoveCardFromBoard(target.Id);
-                    board.GetCard(Id).AddBuff(new Buff(2, 2, Id));
+                    board.GetCard(Id).currentAtk += 2;
+                    board.GetCard(Id).maxHealth += 2;
+                    board.GetCard(Id).CurrentHealth += 2;
+
                 }
             }
         }

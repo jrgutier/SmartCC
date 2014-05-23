@@ -33,7 +33,9 @@ public class DS1_070 : Card
             {
                 if(target.Race == CRace.BEAST)
                 {
-                    target.AddBuff(new Buff(2, 2, Id));
+                    target.currentAtk += 2;
+                    target.maxHealth += 2;
+                    target.CurrentHealth += 2;
                     target.IsTaunt = true;
                 }
             }

@@ -33,7 +33,10 @@ public class EX1_596 : Card
             {
                 if(target.Race == CRace.DEMON)
                 {
-                    target.AddBuff(new Buff(2, 2, Id));
+                    target.currentAtk += 2;
+                    target.maxHealth += 2;
+                    target.CurrentHealth += 2;
+
                 }
                 else
                 {

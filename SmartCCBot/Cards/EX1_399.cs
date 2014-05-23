@@ -33,7 +33,7 @@ public class EX1_399 : Card
         public override void OnDamage()
         {
             base.OnDamage();
-            AddBuff(new Buff(3, 0, Id));
+            currentAtk += 3;
 
         }
         public override void OnPlay(ref Board board, Card target = null,int index = 0)

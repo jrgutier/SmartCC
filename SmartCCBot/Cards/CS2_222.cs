@@ -33,11 +33,25 @@ public class CS2_222 : Card
             {
                 foreach(Card c in board.MinionFriend)
                 {
-                    if (c.Id == Id)
-                        continue;
                     c.RemoveBuffById(Id);
+
+                    if (c.Id == Id || IsSilenced)
+                        continue;
                     c.AddBuff(new Buff(1, 1, Id));
                 }
+            }
+            else
+            {
+                foreach (Card c in board.MinionEnemy)
+                {
+                    c.RemoveBuffById(Id);
+
+                    if (c.Id == Id || IsSilenced)
+                        continue;
+
+                    c.AddBuff(new Buff(1, 1, Id));
+                }
+
             }
 
         }

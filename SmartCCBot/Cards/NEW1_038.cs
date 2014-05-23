@@ -23,7 +23,9 @@ public class NEW1_038 : Card
         public override void OnEndTurn(Board board)
         {
             base.OnEndTurn(board);
-            AddBuff(new Buff(1, 1, Id));
+            currentAtk++;
+            maxHealth++;
+            CurrentHealth++;
         }
         public override void Init()
         {

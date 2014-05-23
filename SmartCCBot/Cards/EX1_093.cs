@@ -44,12 +44,16 @@ public class EX1_093 : Card
             if(left != null)
             {
                 left.IsTaunt = true;
-                left.AddBuff(new Buff(1, 1, Id));
+                left.currentAtk += 1;
+                left.maxHealth += 1;
+                left.CurrentHealth += 1;
             }
             if (right != null)
             {
                 right.IsTaunt = true;
-                right.AddBuff(new Buff(1, 1, Id));
+                right.currentAtk += 1;
+                right.maxHealth += 1;
+                right.CurrentHealth += 1;
             }
 
         }

@@ -28,7 +28,7 @@ public class EX1_001 : Card
         public override void OnOtherMinionHeal()
         {
             base.OnOtherMinionHeal();
-            AddBuff(new Buff(2, 0, Id));
+            currentAtk += 2;
         }
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {

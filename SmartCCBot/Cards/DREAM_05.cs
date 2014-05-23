@@ -31,7 +31,9 @@ public class DREAM_05 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.AddBuff(new Buff(5, 5, Id));
+                target.maxHealth += 5;
+                target.CurrentHealth += 5;
+                target.currentAtk += 5;
             }
         }
 

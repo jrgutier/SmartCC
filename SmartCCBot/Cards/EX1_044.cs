@@ -38,7 +38,10 @@ public class EX1_044 : Card
         public override void OnPlayOtherMinion(ref Board board, Card Minion)
         {
             base.OnPlayOtherMinion(ref board, Minion);
-            board.GetCard(Id).AddBuff(new Buff(1, 1, Id));
+            board.GetCard(Id).currentAtk += 1;
+            board.GetCard(Id).maxHealth += 1;
+            board.GetCard(Id).CurrentHealth += 1;
+
         }
 
         public override void OnCastSpell(ref Board board, Card Spell)
@@ -46,7 +49,9 @@ public class EX1_044 : Card
 		    base.OnCastSpell(ref board, Spell);
             if(IsFriend)
             {
-                board.GetCard(Id).AddBuff(new Buff(1, 1, Id));
+                board.GetCard(Id).currentAtk += 1;
+                board.GetCard(Id).maxHealth += 1;
+                board.GetCard(Id).CurrentHealth += 1;
 
             }
 

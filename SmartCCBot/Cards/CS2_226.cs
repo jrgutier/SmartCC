@@ -28,7 +28,10 @@ public class CS2_226 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.GetCard(Id).AddBuff(new Buff(board.MinionFriend.Count - 1, board.MinionFriend.Count - 1, Id));
+            board.GetCard(Id).currentAtk +=board.MinionFriend.Count - 1;
+            board.GetCard(Id).maxHealth += board.MinionFriend.Count - 1;
+            board.GetCard(Id).CurrentHealth += board.MinionFriend.Count - 1;
+
         }
 
         public override void OnDeath(ref Board board)

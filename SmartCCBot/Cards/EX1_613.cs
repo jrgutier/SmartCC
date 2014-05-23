@@ -35,13 +35,15 @@ public class EX1_613 : Card
             int cardsplayed = 0;
             foreach(Action a in board.ActionsStack)
             {
-                if (a.Type == Action.ActionType.CAST_ABILITY || a.Type == Action.ActionType.CAST_MINION || a.Type == Action.ActionType.CAST_SPELL || a.Type == Action.ActionType.CAST_WEAPON)
+                if (a.Type == Action.ActionType.CAST_MINION || a.Type == Action.ActionType.CAST_SPELL || a.Type == Action.ActionType.CAST_WEAPON)
                 {
                     cardsplayed++;
                 }
             }
 
-            board.GetCard(Id).AddBuff(new Buff(2 * cardsplayed, 2 * cardsplayed, Id));
+            board.GetCard(Id).currentAtk += 2 * cardsplayed;
+            board.GetCard(Id).CurrentHealth += 2 * cardsplayed;
+            board.GetCard(Id).maxHealth += 2 * cardsplayed;
         }
 
         public override void OnDeath(ref Board board)

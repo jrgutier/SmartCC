@@ -150,6 +150,7 @@ namespace HREngine.Bots
                         b.OwnerId = az.GetCreatorId();
                         newc.AddBuff(b);
                         newc.currentAtk -= b.Atk;
+                        newc.CurrentHealth -= b.Hp;
                         newc.maxHealth -= b.Hp;
                     }
                 }
@@ -184,6 +185,7 @@ namespace HREngine.Bots
                         b.OwnerId = az.GetCreatorId();
                         newc.AddBuff(b);
                         newc.currentAtk -= b.Atk;
+                        newc.CurrentHealth -= b.Hp;
                         newc.MaxHealth -= b.Hp;
                     }
                 }
@@ -198,7 +200,7 @@ namespace HREngine.Bots
                 newc.HasPoison = e.IsPoisonous();
                 newc.IsWindfury = e.HasWindfury();
                 newc.IsTaunt = e.HasTaunt();
-                newc.IsTired = e.IsExhausted();
+                newc.IsTired = (e.IsExhausted() || !e.CanAttack());
                 newc.IsImmune = e.IsImmune();
                 newc.Index = e.GetTag(HRGameTag.ZONE_POSITION) - 1;
                 newc.CountAttack = e.GetTag(HRGameTag.NUM_ATTACKS_THIS_TURN);

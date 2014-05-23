@@ -885,12 +885,10 @@ namespace HREngine.Bots
         {
             foreach (Card c in MinionEnemy)
             {
-                if (!c.IsSilenced)
                     c.OnEndTurn(this);
             }
             foreach (Card c in MinionFriend)
             {
-                if (!c.IsSilenced)
                     c.OnEndTurn(this);
             }
 

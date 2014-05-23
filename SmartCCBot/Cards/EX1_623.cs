@@ -31,7 +31,8 @@ public class EX1_623 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.AddBuff(new Buff(0, 3, Id));
+                target.CurrentHealth += 3;
+                target.maxHealth += 3;
             }
         }
 
