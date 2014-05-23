@@ -19,6 +19,12 @@ public class EX1_298 : Card
         {
             
         }
+		
+		public override void OnUpdate(Board board)
+		{
+				if(IsSilenced)
+					IsTired = false;
+		}
 
         public override void Init()
         {
@@ -44,26 +50,6 @@ public class EX1_298 : Card
         {
 		    base.OnCastSpell(ref board, Spell);
         }
-		
-		public override bool ShouldBePlayed(Board board)
-        {
-            return true;
-        }
 
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 1;
-        }
-		
     }
 }

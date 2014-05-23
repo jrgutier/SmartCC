@@ -15,7 +15,6 @@ namespace SmartCompiler
     public partial class ProfileSelector : Form
     {
         private string BotDirectory;
-        private string Profile;
         public ProfileSelector(string directory)
         {
             InitializeComponent();
@@ -38,6 +37,9 @@ namespace SmartCompiler
             using (CodeCompiler compiler = new CodeCompiler(BotDirectory + "Bots\\SmartCC\\Profiles\\"+comboBox1.SelectedItem.ToString()+"\\", BotDirectory))
             {
                 if (compiler.Compile())
+                {
+                }
+                else
                 {
                 }
             }

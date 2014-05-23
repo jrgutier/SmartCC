@@ -39,17 +39,6 @@ public class EX1_549 : Card
             }
         }
 
-        public override bool ShouldBePlayedOnTarget(Card target)
-        {
-            if (target != null)
-            {
-                if (target.Race == CRace.BEAST)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
         public override void OnDeath(ref Board board)
         {
@@ -66,25 +55,6 @@ public class EX1_549 : Card
 		    base.OnCastSpell(ref board, Spell);
         }
 		
-		public override bool ShouldBePlayed(Board board)
-        {
-            return true;
-        }
-
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 1;
-        }
 		
     }
 }

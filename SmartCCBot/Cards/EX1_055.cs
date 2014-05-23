@@ -45,26 +45,6 @@ public class EX1_055 : Card
 		    base.OnCastSpell(ref board, Spell);
             board.GetCard(Id).TempAtk += 2;
         }
-		
-		public override bool ShouldBePlayed(Board board)
-        {
-            return true;
-        }
 
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 1;
-        }
-		
     }
 }

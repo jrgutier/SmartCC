@@ -48,27 +48,6 @@ public class CS2_056 : Card
 		    base.OnCastSpell(ref board, Spell);
         }
 		
-		public override bool ShouldBePlayed(Board board)
-        {
-            if (board.HeroFriend.CurrentHealth < 3)
-                return false;
-            return true;
-        }
-
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 10;
-        }
 		
     }
 }

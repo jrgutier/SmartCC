@@ -28,13 +28,6 @@ public class EX1_334 : Card
             TargetTypeOnPlay = TargetType.MINION_ENEMY;
         }
 
-        public override bool ShouldBePlayedOnTarget(Card target)
-        {
-            if (target.CurrentAtk < 4)
-                return true;
-            return false;
-
-        }
 
         public override void OnPlay(ref Board board, Card target = null, int index = 0)
         {
@@ -62,25 +55,7 @@ public class EX1_334 : Card
             base.OnCastSpell(ref board, Spell);
         }
 
-        public override bool ShouldBePlayed(Board board)
-        {
-            return true;
-        }
 
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 1;
-        }
 
     }
 }

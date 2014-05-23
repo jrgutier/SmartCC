@@ -438,7 +438,7 @@ namespace HREngine.Bots
 
             if (Ability != null)
             {
-                if (Ability.CurrentCost <= ManaAvailable && Ability.ShouldBePlayed(this))
+                if (Ability.CurrentCost <= ManaAvailable && Ability.Behavior.ShouldBePlayed(this))
                 {
                     if (Ability.TargetTypeOnPlay == Card.TargetType.MINION_ENEMY || Ability.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
                            || Ability.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || Ability.TargetTypeOnPlay == Card.TargetType.ALL)
@@ -490,7 +490,7 @@ namespace HREngine.Bots
 
             foreach (Card c in Hand)
             {
-                if (c.CurrentCost <= ManaAvailable && c.ShouldBePlayed(this))
+                if (c.CurrentCost <= ManaAvailable && c.Behavior.ShouldBePlayed(this))
                 {
                     if (c.TargetTypeOnPlay == Card.TargetType.MINION_ENEMY || c.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
                         || c.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || c.TargetTypeOnPlay == Card.TargetType.ALL)
@@ -522,7 +522,7 @@ namespace HREngine.Bots
 
 
                                         a = new Action(Action.ActionType.CAST_MINION, c, Enemy, i);
-                                        if (c.ShouldBePlayedOnTarget(Enemy))
+                                        if (c.Behavior.ShouldBePlayedOnTarget(Enemy))
                                         {
                                             availableActions.Add(a);
                                         }
@@ -531,7 +531,7 @@ namespace HREngine.Bots
                                 else
                                 {
                                     a = new Action(Action.ActionType.CAST_MINION, c, Enemy);
-                                    if (c.ShouldBePlayedOnTarget(Enemy))
+                                    if (c.Behavior.ShouldBePlayedOnTarget(Enemy))
                                     {
                                         availableActions.Add(a);
                                     }
@@ -540,7 +540,7 @@ namespace HREngine.Bots
                             else if (c.Type == Card.CType.SPELL)
                             {
                                 a = new Action(Action.ActionType.CAST_SPELL, c, Enemy);
-                                if (c.ShouldBePlayedOnTarget(Enemy))
+                                if (c.Behavior.ShouldBePlayedOnTarget(Enemy))
                                 {
                                     availableActions.Add(a);
                                 }
@@ -549,7 +549,7 @@ namespace HREngine.Bots
                             else if (c.Type == Card.CType.WEAPON)
                             {
                                 a = new Action(Action.ActionType.CAST_WEAPON, c, Enemy);
-                                if (c.ShouldBePlayedOnTarget(Enemy))
+                                if (c.Behavior.ShouldBePlayedOnTarget(Enemy))
                                 {
                                     availableActions.Add(a);
                                 }
@@ -584,7 +584,7 @@ namespace HREngine.Bots
                                                 continue;
                                         }
                                         a = new Action(Action.ActionType.CAST_MINION, c, friend, i);
-                                        if (c.ShouldBePlayedOnTarget(friend))
+                                        if (c.Behavior.ShouldBePlayedOnTarget(friend))
                                         {
                                             availableActions.Add(a);
                                         }
@@ -594,7 +594,7 @@ namespace HREngine.Bots
                                 else
                                 {
                                     a = new Action(Action.ActionType.CAST_MINION, c, friend);
-                                    if (c.ShouldBePlayedOnTarget(friend))
+                                    if (c.Behavior.ShouldBePlayedOnTarget(friend))
                                     {
                                         availableActions.Add(a);
                                     }
@@ -603,7 +603,7 @@ namespace HREngine.Bots
                             else if (c.Type == Card.CType.SPELL)
                             {
                                 a = new Action(Action.ActionType.CAST_SPELL, c, friend);
-                                if (c.ShouldBePlayedOnTarget(friend))
+                                if (c.Behavior.ShouldBePlayedOnTarget(friend))
                                 {
                                     availableActions.Add(a);
                                 }
@@ -611,7 +611,7 @@ namespace HREngine.Bots
                             else if (c.Type == Card.CType.WEAPON)
                             {
                                 a = new Action(Action.ActionType.CAST_WEAPON, c, friend);
-                                if (c.ShouldBePlayedOnTarget(friend))
+                                if (c.Behavior.ShouldBePlayedOnTarget(friend))
                                 {
                                     availableActions.Add(a);
                                 }
@@ -637,7 +637,7 @@ namespace HREngine.Bots
                                             continue;
                                     }
                                     a = new Action(Action.ActionType.CAST_MINION, c, HeroEnemy, i);
-                                    if (c.ShouldBePlayedOnTarget(HeroEnemy))
+                                    if (c.Behavior.ShouldBePlayedOnTarget(HeroEnemy))
                                     {
                                         availableActions.Add(a);
                                     }
@@ -646,7 +646,7 @@ namespace HREngine.Bots
                             else
                             {
                                 a = new Action(Action.ActionType.CAST_MINION, c, HeroEnemy);
-                                if (c.ShouldBePlayedOnTarget(HeroEnemy))
+                                if (c.Behavior.ShouldBePlayedOnTarget(HeroEnemy))
                                 {
                                     availableActions.Add(a);
                                 }
@@ -655,7 +655,7 @@ namespace HREngine.Bots
                         else if (c.Type == Card.CType.SPELL)
                         {
                             a = new Action(Action.ActionType.CAST_SPELL, c, HeroEnemy);
-                            if (c.ShouldBePlayedOnTarget(HeroEnemy))
+                            if (c.Behavior.ShouldBePlayedOnTarget(HeroEnemy))
                             {
                                 availableActions.Add(a);
                             }
@@ -663,7 +663,7 @@ namespace HREngine.Bots
                         else if (c.Type == Card.CType.WEAPON)
                         {
                             a = new Action(Action.ActionType.CAST_WEAPON, c, HeroEnemy);
-                            if (c.ShouldBePlayedOnTarget(HeroEnemy))
+                            if (c.Behavior.ShouldBePlayedOnTarget(HeroEnemy))
                             {
                                 availableActions.Add(a);
                             }
@@ -687,7 +687,7 @@ namespace HREngine.Bots
                                             continue;
                                     }
                                     a = new Action(Action.ActionType.CAST_MINION, c, HeroFriend, i);
-                                    if (c.ShouldBePlayedOnTarget(HeroFriend))
+                                    if (c.Behavior.ShouldBePlayedOnTarget(HeroFriend))
                                     {
                                         availableActions.Add(a);
                                     }
@@ -696,7 +696,7 @@ namespace HREngine.Bots
                             else
                             {
                                 a = new Action(Action.ActionType.CAST_MINION, c, HeroFriend);
-                                if (c.ShouldBePlayedOnTarget(HeroFriend))
+                                if (c.Behavior.ShouldBePlayedOnTarget(HeroFriend))
                                 {
                                     availableActions.Add(a);
                                 }
@@ -705,7 +705,7 @@ namespace HREngine.Bots
                         else if (c.Type == Card.CType.SPELL)
                         {
                             a = new Action(Action.ActionType.CAST_SPELL, c, HeroFriend);
-                            if (c.ShouldBePlayedOnTarget(HeroFriend))
+                            if (c.Behavior.ShouldBePlayedOnTarget(HeroFriend))
                             {
                                 availableActions.Add(a);
                             }
@@ -713,7 +713,7 @@ namespace HREngine.Bots
                         else if (c.Type == Card.CType.WEAPON)
                         {
                             a = new Action(Action.ActionType.CAST_WEAPON, c, HeroFriend);
-                            if (c.ShouldBePlayedOnTarget(HeroFriend))
+                            if (c.Behavior.ShouldBePlayedOnTarget(HeroFriend))
                             {
                                 availableActions.Add(a);
                             }
@@ -771,7 +771,7 @@ namespace HREngine.Bots
 
             foreach (Card minion in MinionFriend)
             {
-                if (!minion.CanAttack || !minion.ShouldAttack(this))
+                if (!minion.CanAttack || !minion.Behavior.ShouldAttack(this))
                     continue;
 
                 if (taunts.Count == 0)

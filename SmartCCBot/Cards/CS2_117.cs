@@ -36,12 +36,6 @@ public class CS2_117 : Card
             
         }
 
-        public override bool ShouldBePlayedOnTarget(Card target)
-        {
-            if (target.CanAttack || target.Type == CType.HERO)
-                return true;
-            return false;
-        }
 
         public override void OnDeath(ref Board board)
         {
@@ -58,25 +52,6 @@ public class CS2_117 : Card
 		    base.OnCastSpell(ref board, Spell);
         }
 		
-		public override bool ShouldBePlayed(Board board)
-        {
-            return true;
-        }
-
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 1;
-        }
-		
+	
     }
 }

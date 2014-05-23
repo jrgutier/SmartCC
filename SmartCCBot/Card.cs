@@ -8,6 +8,11 @@ namespace HREngine.Bots
     public class Card : IEquatable<Card>
     {
         static Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath + "Bots/SmartCC/Profile.dll");
+
+
+        public Behavior Behavior { get; set; }
+
+
         public int GetValue(Board board)
         {
             int value = 0;
@@ -76,31 +81,6 @@ namespace HREngine.Bots
         {
 
         }
-        public virtual bool ShouldBePlayed(Board board)
-        {
-            return true;
-        }
-        public virtual bool ShouldBePlayedOnTarget(Card target)
-        {
-            return true;
-        }
-
-
-        public virtual bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public virtual int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public virtual int GetPriorityPlay()
-        {
-            return 1;
-        }
-
 
         public virtual void OnPlay(ref Board board, Card target = null, int index = 0)
         {
@@ -792,12 +772,6 @@ namespace HREngine.Bots
 
             Card c = null;
 
-
-            Type type = assembly.GetType("HREngine.Bots." + cardId);
-
-            c = (Card)Activator.CreateInstance(type);
-
-            /*
             if (cardId == "EX1_129")
             {
                 c = new EX1_129(template, isFriend, id);
@@ -2894,13 +2868,21 @@ namespace HREngine.Bots
             {
                 c = new CS2_024(template, isFriend, id);
             }
-            */
+            
             if (c == null)
             {
                 HREngine.API.Utilities.HRLog.Write("CARD null");
             }
             c.InitInstance(template, isFriend, id);
             c.Index = index;
+
+
+
+            Type type = assembly.GetType("HREngine.Bots.b" + cardId);
+
+            c.Behavior = (Behavior)Activator.CreateInstance(type);
+
+
             return c;
         }
 
@@ -2914,7 +2896,7 @@ namespace HREngine.Bots
 
             clone = (Card)Activator.CreateInstance(baseInstance.GetType());
             clone.InitInstance(baseInstance.template, baseInstance.IsFriend, baseInstance.Id);
-
+            clone.Behavior = baseInstance.Behavior;
             clone.IsTargetable = baseInstance.IsTargetable;
             clone.Race = baseInstance.Race;
             clone.Type = baseInstance.Type;

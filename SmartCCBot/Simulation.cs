@@ -227,7 +227,7 @@ namespace HREngine.Bots
             {
                 if (actionPrior == null && acc.Actor != null)
                 {
-                    if (acc.Actor.GetPriorityPlay() > 1 && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
+                    if (acc.Actor.Behavior.GetPriorityPlay(bestBoard) > 1 && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
                     {
                         Console.WriteLine("Action priori found");
                         if (acc.Type == Action.ActionType.CAST_MINION)
@@ -246,7 +246,7 @@ namespace HREngine.Bots
                 }
                 if (actionPrior != null && acc.Actor != null)
                 {
-                    if (actionPrior.Actor.GetPriorityPlay() < acc.Actor.GetPriorityPlay() && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
+                    if (actionPrior.Actor.Behavior.GetPriorityPlay(bestBoard) < acc.Actor.Behavior.GetPriorityPlay(bestBoard) && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
                     {
                         if (acc.Type == Action.ActionType.CAST_MINION)
                         {

@@ -44,15 +44,7 @@ public class EX1_308 : Card
             base.OnDeath(ref board);
         }
 
-        public override bool ShouldBePlayedOnTarget(Card target)
-        {
-
-                if (target.CurrentHealth > 4)
-                    return false;
-
-            return true;
-        }
-
+ 
         public override void OnPlayOtherMinion(ref Board board, Card Minion)
         {
             base.OnPlayOtherMinion(ref board, Minion);
@@ -62,28 +54,5 @@ public class EX1_308 : Card
         {
             base.OnCastSpell(ref board, Spell);
         }
-
-        public override bool ShouldBePlayed(Board board)
-        {
-            if (board.Hand.Count < 3 && board.Hand.Count >1)
-                return false;
-            return true;
-        }
-
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 1;
-        }
-
     }
 }

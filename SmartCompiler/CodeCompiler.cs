@@ -27,7 +27,6 @@ namespace SmartCompiler
                 {
                     if (!s.Contains(".cs"))
                         continue;
-                   // Console.WriteLine(s);
 
                     sources.Add(File.ReadAllText(s));
                 }
@@ -40,15 +39,15 @@ namespace SmartCompiler
                         GenerateInMemory = false,
                         OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(this.BotDirectory + "Bots\\SmartCC\\Profile.dll"), Path.GetFileName(this.BotDirectory + "Bots\\SmartCC\\Profile.dll"))
                     };
-                    //Console.WriteLine("Compile"+this.FilePath +"to " + this.BotDirectory + "Bots\\SmartCC\\Profile.dll");
                     options.ReferencedAssemblies.Add(BotDirectory + "Bots\\SmartCC.dll");
                     options.ReferencedAssemblies.Add("System.Core.dll");
                     CompilerResults results = provider.CompileAssemblyFromSource(options, sources.ToArray());
                     StringEnumerator enumerator = results.Output.GetEnumerator();
 
+
+
                     while (enumerator.MoveNext())
                     {
-                       // Console.WriteLine(enumerator.Current);
                     }
 
                     return (results.Errors.Count == 0);

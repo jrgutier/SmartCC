@@ -49,32 +49,6 @@ public class CS2_072 : Card
         {
 		    base.OnCastSpell(ref board, Spell);
         }
-        public override bool ShouldBePlayedOnTarget(Card target)
-        {
-            if (target.CurrentHealth == target.MaxHealth)
-                return false;
-            return true;
-        }
-
-		public override bool ShouldBePlayed(Board board)
-        {
-            return true;
-        }
-
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 1;
-        }
-		
+       
     }
 }

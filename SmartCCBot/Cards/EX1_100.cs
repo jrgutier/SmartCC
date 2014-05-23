@@ -46,25 +46,5 @@ public class EX1_100 : Card
             board.EnemyCardDraw++;
         }
 		
-		public override bool ShouldBePlayed(Board board)
-        {
-            return true;
-        }
-
-        public override bool ShouldAttack(Board board)
-        {
-            return true;
-        }
-
-        public override int GetPriorityAttack(ref Board board)
-        {
-            return 1;
-        }
-
-        public override int GetPriorityPlay()
-        {
-            return 1;
-        }
-		
     }
 }
