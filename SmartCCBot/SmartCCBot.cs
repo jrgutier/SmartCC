@@ -150,7 +150,7 @@ namespace HREngine.Bots
                         b.OwnerId = az.GetCreatorId();
                         newc.AddBuff(b);
                         newc.currentAtk -= b.Atk;
-                        newc.MaxHealth -= b.Hp;
+                        newc.maxHealth -= b.Hp;
                     }
                 }
 
