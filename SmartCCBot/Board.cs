@@ -232,11 +232,36 @@ namespace HREngine.Bots
 
         public bool HasFriendBuffer()
         {
+            int foundIndex = -1;
+
             foreach (Card c in MinionFriend)
             {
                 if (c.TestAllIndexOnPlay)
-                    return true;
+                {
+                    foundIndex = c.Index;
+                    break;
+                }
             }
+            if(foundIndex != -1)
+            {
+                bool right = false;
+                bool left = false;
+
+                foreach(Card c in MinionFriend)
+                {
+                    if (c.Index == foundIndex - 1)
+                        right = true;
+                    if (c.Index == foundIndex + 1)
+                        left = true;
+                }
+
+                if (right && left)
+                    return false;
+
+                return true;
+            }
+
+
             return false;
         }
 
@@ -795,6 +820,7 @@ namespace HREngine.Bots
                     }
                 }
             }
+
             if (WeaponFriend != null)
             {
                 if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack)

@@ -95,7 +95,21 @@ namespace DebugSmartCC
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
             ValuesInterface.LoadValuesFromFile();
-            s.Simulate();
+            s.Simulate(true);
+
+            stopWatch.Stop();
+            Console.WriteLine("Simulation stopped after :" + (stopWatch.ElapsedMilliseconds / 1000.0f).ToString());
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            s.CreateLogFolder();
+            s.SeedSimulation(root);
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            ValuesInterface.LoadValuesFromFile();
+            s.Simulate(false);
 
             stopWatch.Stop();
             Console.WriteLine("Simulation stopped after :" + (stopWatch.ElapsedMilliseconds / 1000.0f).ToString());

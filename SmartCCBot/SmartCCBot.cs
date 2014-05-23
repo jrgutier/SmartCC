@@ -130,7 +130,7 @@ namespace HREngine.Bots
                 if (weaponFriendCard != null)
                 {
                     root.WeaponFriend = Card.Create(weaponFriendCard.GetEntity().GetCardId(), true, weaponFriendCard.GetEntity().GetEntityId());
-                    root.WeaponFriend.IsTired = (weaponFriendCard.GetEntity().IsExhausted() || HeroFriend.IsExhausted());
+                    root.WeaponFriend.IsTired = (weaponFriendCard.GetEntity().GetNumAttacksThisTurn() > 0 || HeroFriend.GetNumAttacksThisTurn() > 0);
                 }
             }
 
@@ -205,7 +205,11 @@ namespace HREngine.Bots
 
                 root.MinionFriend.Add(newc);
             }
-
+            foreach (HRCard c in HRCard.GetCards(HRPlayer.GetLocalPlayer(), HRCardZone.SECRET))
+            {
+                Card newc = Card.Create(c.GetEntity().GetCardId(), true, c.GetEntity().GetEntityId());
+                root.Secret.Add(newc);
+            }
             foreach (HRCard c in GetAllCardsInHand())
             {
                 Card newc = Card.Create(c.GetEntity().GetCardId(), true, c.GetEntity().GetEntityId());
@@ -238,7 +242,7 @@ namespace HREngine.Bots
                     SeedSmartCc();
                     HRLog.Write("Simulation");
 
-                    SmartCc.Simulate();
+                    SmartCc.Simulate(false);
                     HRLog.Write("Simulation Done");
 
                 }

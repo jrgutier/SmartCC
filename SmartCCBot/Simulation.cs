@@ -5,6 +5,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Xml.Serialization;
+using System.Reflection;
+using System.Threading;
 
 namespace HREngine.Bots
 {
@@ -74,7 +76,8 @@ namespace HREngine.Bots
             sw.Close();
         }
 
-        public void Simulate()
+
+        public void Simulate(bool threaded)
         {
 
             SerializeRoot();
@@ -82,14 +85,12 @@ namespace HREngine.Bots
             NeedCalculation = false;
 
             List<Board> boards = new List<Board>();
-            List<Board> AllBoards = new List<Board>();
 
             boards.Add(root);
-            AllBoards.Add(root);
             int wide = 0;
             int depth = 0;
-            int maxDepth = 10;
-            int maxWide = 5000;
+            int maxDepth = 6;
+            int maxWide = 4000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -99,128 +100,180 @@ namespace HREngine.Bots
             Log("");
             Console.WriteLine(root.ToString());
             bool foundearly = false;
-            while (boards.Count != 0)
+
+            if (threaded)
             {
-                if (depth >= maxDepth)
-                    break;
-                if (wide >= maxWide)
-                    break;
-                wide = 0;
-                skipped = 0;
-                int childsCount = 0;
-                List<Board> childs = new List<Board>();
-                foreach (Board b in boards)
+                int nbThread = 10;
+                List<Board> Roots = new List<Board>();
+                List<Board> Childs = new List<Board>();
+
+                foreach (Action a in root.CalculateAvailableActions())
                 {
+                    Board tmp = root.ExecuteAction(a);
+                    Roots.Add(tmp);
+                    Childs.Add(tmp);
+                }
+
+                if (Roots.Count < nbThread)
+                    nbThread = Roots.Count;
+
+                Childs.Add(root);
+
+                List<Thread> tt = new List<Thread>();
+                for (int i = 0; i < nbThread; i++)
+                {
+                    HREngine.API.Utilities.HRLog.Write("NewThread");
+                    List<Board> input = null;
+                    if (i == nbThread - 1)
+                    {
+                        input = Roots.GetRange(i * (Roots.Count / nbThread), (Roots.Count / nbThread) + (Roots.Count % nbThread));
+                    }
+                    else
+                    {
+                        input = Roots.GetRange(i * (Roots.Count / nbThread), (Roots.Count / nbThread));
+                    }
+
+                    SimulationThread thread = new SimulationThread();
+                    Thread threadl = new Thread(new ParameterizedThreadStart(thread.Calculate));
+                    threadl.Start((object)new SimulationThreadStart(input, ref Childs));
+
+                    tt.Add(threadl);
+                }
+
+                foreach (Thread t in tt)
+                {
+                    t.Join();
+                }
+
+                Board BestBoard = null;
+                foreach (Board b in Childs)
+                {
+                    Board endBoard = Board.Clone(b);
+                    endBoard.EndTurn();
+
+                    if (BestBoard == null)
+                        BestBoard = endBoard;
+                    else if (endBoard.GetValue() > BestBoard.GetValue())
+                        BestBoard = endBoard;
+                    else if (endBoard.GetValue() == BestBoard.GetValue())
+                        if (endBoard.FriendCardDraw > BestBoard.FriendCardDraw)
+                            BestBoard = endBoard;
+                }
+                bestBoard = BestBoard;
+
+            }
+            else
+            {
+                while (boards.Count != 0)
+                {
+                    if (depth >= maxDepth)
+                        break;
                     if (wide >= maxWide)
                         break;
-                    wide++;
-                    childsCount++;
+                    wide = 0;
+                    skipped = 0;
+                    int childsCount = 0;
+                    List<Board> childs = new List<Board>();
 
-                    List<Action> actions = b.CalculateAvailableActions();
 
-                    /*if(depth == 0)
+                    foreach (Board b in boards)
                     {
-                        bool containsCast = false;
+                        if (wide >= maxWide)
+                            break;
+                        wide++;
+                        childsCount++;
+
+                        List<Action> actions = b.CalculateAvailableActions();
+
                         foreach (Action a in actions)
                         {
-                            if (a.Type == Action.ActionType.CAST_ABILITY || a.Type == Action.ActionType.CAST_MINION || a.Type == Action.ActionType.CAST_SPELL)
+                            Board bb = b.ExecuteAction(a);
+                            /*
+                             Console.WriteLine(a.ToString());
+                             Console.WriteLine("**************************************");
+                             Console.WriteLine(bb.ToString());
+                             */
+                            if (bb != null)
                             {
-                                if (a.Actor.template.Id != "GAME_005")
+                                if (bb.GetValue() > 10000)
                                 {
-                                    containsCast = true;
+                                    bestBoard = bb;
+                                    foundearly = true;
+                                    break;
                                 }
-                            }
-                        }
-                        if (containsCast)
-                        {
-                            foreach (Action a in actions.ToArray())
-                            {
-                                if (a.Type != Action.ActionType.CAST_ABILITY && a.Type != Action.ActionType.CAST_MINION && a.Type != Action.ActionType.CAST_SPELL && a.Type != Action.ActionType.RESIMULATE)
-                                {
-                                    actions.Remove(a);
-                                }
-                            }
-                        }
-                    }
-                   
- */
 
-                    foreach (Action a in actions)
-                    {
-                        Board bb = b.ExecuteAction(a);
-                        /*
-                         Console.WriteLine(a.ToString());
-                         Console.WriteLine("**************************************");
-                         Console.WriteLine(bb.ToString());
-                         */
-                        if (bb != null)
-                        {
-                            if (bb.GetValue() > 10000)
-                            {
-                                bestBoard = bb;
-                                foundearly = true;
-                                break;
-                            }
-
-                            if (tryToSkipEqualBoards)
-                            {
-                                bool found = false;
-                                foreach (Board lol in childs)
+                                if (tryToSkipEqualBoards)
                                 {
-                                    if (bb.Equals(lol))
+                                    bool found = false;
+                                    foreach (Board lol in childs)
                                     {
-                                        found = true;
-                                        break;
+                                        if (bb.Equals(lol))
+                                        {
+                                            found = true;
+                                            break;
+                                        }
                                     }
-                                }
 
-                                if (!found)
-                                {
-                                    childs.Add(bb);
+                                    if (!found)
+                                    {
+                                        childs.Add(bb);
+                                    }
+                                    else
+                                    {
+                                        skipped++;
+                                    }
                                 }
                                 else
                                 {
-                                    skipped++;
+                                    childs.Add(bb);
                                 }
                             }
-                            else
+                        }
+                        if (foundearly)
+                            break;
+                    }
+                    if (wide >= maxWide)
+                        break;
+
+
+
+
+                    if (!foundearly)
+                    {
+                        foreach (Board baa in childs)
+                        {
+                            Board endBoard = Board.Clone(baa);
+                            endBoard.EndTurn();
+                            if (endBoard.GetValue() > bestBoard.GetValue())
                             {
-                                childs.Add(bb);
+                                bestBoard = endBoard;
                             }
                         }
                     }
-                    if (foundearly)
-                        break;
-                }
-                if (wide >= maxWide)
-                    break;
-
-                if (!foundearly)
-                {
-                    foreach (Board baa in childs)
+                    else
                     {
-                        Board endBoard = Board.Clone(baa);
-                        endBoard.EndTurn();
-                        if (endBoard.GetValue() > bestBoard.GetValue())
-                        {
-                            bestBoard = endBoard;
-                        }
+                        Log("Found early at : " + depth.ToString() + " | " + wide.ToString());
+                        Console.WriteLine("Found Early");
+                        break;
+
                     }
-                }
-                else
-                {
-                    Log("Found early at : " + depth.ToString() + " | " + wide.ToString());
-                    Console.WriteLine("Found Early");
-                    break;
 
+                    Log("Simulation :" + depth.ToString() + " | " + wide.ToString() + " | " + skipped.ToString());
+                    Console.WriteLine("Simulation :" + depth.ToString() + " | " + wide.ToString() + " | " + skipped.ToString());
+                    boards.Clear();
+                    boards = childs;
+                    depth++;
                 }
-
-                Log("Simulation :" + depth.ToString() + " | " + wide.ToString() + " | " + skipped.ToString());
-                Console.WriteLine("Simulation :" + depth.ToString() + " | " + wide.ToString() + " | " + skipped.ToString());
-                boards.Clear();
-                boards = childs;
-                depth++;
             }
+
+
+
+
+
+
+
+
+
 
             Action actionPrior = null;
             foreach (Action acc in bestBoard.ActionsStack)
