@@ -745,7 +745,7 @@ namespace HREngine.Bots
             buffs.Clear();
 
 
-            if(maxHealth > template.Health)
+            if (maxHealth > template.Health)
             {
                 maxHealth = template.Health;
                 if (CurrentHealth > MaxHealth)
@@ -756,7 +756,7 @@ namespace HREngine.Bots
                 maxHealth = template.Health;
                 CurrentHealth = MaxHealth;
             }
-            
+
 
             CurrentAtk = template.Atk;
         }
@@ -2868,7 +2868,7 @@ namespace HREngine.Bots
             {
                 c = new CS2_024(template, isFriend, id);
             }
-            
+
             if (c == null)
             {
                 HREngine.API.Utilities.HRLog.Write("CARD null");

@@ -9,12 +9,12 @@ namespace HREngine.Bots
     [Serializable]
     public class Behavior
     {
-		public Behavior() 
+        public Behavior()
         {
-            
+
         }
-		
-		public virtual bool ShouldBePlayed(Board board)
+
+        public virtual bool ShouldBePlayed(Board board)
         {
             return true;
         }
@@ -28,8 +28,8 @@ namespace HREngine.Bots
         {
             return true;
         }
-		
-		public virtual bool ShouldBePlayedOnTarget(Card target)
+
+        public virtual bool ShouldBePlayedOnTarget(Card target)
         {
             return true;
         }
@@ -38,6 +38,6 @@ namespace HREngine.Bots
         {
             return 1;
         }
-		
+
     }
 }

@@ -39,7 +39,7 @@ namespace HREngine.Bots
 
             value += Secret.Count * ValuesInterface.ValueSecret;
 
-            value -= (HeroEnemy.CurrentHealth  * ValuesInterface.ValueHealthEnemy)+ HeroEnemy.CurrentArmor * ValuesInterface.ValueArmorEnemy;
+            value -= (HeroEnemy.CurrentHealth * ValuesInterface.ValueHealthEnemy) + HeroEnemy.CurrentArmor * ValuesInterface.ValueArmorEnemy;
 
             foreach (Card c in MinionFriend)
             {
@@ -232,9 +232,9 @@ namespace HREngine.Bots
 
         public bool HasFriendBuffer()
         {
-            foreach(Card c in MinionFriend)
+            foreach (Card c in MinionFriend)
             {
-                if(c.TestAllIndexOnPlay)
+                if (c.TestAllIndexOnPlay)
                     return true;
             }
             return false;
