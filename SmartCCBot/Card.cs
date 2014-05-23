@@ -742,19 +742,17 @@ namespace HREngine.Bots
             IsCharge = false;
             IsSilenced = true;
 
-            buffs.Clear();
 
 
             if (maxHealth > template.Health)
             {
                 maxHealth = template.Health;
-                if (CurrentHealth > MaxHealth)
-                    CurrentHealth = MaxHealth;
+                if (CurrentHealth > maxHealth)
+                    CurrentHealth = maxHealth;
             }
             else if (maxHealth < template.Health)
             {
-                maxHealth = template.Health;
-                CurrentHealth = MaxHealth;
+                maxHealth = template.Health + (CurrentHealth - maxHealth);
             }
 
 
