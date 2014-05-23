@@ -45,7 +45,7 @@ namespace HREngine.Bots
                 }
                 catch
                 {
-                    // Log error.
+                    Console.WriteLine("Compiler error");
                 }
 
             }

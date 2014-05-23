@@ -242,12 +242,12 @@ namespace HREngine.Bots
                     break;
                 }
             }
-            if(foundIndex != -1)
+            if (foundIndex != -1)
             {
                 bool right = false;
                 bool left = false;
 
-                foreach(Card c in MinionFriend)
+                foreach (Card c in MinionFriend)
                 {
                     if (c.Index == foundIndex - 1)
                         right = true;
@@ -371,6 +371,7 @@ namespace HREngine.Bots
         {
             Board child = Board.Clone(this);
             child.ActionsStack.Add(a);
+            child.Update();
 
             switch (a.Type)
             {
@@ -805,6 +806,7 @@ namespace HREngine.Bots
                     {
                         if (Enemy.IsStealth)
                             continue;
+
                         Action a = new Action(Action.ActionType.MINION_ATTACK, minion, Enemy);
                         availableActions.Add(a);
                     }
@@ -885,11 +887,11 @@ namespace HREngine.Bots
         {
             foreach (Card c in MinionEnemy)
             {
-                    c.OnEndTurn(this);
+                c.OnEndTurn(this);
             }
             foreach (Card c in MinionFriend)
             {
-                    c.OnEndTurn(this);
+                c.OnEndTurn(this);
             }
 
             /*  if(ActionsStack.Count == 1)
@@ -1236,6 +1238,10 @@ namespace HREngine.Bots
             if (HeroFriend.CurrentHealth + HeroFriend.CurrentArmor != b.HeroFriend.CurrentArmor + b.HeroFriend.CurrentHealth)
                 return false;
 
+            /*if (GetValue() != b.GetValue())
+                return false;
+            */
+
             if (HeroEnemy != null)
             {
                 if (b.HeroEnemy == null)
@@ -1285,6 +1291,9 @@ namespace HREngine.Bots
                 return false;
             if (!ListEquals(MinionFriend, b.MinionFriend))
                 return false;
+
+
+
 
             return true;
         }

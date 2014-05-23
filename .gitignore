@@ -5,3 +5,4 @@ SmartCCBot/obj/Release/SmartCC.csproj.FileListAbsolute.txt
 SmartCompiler/obj/
 *.vsp
 *.psess
+*.jtconfig

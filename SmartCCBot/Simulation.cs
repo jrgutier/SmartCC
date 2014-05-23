@@ -89,8 +89,8 @@ namespace HREngine.Bots
             boards.Add(root);
             int wide = 0;
             int depth = 0;
-            int maxDepth = 6;
-            int maxWide = 4000;
+            int maxDepth = 15;
+            int maxWide = 20000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -168,8 +168,7 @@ namespace HREngine.Bots
                 {
                     if (depth >= maxDepth)
                         break;
-                    if (wide >= maxWide)
-                        break;
+
                     wide = 0;
                     skipped = 0;
                     int childsCount = 0;
@@ -178,15 +177,17 @@ namespace HREngine.Bots
 
                     foreach (Board b in boards)
                     {
-                        if (wide >= maxWide)
-                            break;
-                        wide++;
-                        childsCount++;
-
+                       
+                       
                         List<Action> actions = b.CalculateAvailableActions();
 
                         foreach (Action a in actions)
                         {
+                            if (wide >= maxWide)
+                                break;
+                            wide++;
+                            childsCount++;
+
                             Board bb = b.ExecuteAction(a);
                            /* 
                              Console.WriteLine(a.ToString());
@@ -232,10 +233,6 @@ namespace HREngine.Bots
                         if (foundearly)
                             break;
                     }
-                    if (wide >= maxWide)
-                        break;
-
-
 
 
                     if (!foundearly)
