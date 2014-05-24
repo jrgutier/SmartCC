@@ -20,6 +20,18 @@ public class NEW1_021 : Card
             
         }
 
+        public override void OnEndTurn(Board board)
+        {
+            base.OnEndTurn(board);
+            if(!IsFriend)
+            {
+                foreach(Card c in board.MinionFriend.ToArray())
+                {
+                    board.RemoveCardFromBoard(c.Id);
+                }
+            }
+        }
+
         public override void Init()
         {
             base.Init();

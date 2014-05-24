@@ -6,3 +6,6 @@ SmartCompiler/obj/
 *.vsp
 *.psess
 *.jtconfig
+SeedEditor/bin/
+SeedEditor/obj/Release/SeedEditor.Form1.resources
+SeedEditor/obj/

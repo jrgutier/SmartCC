@@ -756,9 +756,9 @@ namespace HREngine.Bots
                 if (CurrentHealth > maxHealth)
                     CurrentHealth = maxHealth;
             }
-            else if (maxHealth < template.Health)
+            else if (MaxHealth < template.Health)
             {
-                maxHealth = template.Health + (CurrentHealth - maxHealth);
+                maxHealth = template.Health + (CurrentHealth - MaxHealth);
             }
 
 
@@ -2873,6 +2873,10 @@ namespace HREngine.Bots
                 c = new CS2_024(template, isFriend, id);
             }
 
+            else
+            {
+                return null;
+            }
             if (c == null)
             {
                 HREngine.API.Utilities.HRLog.Write("CARD null");
