@@ -45,7 +45,7 @@ namespace DebugSmartCC
                     {
                     }
                 }
-                String path = CardTemplate.DatabasePath + "Bots/SmartCC/Profile.current";
+                String path = CardTemplate.DatabasePath + "/Bots/SmartCC/Profile.current";
                 using (var stream = new FileStream(path, FileMode.Truncate))
                 {
                     using (var writer = new StreamWriter(stream))

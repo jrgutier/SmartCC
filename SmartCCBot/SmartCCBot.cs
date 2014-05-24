@@ -57,6 +57,7 @@ namespace HREngine.Bots
             }
 
             ValuesInterface.LoadValuesFromFile();
+           
 
         }
 
