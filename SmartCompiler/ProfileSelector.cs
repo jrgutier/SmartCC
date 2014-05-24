@@ -33,7 +33,7 @@ namespace SmartCompiler
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (CodeCompiler compiler = new CodeCompiler(BotDirectory + "Bots\\SmartCC\\Profiles\\"+comboBox1.SelectedItem.ToString()+"\\", BotDirectory))
+            using (CodeCompiler compiler = new CodeCompiler(BotDirectory + "\\Bots\\SmartCC\\Profiles\\" + comboBox1.SelectedItem.ToString() + "\\", BotDirectory))
             {
                 if (compiler.Compile())
                 {

@@ -39,13 +39,13 @@ namespace DebugSmartCC
             else
             {
 
-                using (CodeCompiler compiler = new CodeCompiler(CardTemplate.DatabasePath + "Bots\\SmartCC\\Profiles\\Defaut\\", CardTemplate.DatabasePath))
+                using (CodeCompiler compiler = new CodeCompiler(CardTemplate.DatabasePath + "\\Bots\\SmartCC\\Profiles\\Defaut\\", CardTemplate.DatabasePath))
                 {
                     if (compiler.Compile())
                     {
                     }
                 }
-                String path = CardTemplate.DatabasePath + "/Bots/SmartCC/Profile.current";
+                String path = CardTemplate.DatabasePath + "\\Bots\\SmartCC\\Profile.current";
                 using (var stream = new FileStream(path, FileMode.Truncate))
                 {
                     using (var writer = new StreamWriter(stream))

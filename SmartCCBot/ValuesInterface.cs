@@ -32,11 +32,11 @@ namespace HREngine.Bots
         {
             string profileName = string.Empty;
 
-            StreamReader reader = new StreamReader(CardTemplate.DatabasePath + "/Bots/SmartCC/Profile.current");
+            StreamReader reader = new StreamReader(CardTemplate.DatabasePath + "\\Bots\\SmartCC\\Profile.current");
             profileName = reader.ReadLine();
             reader.Close();
             HREngine.API.Utilities.HRLog.Write("Loaded Profile :" + profileName);
-            reader = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Profiles/"+profileName+"/aValues");
+            reader = new StreamReader(CardTemplate.DatabasePath + "\\Bots\\SmartCC\\Profiles\\" + profileName + "\\aValues");
 
             while(!reader.EndOfStream)
             {
