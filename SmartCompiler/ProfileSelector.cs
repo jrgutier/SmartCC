@@ -19,10 +19,10 @@ namespace SmartCompiler
         {
             InitializeComponent();
             this.BotDirectory = directory;
-            if (Directory.Exists(BotDirectory + "\\Bots\\SmartCC\\Profiles\\"))
+            if (Directory.Exists(BotDirectory + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profiles" + Path.DirectorySeparatorChar + ""))
             {
 
-                string[] profiles = Directory.GetDirectories(BotDirectory + "\\Bots\\SmartCC\\Profiles\\");
+                string[] profiles = Directory.GetDirectories(BotDirectory + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profiles" + Path.DirectorySeparatorChar + "");
 
                 foreach (string s in profiles)
                 {
@@ -33,7 +33,7 @@ namespace SmartCompiler
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (CodeCompiler compiler = new CodeCompiler(BotDirectory + "\\Bots\\SmartCC\\Profiles\\" + comboBox1.SelectedItem.ToString() + "\\", BotDirectory))
+            using (CodeCompiler compiler = new CodeCompiler(BotDirectory + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profiles" + Path.DirectorySeparatorChar + "" + comboBox1.SelectedItem.ToString() + "\\", BotDirectory))
             {
                 if (compiler.Compile())
                 {
@@ -43,7 +43,7 @@ namespace SmartCompiler
                 }
             }
             Close();
-            StreamWriter writer = new StreamWriter(BotDirectory + "\\Bots\\SmartCC\\Profile.current");
+            StreamWriter writer = new StreamWriter(BotDirectory + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profile.current");
             writer.WriteLine(comboBox1.SelectedItem.ToString().Substring(1));
             writer.Close();
         }

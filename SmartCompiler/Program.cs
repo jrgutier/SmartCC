@@ -21,13 +21,13 @@ namespace SmartCompiler
             {
                 if (args[0] == "null")
                     args[0] = "";
-                using (CodeCompiler compiler = new CodeCompiler(args[0] + "\\Bots\\SmartCC\\Profiles\\Defaut\\", args[0]))
+                using (CodeCompiler compiler = new CodeCompiler(args[0] + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profiles" + Path.DirectorySeparatorChar + "Defaut" + Path.DirectorySeparatorChar, args[0]))
                 {
                     if (compiler.Compile())
                     {
                     }
                 }
-                    String path = args[0] + "\\Bots\\SmartCC\\Profile.current";
+                String path = args[0] + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profile.current";
                     using (var stream = new FileStream(path, FileMode.Truncate))
                     {
                         using (var writer = new StreamWriter(stream))

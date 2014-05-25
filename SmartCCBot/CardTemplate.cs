@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.IO;
 
 namespace HREngine.Bots
 {
@@ -61,7 +62,7 @@ namespace HREngine.Bots
                 return;
 
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(DatabasePath + "Bots/SmartCC/" + "Database.xml");
+            xmlDoc.Load(DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "" + "Database.xml");
 
             foreach (XmlNode xmlNode in xmlDoc.DocumentElement.ChildNodes)
             {

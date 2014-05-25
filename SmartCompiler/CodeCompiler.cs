@@ -37,9 +37,9 @@ namespace SmartCompiler
                     CompilerParameters options = new CompilerParameters
                     {
                         GenerateInMemory = false,
-                        OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(this.BotDirectory + "Bots\\SmartCC\\Profile.dll"), Path.GetFileName(this.BotDirectory + "Bots\\SmartCC\\Profile.dll"))
+                        OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(this.BotDirectory + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profile.dll"), Path.GetFileName(this.BotDirectory + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profile.dll"))
                     };
-                    options.ReferencedAssemblies.Add(BotDirectory + "Bots\\SmartCC.dll");
+                    options.ReferencedAssemblies.Add(BotDirectory + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC.dll");
                     options.ReferencedAssemblies.Add("System.Core.dll");
                     CompilerResults results = provider.CompileAssemblyFromSource(options, sources.ToArray());
                     StringEnumerator enumerator = results.Output.GetEnumerator();

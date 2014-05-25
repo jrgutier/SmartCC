@@ -45,7 +45,7 @@ namespace HREngine.Bots
                 {
                     string ToAssemblyName = assemblyName.Split(',')[0];
                     List<Assembly> Assemblies = new List<Assembly>();
-                    Assemblies.Add(Assembly.LoadFile(CardTemplate.DatabasePath + "Bots/SmartCC/Profile.dll"));
+                    Assemblies.Add(Assembly.LoadFile(CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profile.dll"));
 
                     foreach (Assembly ass in Assemblies)
                     {

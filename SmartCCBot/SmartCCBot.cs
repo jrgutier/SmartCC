@@ -27,10 +27,10 @@ namespace HREngine.Bots
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.CreateNoWindow = false;
                 startInfo.UseShellExecute = false;
-                startInfo.FileName = CardTemplate.DatabasePath + "Bots/SmartCC/SmartCompiler.exe";
+                startInfo.FileName = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "SmartCompiler.exe";
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
-                StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/useProfiles");
+                StreamReader str = new StreamReader(CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Config" + Path.DirectorySeparatorChar + "useProfiles");
                 startInfo.Arguments = CardTemplate.DatabasePath + " "+str.ReadLine();
                 str.Close();
 

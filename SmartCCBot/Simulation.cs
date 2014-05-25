@@ -57,13 +57,13 @@ namespace HREngine.Bots
         public void CreateLogFolder()
         {
             string nameFolder = DateTime.Now.ToString().Replace("/", "-").Replace(":", "-");
-            System.IO.Directory.CreateDirectory(CardTemplate.DatabasePath + "Bots/SmartCC/Logs/" + nameFolder);
-            CurrentFolder = CardTemplate.DatabasePath + "Bots/SmartCC/Logs/" + nameFolder;
+            System.IO.Directory.CreateDirectory(CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar + "" + nameFolder);
+            CurrentFolder = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar + "" + nameFolder;
         }
 
         public void SerializeRoot()
         {
-            Stream stream = new FileStream(CurrentFolder + "/Turn" + TurnCount.ToString() + "_" + SimuCount.ToString() + ".seed", FileMode.Create, FileAccess.Write, FileShare.None);
+            Stream stream = new FileStream(CurrentFolder + "" + Path.DirectorySeparatorChar + "Turn" + TurnCount.ToString() + "_" + SimuCount.ToString() + ".seed", FileMode.Create, FileAccess.Write, FileShare.None);
             byte[] mem = Debugger.Serialize(root);
             stream.Write(mem, 0, mem.GetLength(0));
             stream.Close();
@@ -71,7 +71,7 @@ namespace HREngine.Bots
 
         public void Log(string msg)
         {
-            StreamWriter sw = new StreamWriter(CurrentFolder + "/Turn" + TurnCount.ToString() + ".log", true);
+            StreamWriter sw = new StreamWriter(CurrentFolder + "" + Path.DirectorySeparatorChar + "Turn" + TurnCount.ToString() + ".log", true);
             sw.WriteLine(msg);
             sw.Close();
         }
