@@ -132,7 +132,8 @@ namespace HREngine.Bots
                         Resimulate();
                     }
                     Hand.Remove(c);
-                    FriendCardDraw--;
+                    if (c.Type != Card.CType.WEAPON)
+                        FriendCardDraw--;
                     ManaAvailable -= c.CurrentCost;
                     if (c.Type == Card.CType.WEAPON)
                     {
@@ -827,27 +828,26 @@ namespace HREngine.Bots
             {
                 if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack)
                 {
-                        if (taunts.Count == 0)
+                    if (taunts.Count == 0)
+                    {
+                        foreach (Card Enemy in MinionEnemy)
                         {
-                            foreach (Card Enemy in MinionEnemy)
-                            {
-                                if (Enemy.IsStealth)
-                                    continue;
-                                Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, Enemy);
-                                availableActions.Add(a);
-                            }
-                            Console.WriteLine("Weeeapooooooooooooooooon");
-                            Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnemy);
-                            availableActions.Add(ac);
+                            if (Enemy.IsStealth)
+                                continue;
+                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, Enemy);
+                            availableActions.Add(a);
                         }
-                        else
+                        Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnemy);
+                        availableActions.Add(ac);
+                    }
+                    else
+                    {
+                        foreach (Card taunt in taunts)
                         {
-                            foreach (Card taunt in taunts)
-                            {
-                                Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, taunt);
-                                availableActions.Add(a);
-                            }
+                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, taunt);
+                            availableActions.Add(a);
                         }
+                    }
                 }
             }
             if (HeroFriend.CurrentAtk > 0 && HeroFriend.CanAttack)
