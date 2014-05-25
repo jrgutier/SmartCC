@@ -168,11 +168,9 @@ namespace HREngine.Bots
             else if (me.Type == CType.WEAPON)
             {
                 me.CurrentDurability--;
-
-
                 me.CountAttack++;
                 board.HeroFriend.CountAttack++;
-
+                board.HeroFriend.TempAtk += me.CurrentAtk;
                 board.HeroFriend.OnHit(ref board, tar);
                 tar.OnHit(ref board, board.HeroFriend);
                 // tar.OnHit(ref board, me);

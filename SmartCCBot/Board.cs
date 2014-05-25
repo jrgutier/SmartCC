@@ -827,8 +827,6 @@ namespace HREngine.Bots
             {
                 if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack)
                 {
-                    if (HeroFriend.CanAttack)
-                    {
                         if (taunts.Count == 0)
                         {
                             foreach (Card Enemy in MinionEnemy)
@@ -838,6 +836,7 @@ namespace HREngine.Bots
                                 Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, Enemy);
                                 availableActions.Add(a);
                             }
+                            Console.WriteLine("Weeeapooooooooooooooooon");
                             Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnemy);
                             availableActions.Add(ac);
                         }
@@ -849,8 +848,6 @@ namespace HREngine.Bots
                                 availableActions.Add(a);
                             }
                         }
-                    }
-
                 }
             }
             if (HeroFriend.CurrentAtk > 0 && HeroFriend.CanAttack)
@@ -875,7 +872,9 @@ namespace HREngine.Bots
                         Action a = new Action(Action.ActionType.HERO_ATTACK, HeroFriend, taunt);
                         availableActions.Add(a);
                     }
+
                 }
+
             }
 
 
