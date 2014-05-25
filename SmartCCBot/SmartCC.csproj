@@ -588,7 +588,6 @@
     <Compile Include="Cards\TU4f_006.cs" />
     <Compile Include="Cards\TU4f_007.cs" />
     <Compile Include="Debugger.cs" />
-    <Compile Include="SimulationThread.cs" />
     <Compile Include="SmartCCBot.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="CardTemplate.cs" />

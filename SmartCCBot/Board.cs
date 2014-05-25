@@ -26,7 +26,7 @@ namespace HREngine.Bots
         public int EnemyCardDraw { get; set; }
         public int WastedATK { get; set; }
 
-
+        static int lastIdGen = 10000;
 
         public float GetValue()
         {
@@ -203,14 +203,17 @@ namespace HREngine.Bots
             ActionsStack.Add(new Action(Action.ActionType.RESIMULATE, null));
         }
 
+        public static int GenId()
+        {
+            return lastIdGen++;
+        }
+
         public void AddCardToBoard(string id, bool friend)
         {
-            Random random = new Random();
-            int randomNumber = random.Next(88888, 99999);
 
             if (!friend)
             {
-                Card c = Card.Create(id, false, randomNumber);
+                Card c = Card.Create(id, false, GenId());
                 if (!c.IsCharge)
                 {
                     c.IsTired = true;
@@ -220,7 +223,7 @@ namespace HREngine.Bots
             }
             else
             {
-                Card c = Card.Create(id, true, randomNumber);
+                Card c = Card.Create(id, true, GenId());
                 if (!c.IsCharge)
                 {
                     c.IsTired = true;
@@ -796,8 +799,23 @@ namespace HREngine.Bots
                     taunts.Add(Enemy);
             }
 
+            List<Card> attackers = new List<Card>();
             foreach (Card minion in MinionFriend)
             {
+                bool alreadyAttacked = false;
+                foreach(Card c in attackers)
+                {
+                    if (c.Equals(minion))
+                    {
+                        alreadyAttacked  = true;
+                        break;
+                    } 
+                }
+                if (alreadyAttacked)
+                    continue;
+
+                attackers.Add(minion);
+
                 if (!minion.CanAttack || !minion.Behavior.ShouldAttack(this))
                     continue;
 
@@ -822,6 +840,7 @@ namespace HREngine.Bots
                         availableActions.Add(a);
                     }
                 }
+                
             }
 
             if (WeaponFriend != null)

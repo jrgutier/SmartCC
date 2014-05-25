@@ -244,8 +244,21 @@ namespace HREngine.Bots
                     HRLog.Write("Seed");
                     SeedSmartCc();
                     HRLog.Write("Simulation");
+                     StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/useThreading");
+            string use = str.ReadLine();
 
-                    SmartCc.Simulate(false);
+            str.Close();
+
+            if (use == "true")
+            {
+                SmartCc.Simulate(true);
+
+            }
+            else
+            {
+                SmartCc.Simulate(false);
+
+            }
                     HRLog.Write("Simulation Done");
 
                 }

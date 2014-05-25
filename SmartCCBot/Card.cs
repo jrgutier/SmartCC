@@ -7,7 +7,7 @@ namespace HREngine.Bots
     [Serializable]
     public class Card : IEquatable<Card>
     {
-        static Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath + "Bots/SmartCC/Profile.dll");
+        static Assembly assembly =Assembly.LoadFile(CardTemplate.DatabasePath + "/Bots/SmartCC/Profile.dll");
 
 
         public Behavior Behavior { get; set; }
@@ -2882,8 +2882,6 @@ namespace HREngine.Bots
             c.InitInstance(template, isFriend, id);
             c.Index = index;
 
-
-
             Type type = assembly.GetType("HREngine.Bots.b" + cardId);
 
             c.Behavior = (Behavior)Activator.CreateInstance(type);
@@ -2987,8 +2985,7 @@ namespace HREngine.Bots
 
             if (c == null)
                 return false;
-            if (Id != c.Id)
-                return false;
+
             if (TestAllIndexOnPlay)
             {
                 if (Index != c.Index)

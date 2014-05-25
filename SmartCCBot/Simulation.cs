@@ -7,6 +7,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Reflection;
 using System.Threading;
+using System.Diagnostics;
 
 namespace HREngine.Bots
 {
@@ -85,12 +86,11 @@ namespace HREngine.Bots
             NeedCalculation = false;
 
             List<Board> boards = new List<Board>();
-
             boards.Add(root);
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 10000;
+            int maxWide = 20000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -103,64 +103,36 @@ namespace HREngine.Bots
 
             if (threaded)
             {
-                int nbThread = 10;
-                List<Board> Roots = new List<Board>();
-                List<Board> Childs = new List<Board>();
+                Stream stream = new FileStream(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads"+ Path.DirectorySeparatorChar + "board.seed", FileMode.Create, FileAccess.Write, FileShare.None);
+                byte[] mem = HREngine.Bots.Debugger.Serialize(bestBoard);
+                stream.Write(mem, 0, mem.GetLength(0));
+                stream.Close();
 
-                foreach (Action a in root.CalculateAvailableActions())
+                // Use ProcessStartInfo class
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.CreateNoWindow = false;
+                startInfo.UseShellExecute = false;
+                startInfo.FileName = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "ExternalSimulationThread.exe";
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+                startInfo.Arguments = "\"" + CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed"+"\"";
+
+                try
                 {
-                    Board tmp = root.ExecuteAction(a);
-                    Roots.Add(tmp);
-                    Childs.Add(tmp);
-                }
-
-                if (Roots.Count < nbThread)
-                    nbThread = Roots.Count;
-
-                Childs.Add(root);
-
-                List<Thread> tt = new List<Thread>();
-                for (int i = 0; i < nbThread; i++)
-                {
-                    HREngine.API.Utilities.HRLog.Write("NewThread");
-                    List<Board> input = null;
-                    if (i == nbThread - 1)
+                    // Start the process with the info we specified.
+                    // Call WaitForExit and then the using statement will close.
+                    using (Process exeProcess = Process.Start(startInfo))
                     {
-                        input = Roots.GetRange(i * (Roots.Count / nbThread), (Roots.Count / nbThread) + (Roots.Count % nbThread));
+                        exeProcess.WaitForExit();
                     }
-                    else
-                    {
-                        input = Roots.GetRange(i * (Roots.Count / nbThread), (Roots.Count / nbThread));
-                    }
-
-                    SimulationThread thread = new SimulationThread();
-                    Thread threadl = new Thread(new ParameterizedThreadStart(thread.Calculate));
-                    threadl.Start((object)new SimulationThreadStart(input, ref Childs));
-
-                    tt.Add(threadl);
                 }
-
-                foreach (Thread t in tt)
+                catch
                 {
-                    t.Join();
+                    Console.WriteLine("Compiler error");
                 }
+                bestBoard = HREngine.Bots.Debugger.BinaryDeSerialize(File.ReadAllBytes(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed.out")) as Board;
 
-                Board BestBoard = null;
-                foreach (Board b in Childs)
-                {
-                    Board endBoard = Board.Clone(b);
-                    endBoard.EndTurn();
-
-                    if (BestBoard == null)
-                        BestBoard = endBoard;
-                    else if (endBoard.GetValue() > BestBoard.GetValue())
-                        BestBoard = endBoard;
-                    else if (endBoard.GetValue() == BestBoard.GetValue())
-                        if (endBoard.FriendCardDraw > BestBoard.FriendCardDraw)
-                            BestBoard = endBoard;
-                }
-                bestBoard = BestBoard;
-
+                
             }
             else
             {
