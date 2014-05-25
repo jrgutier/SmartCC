@@ -19,33 +19,41 @@ namespace SmartCompiler
         {
             InitializeComponent();
             this.BotDirectory = directory;
-            if (Directory.Exists(BotDirectory + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profiles" + Path.DirectorySeparatorChar + ""))
+            if (Directory.Exists(BotDirectory + "\\Bots\\SmartCC\\Profiles\\"))
             {
 
-                string[] profiles = Directory.GetDirectories(BotDirectory + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profiles" + Path.DirectorySeparatorChar + "");
+                string[] profiles = Directory.GetDirectories(BotDirectory + "\\Bots\\SmartCC\\Profiles\\");
 
                 foreach (string s in profiles)
                 {
-                    comboBox1.Items.Add(s.Substring(s.LastIndexOf("\\")));
+                    comboBoxProfiles.Items.Add(s.Substring(s.LastIndexOf("\\")));
                 }
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (CodeCompiler compiler = new CodeCompiler(BotDirectory + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profiles" + Path.DirectorySeparatorChar + "" + comboBox1.SelectedItem.ToString() + "\\", BotDirectory))
+            if (comboBoxProfiles.Text != "")
             {
-                if (compiler.Compile())
+                using (CodeCompiler compiler = new CodeCompiler(BotDirectory + "\\Bots\\SmartCC\\Profiles\\" + comboBoxProfiles.SelectedItem.ToString() + "\\", BotDirectory))
                 {
+                    if (compiler.Compile())
+                    {
+                    }
+                    else
+                    {
+                    }
                 }
-                else
-                {
-                }
+                Close();
+                StreamWriter writer = new StreamWriter(BotDirectory + "\\Bots\\SmartCC\\Profile.current");
+                writer.WriteLine(comboBoxProfiles.SelectedItem.ToString().Substring(1));
+                writer.Close();
             }
-            Close();
-            StreamWriter writer = new StreamWriter(BotDirectory + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Profile.current");
-            writer.WriteLine(comboBox1.SelectedItem.ToString().Substring(1));
-            writer.Close();
+            else
+            {
+                MessageBox.Show("Error: you didn't select a profile from the list", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
     }
