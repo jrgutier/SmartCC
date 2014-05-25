@@ -391,7 +391,7 @@ namespace SeedEditor
         private void EnemyMinionAddB_Click(object sender, EventArgs e)
         {
             string className = EnnemyMinionInputText.Text;
-            Card tmp = Card.Create(className, true, GenerateId());
+            Card tmp = Card.Create(className, false, GenerateId());
             if (tmp != null)
             {
                 ComboBoxItem item = new ComboBoxItem();

@@ -13,7 +13,7 @@ namespace HREngine.Bots
         public Behavior Behavior { get; set; }
 
 
-        public int GetValue(Board board)
+        public virtual int GetValue(Board board)
         {
             int value = 0;
             if (Type == CType.MINION)

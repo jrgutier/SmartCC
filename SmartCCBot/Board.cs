@@ -850,7 +850,7 @@ namespace HREngine.Bots
                     }
                 }
             }
-            if (HeroFriend.CurrentAtk > 0 && HeroFriend.CanAttack)
+            else if (HeroFriend.CurrentAtk > 0 && HeroFriend.CanAttack)
             {
 
                 if (taunts.Count == 0)

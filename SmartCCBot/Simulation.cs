@@ -90,7 +90,7 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 20000;
+            int maxWide = 10000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -272,31 +272,13 @@ namespace HREngine.Bots
                     if (acc.Actor.Behavior.GetPriorityPlay(bestBoard) > 1 && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
                     {
                         Console.WriteLine("Action priori found");
-                        if (acc.Type == Action.ActionType.CAST_MINION)
+                        if (acc.Type == Action.ActionType.CAST_MINION && acc.Actor.Behavior.ShouldBePlayed(root))
                         {
                             if (bestBoard.MinionFriend.Count < 7)
                                 actionPrior = acc;
 
                         }
-                        else
-                        {
-                            actionPrior = acc;
-
-                        }
-                    }
-
-                }
-                if (actionPrior != null && acc.Actor != null)
-                {
-                    if (actionPrior.Actor.Behavior.GetPriorityPlay(bestBoard) < acc.Actor.Behavior.GetPriorityPlay(bestBoard) && acc.Type != Action.ActionType.MINION_ATTACK && acc.Type != Action.ActionType.HERO_ATTACK)
-                    {
-                        if (acc.Type == Action.ActionType.CAST_MINION)
-                        {
-                            if (bestBoard.MinionFriend.Count < 7)
-                                actionPrior = acc;
-
-                        }
-                        else
+                        else if(acc.Actor.Behavior.ShouldBePlayed(root))
                         {
                             actionPrior = acc;
 

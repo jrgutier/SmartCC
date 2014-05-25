@@ -513,8 +513,8 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.FriendMinionInputText);
             this.tabPage3.Controls.Add(this.EnemyMinionAddB);
+            this.tabPage3.Controls.Add(this.EnnemyMinionInputText);
             this.tabPage3.Controls.Add(this.EnemyMinionDelB);
             this.tabPage3.Controls.Add(this.MinionEnemyComboBox);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
@@ -526,7 +526,7 @@
             // 
             // FriendMinionInputText
             // 
-            this.FriendMinionInputText.Location = new System.Drawing.Point(127, 37);
+            this.FriendMinionInputText.Location = new System.Drawing.Point(124, 43);
             this.FriendMinionInputText.Name = "FriendMinionInputText";
             this.FriendMinionInputText.Size = new System.Drawing.Size(71, 22);
             this.FriendMinionInputText.TabIndex = 6;
@@ -562,7 +562,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.EnnemyMinionInputText);
+            this.tabPage2.Controls.Add(this.FriendMinionInputText);
             this.tabPage2.Controls.Add(this.FriendMinionAddB);
             this.tabPage2.Controls.Add(this.FriendMinionDelB);
             this.tabPage2.Controls.Add(this.FriendMinionComboBox);
@@ -576,7 +576,7 @@
             // 
             // EnnemyMinionInputText
             // 
-            this.EnnemyMinionInputText.Location = new System.Drawing.Point(124, 43);
+            this.EnnemyMinionInputText.Location = new System.Drawing.Point(127, 37);
             this.EnnemyMinionInputText.Name = "EnnemyMinionInputText";
             this.EnnemyMinionInputText.Size = new System.Drawing.Size(71, 22);
             this.EnnemyMinionInputText.TabIndex = 5;
