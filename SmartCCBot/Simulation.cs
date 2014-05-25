@@ -110,7 +110,7 @@ namespace HREngine.Bots
 
                 // Use ProcessStartInfo class
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.CreateNoWindow = false;
+                startInfo.CreateNoWindow = true;
                 startInfo.UseShellExecute = false;
                 startInfo.FileName = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "ExternalSimulationThread.exe";
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
