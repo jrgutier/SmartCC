@@ -31,7 +31,9 @@ namespace HREngine.Bots
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                 StreamReader str = new StreamReader(CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Config" + Path.DirectorySeparatorChar + "useProfiles");
-                startInfo.Arguments = CardTemplate.DatabasePath + " "+str.ReadLine();
+
+
+                startInfo.Arguments = "\"" + CardTemplate.DatabasePath+ Path.DirectorySeparatorChar + "\"" + " " + str.ReadLine();
                 str.Close();
 
                 try
@@ -57,14 +59,14 @@ namespace HREngine.Bots
             }
 
             ValuesInterface.LoadValuesFromFile();
-           
+
 
         }
 
         private HREngine.API.Actions.ActionBase HandleBattleMulliganPhase()
         {
             SmartCc = new Simulation();
-           
+
 
             SmartCc.CreateLogFolder();
             SmartCc.TurnCount = 0;
@@ -111,11 +113,11 @@ namespace HREngine.Bots
             root.HeroFriend.CurrentArmor = HeroFriend.GetArmor();
             root.HeroFriend.CurrentAtk = HeroFriend.GetATK();
 
-            if(HRCard.GetCards(HRPlayer.GetEnemyPlayer(), HRCardZone.SECRET).Count > 0)
+            if (HRCard.GetCards(HRPlayer.GetEnemyPlayer(), HRCardZone.SECRET).Count > 0)
             {
                 root.SecretEnemy = true;
             }
-            
+
             if (HRPlayer.GetEnemyPlayer().HasWeapon())
             {
                 HRCard weaponEnemyCard = HRPlayer.GetEnemyPlayer().GetWeaponCard();
@@ -228,7 +230,7 @@ namespace HREngine.Bots
 
         private HREngine.API.Actions.ActionBase HandleOnBattleStateUpdate()
         {
-            if(SmartCc == null)
+            if (SmartCc == null)
             {
                 SmartCc = new Simulation();
 
@@ -244,21 +246,21 @@ namespace HREngine.Bots
                     HRLog.Write("Seed");
                     SeedSmartCc();
                     HRLog.Write("Simulation");
-                     StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/useThreading");
-            string use = str.ReadLine();
+                    StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/useThreading");
+                    string use = str.ReadLine();
 
-            str.Close();
+                    str.Close();
 
-            if (use == "true")
-            {
-                SmartCc.Simulate(true);
+                    if (use == "true")
+                    {
+                        SmartCc.Simulate(true);
 
-            }
-            else
-            {
-                SmartCc.Simulate(false);
+                    }
+                    else
+                    {
+                        SmartCc.Simulate(false);
 
-            }
+                    }
                     HRLog.Write("Simulation Done");
 
                 }

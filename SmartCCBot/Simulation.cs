@@ -90,7 +90,7 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 20000;
+            int maxWide = 10000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -103,7 +103,13 @@ namespace HREngine.Bots
 
             if (threaded)
             {
-                Stream stream = new FileStream(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads"+ Path.DirectorySeparatorChar + "board.seed", FileMode.Create, FileAccess.Write, FileShare.None);
+                string[] filePaths = Directory.GetFiles(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar);
+                foreach (string filePath in filePaths)
+                {
+                    File.Delete(filePath);
+                }
+
+                Stream stream = new FileStream(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed", FileMode.Create, FileAccess.Write, FileShare.None);
                 byte[] mem = HREngine.Bots.Debugger.Serialize(bestBoard);
                 stream.Write(mem, 0, mem.GetLength(0));
                 stream.Close();
@@ -130,6 +136,7 @@ namespace HREngine.Bots
                 {
                     Console.WriteLine("Compiler error");
                 }
+                Thread.Sleep(100);
                 bestBoard = HREngine.Bots.Debugger.BinaryDeSerialize(File.ReadAllBytes(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed.out")) as Board;
 
                 

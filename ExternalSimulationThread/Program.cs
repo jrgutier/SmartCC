@@ -49,13 +49,10 @@ namespace ExternalSimulationThread
                 List<Board> input = null;
                 if (i == nbThread - 1)
                 {
-                    Console.WriteLine("Thread : "  + (i * (Roots.Count / nbThread)).ToString() + " " + ((Roots.Count / nbThread) + (Roots.Count % nbThread)).ToString());
                     input = Roots.GetRange(i * (Roots.Count / nbThread), (Roots.Count / nbThread) + (Roots.Count % nbThread));
                 }
                 else
                 {
-                                        Console.WriteLine("Thread : "  + (i * (Roots.Count / nbThread)).ToString() + " " + ((Roots.Count / nbThread)).ToString());
-
                     input = Roots.GetRange(i * (Roots.Count / nbThread), (Roots.Count / nbThread));
                 }
 
@@ -107,6 +104,7 @@ namespace ExternalSimulationThread
 
     class SimulationThread
     {
+        int maxWide = 20000;
         static bool ShouldStop = false;
         static object sync = new Object();
         List<Board> input = null;
@@ -118,7 +116,7 @@ namespace ExternalSimulationThread
 
         public void Calculate(object start)
         {
-
+            int wide = 0;
             SimulationThreadStart starter = start as SimulationThreadStart;
             this.input = starter.input;
             this.output = starter.output;
@@ -130,6 +128,7 @@ namespace ExternalSimulationThread
 
             while (input.Count > 0)
             {
+                wide = 0;
                 lock (sync)
                 {
                     if (ShouldStop)
@@ -138,8 +137,13 @@ namespace ExternalSimulationThread
                 List<Board> childs = new List<Board>();
                 foreach (Board b in input)
                 {
+
                     foreach (HREngine.Bots.Action a in b.CalculateAvailableActions())
                     {
+                        if (wide > maxWide)
+                            break;
+
+                        wide++;
                         Board bb = b.ExecuteAction(a);
 
                         bool found = false;
@@ -160,6 +164,8 @@ namespace ExternalSimulationThread
                         }
 
                     }
+                    if (wide > maxWide)
+                        break;
                 }
 
                 foreach (Board b in childs)
