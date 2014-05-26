@@ -80,11 +80,9 @@ namespace HREngine.Bots
 
         public void Simulate(bool threaded)
         {
-
             SerializeRoot();
             Console.WriteLine();
             NeedCalculation = false;
-
             List<Board> boards = new List<Board>();
             boards.Add(root);
             int wide = 0;
@@ -103,62 +101,90 @@ namespace HREngine.Bots
 
             if (threaded)
             {
-               /* using (MemoryMappedFile mmf = MemoryMappedFile.CreateNew("testmap", 100000))
+                int nbThread = Environment.ProcessorCount;
+                List<Board> Roots = new List<Board>();
+                List<Board> Childs = new List<Board>();
+
+                foreach (HREngine.Bots.Action a in root.CalculateAvailableActions())
                 {
-                    /*
-                    bool mutexCreated;
-                    Mutex mutex = new Mutex(true, "testmapmutex", out mutexCreated);
-                    using (MemoryMappedViewStream stream = mmf.CreateViewStream())
-                    {
-                        BinaryWriter writer = new BinaryWriter(stream);
-                        byte[] mem = HREngine.Bots.Debugger.Serialize(bestBoard);
-                        writer.Write(mem.GetLength(0));
-                        writer.Write(mem);
-                        
-                    }
-                    mutex.ReleaseMutex();
-                    */
-                    Stream stream = new FileStream(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed", FileMode.Create, FileAccess.Write, FileShare.None);
-                    byte[] mem = HREngine.Bots.Debugger.Serialize(bestBoard);
-                    stream.Write(mem, 0, mem.GetLength(0));
-                    stream.Close();
-                    // Use ProcessStartInfo class
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.CreateNoWindow = true;
-                    startInfo.UseShellExecute = false;
-                    startInfo.FileName = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "ExternalSimulationThread.exe";
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    Board tmp = root.ExecuteAction(a);
+                    Roots.Add(tmp);
+                    Childs.Add(tmp);
+                }
 
-                    startInfo.Arguments = "\"" + CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed" + "\"";
+                if (Roots.Count < nbThread)
+                    nbThread = Roots.Count;
 
-                    try
+                Childs.Add(root);
+                int[] tab = new int[nbThread];
+
+                int roll = 0;
+                //lazy dispatch(tired lol)
+                for (int i = Roots.Count; i > 0; i--)
+                {
+
+                    tab[roll]++;
+
+                    if (roll == nbThread - 1)
+                        roll = 0;
+                    else
+                        roll++;
+                }
+                int maxWidePerThread = 1;
+                if(nbThread > 0)
+                {
+                    maxWidePerThread = 10000 / nbThread;
+                }
+                
+                Console.WriteLine("Max per thread :" + maxWidePerThread.ToString());
+                bool useQuickSearch = true;
+                int lastStartRange = 0;
+                List<Thread> tt = new List<Thread>();
+                for (int i = 0; i < nbThread; i++)
+                {
+                    List<Board> input = null;
+
+                    input = Roots.GetRange(lastStartRange, tab[i]);
+                    lastStartRange += tab[i];
+                    if (i == 0 && useQuickSearch)
                     {
-                        // Start the process with the info we specified.
-                        // Call WaitForExit and then the using statement will close.
-                        using (Process exeProcess = Process.Start(startInfo))
+                        SimulationThread threadQuickSearch = new SimulationThread(maxWidePerThread/3);
+                        Thread threadlQuickSearch = new Thread(new ParameterizedThreadStart(threadQuickSearch.Calculate));
+
+                        List<Board> quickSearchBoards = new List<Board>();
+                        foreach(Board v in input)
                         {
-                            exeProcess.WaitForExit();
+                            quickSearchBoards.Add(Board.Clone(v));
                         }
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Compiler error");
-                    }
-                    bestBoard = HREngine.Bots.Debugger.BinaryDeSerialize(File.ReadAllBytes(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed.out")) as Board;
 
-/*
-                    mutex.WaitOne();
-                    using (MemoryMappedViewStream stream = mmf.CreateViewStream())
-                    {
-                        BinaryReader reader = new BinaryReader(stream);
-                        int index = reader.ReadInt32();
-                        byte[] mem = reader.ReadBytes(index);
-                        bestBoard = HREngine.Bots.Debugger.BinaryDeSerialize(mem) as Board;
+                        threadlQuickSearch.Start((object)new SimulationThreadStart(quickSearchBoards, ref Childs));
+                        tt.Add(threadlQuickSearch);
                     }
-                    mutex.ReleaseMutex();
- * */
-               // }
-         
+
+                    SimulationThread thread = new SimulationThread(maxWidePerThread);
+                    Thread threadl = new Thread(new ParameterizedThreadStart(thread.Calculate));
+                    threadl.Start((object)new SimulationThreadStart(input, ref Childs));
+                    tt.Add(threadl);
+                }
+
+                foreach (Thread t in tt)
+                {
+                    t.Join();
+                }
+
+                Board BestBoard = null;
+                foreach (Board b in Childs)
+                {
+                    Board endBoard = Board.Clone(b);
+                    endBoard.EndTurn();
+
+                    if (BestBoard == null)
+                        BestBoard = endBoard;
+                    else if (endBoard.GetValue() > BestBoard.GetValue())
+                        BestBoard = endBoard;
+                }
+                bestBoard = BestBoard;
+
             }
             else
             {
@@ -175,8 +201,8 @@ namespace HREngine.Bots
 
                     foreach (Board b in boards)
                     {
-                       
-                       
+
+
                         List<Action> actions = b.CalculateAvailableActions();
 
                         foreach (Action a in actions)
@@ -187,11 +213,11 @@ namespace HREngine.Bots
                             childsCount++;
 
                             Board bb = b.ExecuteAction(a);
-                           /* 
-                             Console.WriteLine(a.ToString());
-                             Console.WriteLine("**************************************");
-                             Console.WriteLine(bb.ToString());
-                             */
+                            /* 
+                              Console.WriteLine(a.ToString());
+                              Console.WriteLine("**************************************");
+                              Console.WriteLine(bb.ToString());
+                              */
                             if (bb != null)
                             {
                                 if (bb.GetValue() > 10000)
@@ -276,7 +302,7 @@ namespace HREngine.Bots
                                 actionPrior = acc;
 
                         }
-                        else if(acc.Actor.Behavior.ShouldBePlayed(root))
+                        else if (acc.Actor.Behavior.ShouldBePlayed(root))
                         {
                             actionPrior = acc;
 
@@ -330,7 +356,7 @@ namespace HREngine.Bots
             Console.WriteLine("---------------------------------");
             Console.WriteLine(bestBoard.ToString());
             Console.WriteLine("---------------------------------");
-            
+
             Log("");
             Log("Actions:");
 
@@ -342,5 +368,111 @@ namespace HREngine.Bots
             }
 
         }
+    }
+    class SimulationThreadStart
+    {
+        public List<Board> input = null;
+        public List<Board> output = null;
+        public SimulationThreadStart(List<Board> input, ref List<Board> output)
+        {
+            this.input = input;
+            this.output = output;
+        }
+    }
+
+    class SimulationThread
+    {
+        static volatile bool ShouldStop = false;
+        int maxWide = 0;
+        List<Board> input = null;
+        List<Board> output = null;
+        public SimulationThread(int maxWide)
+        {
+            this.maxWide = maxWide;
+        }
+
+        public void Calculate(object start)
+        {
+            //ValuesInterface.LoadValuesFromFile();
+            SimulationThreadStart starter = start as SimulationThreadStart;
+            this.input = starter.input;
+            this.output = starter.output;
+
+            int wide = 0;
+            if (input == null)
+                return;
+            if (output == null)
+                return;
+            Board BestBoard = null;
+
+            List<Board> childaas = new List<Board>();
+
+            while (input.Count > 0)
+            {
+                if (ShouldStop)
+                    break;
+                childaas.Clear();
+                wide = 0;
+                foreach (Board b in input)
+                {
+                    int boardWide = 0;
+                    float maxWidePerBoard = maxWide/input.Count;
+                    foreach (HREngine.Bots.Action a in b.CalculateAvailableActions())
+                    {
+                        boardWide++;
+                        wide++;
+                        Board bb = b.ExecuteAction(a);
+
+                        bool found = false;
+                        foreach (Board lol in childaas)
+                        {
+                            if (bb.Equals(lol))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found)
+                        {
+                            childaas.Add(bb);
+                            if (bb.GetValue() > 10000)
+                                ShouldStop = true;
+                        }
+
+                        if (boardWide > maxWidePerBoard)
+                            break;
+                        if (wide > maxWide)
+                            break;
+                        if (ShouldStop)
+                            break;
+
+                        if (BestBoard == null)
+                            BestBoard = bb;
+                    }
+                    if (wide > maxWide)
+                        break;
+                    if (ShouldStop)
+                        break;
+                }
+                foreach (Board baa in childaas)
+                {
+                    if (baa.GetValue() > BestBoard.GetValue())
+                        BestBoard = baa;
+                }
+                input.Clear();
+                foreach(Board aaa in childaas)
+                {
+                    input.Add(aaa);
+                }
+            }
+
+            if (BestBoard != null)
+            {
+                output.Add(BestBoard);
+            }
+            return;
+        }
+
     }
 }
