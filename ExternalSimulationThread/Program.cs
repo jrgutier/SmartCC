@@ -27,7 +27,7 @@ namespace ExternalSimulationThread
 
 
             ValuesInterface.LoadValuesFromFile();
-            int nbThread = 100;
+            int nbThread = 6;
             List<Board> Roots = new List<Board>();
             List<Board> Childs = new List<Board>();
 
@@ -41,24 +41,51 @@ namespace ExternalSimulationThread
             if (Roots.Count < nbThread)
                 nbThread = Roots.Count;
 
+            //Console.WriteLine("Threads :" + nbThread.ToString());
             Childs.Add(root);
+            int[] tab = new int[nbThread];
 
+            int roll = 0;
+            //lazy dispatch(tired lol)
+            for (int i = Roots.Count; i > 0; i--)
+            {
+
+                tab[roll]++;
+
+                if (roll == nbThread - 1)
+                    roll = 0;
+                else
+                    roll++;
+            }
+
+            int maxWidePerThread = 10000;
+            bool useQuickSearch = true;
+            int lastStartRange = 0;
             List<Thread> tt = new List<Thread>();
             for (int i = 0; i < nbThread; i++)
             {
                 List<Board> input = null;
-                if (i == nbThread - 1)
+
+               /* using (System.IO.StreamWriter file = new System.IO.StreamWriter("Log.txt", true))
                 {
-                    input = Roots.GetRange(i * (Roots.Count / nbThread), (Roots.Count / nbThread) + (Roots.Count % nbThread));
-                }
-                else
+                    file.WriteLine("new Thread :" + lastStartRange.ToString() + " - " + tab[i]);
+                }*/
+                input = Roots.GetRange(lastStartRange, tab[i]);
+                lastStartRange += tab[i];
+
+
+
+
+                if (i == 0 && useQuickSearch)
                 {
-                    input = Roots.GetRange(i * (Roots.Count / nbThread), (Roots.Count / nbThread));
+                    SimulationThread threadQuickSearch = new SimulationThread();
+                    Thread threadlQuickSearch = new Thread(new ParameterizedThreadStart(threadQuickSearch.Calculate));
+                    threadlQuickSearch.Start((object)new SimulationThreadStart(input, ref Childs, 1000));
                 }
 
                 SimulationThread thread = new SimulationThread();
                 Thread threadl = new Thread(new ParameterizedThreadStart(thread.Calculate));
-                threadl.Start((object)new SimulationThreadStart(input, ref Childs));
+                threadl.Start((object)new SimulationThreadStart(input, ref Childs,maxWidePerThread));
 
                 tt.Add(threadl);
             }
@@ -83,7 +110,7 @@ namespace ExternalSimulationThread
                         BestBoard = endBoard;
             }
 
-            Stream stream = new FileStream(args[0]+".out", FileMode.Create, FileAccess.Write, FileShare.None);
+            Stream stream = new FileStream(args[0] + ".out", FileMode.Create, FileAccess.Write, FileShare.None);
             byte[] mem = HREngine.Bots.Debugger.Serialize(BestBoard);
             stream.Write(mem, 0, mem.GetLength(0));
             stream.Close();
@@ -95,17 +122,19 @@ namespace ExternalSimulationThread
     {
         public List<Board> input = null;
         public List<Board> output = null;
-        public SimulationThreadStart(List<Board> input, ref List<Board> output)
+        public int maxWide = 0;
+        public SimulationThreadStart(List<Board> input, ref List<Board> output,int maxWide)
         {
             this.input = input;
             this.output = output;
+            this.maxWide = maxWide;
         }
     }
 
     class SimulationThread
     {
         int maxWide = 20000;
-        static bool ShouldStop = false;
+        static volatile bool ShouldStop = false;
         static object sync = new Object();
         List<Board> input = null;
         List<Board> output = null;
@@ -120,6 +149,7 @@ namespace ExternalSimulationThread
             SimulationThreadStart starter = start as SimulationThreadStart;
             this.input = starter.input;
             this.output = starter.output;
+            this.maxWide = starter.maxWide;
             if (input == null)
                 return;
             if (output == null)
@@ -129,17 +159,23 @@ namespace ExternalSimulationThread
             while (input.Count > 0)
             {
                 wide = 0;
-                lock (sync)
-                {
-                    if (ShouldStop)
-                        break;
-                }
+
+                if (ShouldStop)
+                    break;
+
                 List<Board> childs = new List<Board>();
                 foreach (Board b in input)
                 {
 
+                    if (ShouldStop)
+                        break;
+
                     foreach (HREngine.Bots.Action a in b.CalculateAvailableActions())
                     {
+
+                        if (ShouldStop)
+                            break;
+
                         if (wide > maxWide)
                             break;
 
@@ -180,18 +216,14 @@ namespace ExternalSimulationThread
 
                 }
 
-                if(BestBoard != null)
+                if (BestBoard != null)
                 {
                     if (BestBoard.GetValue() > 10000)
                     {
-                        lock (sync)
-                        {
-                            ShouldStop = true;
-                            output.Add(BestBoard);
-                        }
+                        ShouldStop = true;
                     }
                 }
-                
+
                 input = childs;
             }
 
