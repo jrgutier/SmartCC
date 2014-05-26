@@ -103,43 +103,62 @@ namespace HREngine.Bots
 
             if (threaded)
             {
-                string[] filePaths = Directory.GetFiles(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar);
-                foreach (string filePath in filePaths)
+               /* using (MemoryMappedFile mmf = MemoryMappedFile.CreateNew("testmap", 100000))
                 {
-                    File.Delete(filePath);
-                }
-
-                Stream stream = new FileStream(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed", FileMode.Create, FileAccess.Write, FileShare.None);
-                byte[] mem = HREngine.Bots.Debugger.Serialize(bestBoard);
-                stream.Write(mem, 0, mem.GetLength(0));
-                stream.Close();
-
-                // Use ProcessStartInfo class
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.CreateNoWindow = true;
-                startInfo.UseShellExecute = false;
-                startInfo.FileName = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "ExternalSimulationThread.exe";
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-
-                startInfo.Arguments = "\"" + CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed"+"\"";
-
-                try
-                {
-                    // Start the process with the info we specified.
-                    // Call WaitForExit and then the using statement will close.
-                    using (Process exeProcess = Process.Start(startInfo))
+                    /*
+                    bool mutexCreated;
+                    Mutex mutex = new Mutex(true, "testmapmutex", out mutexCreated);
+                    using (MemoryMappedViewStream stream = mmf.CreateViewStream())
                     {
-                        exeProcess.WaitForExit();
+                        BinaryWriter writer = new BinaryWriter(stream);
+                        byte[] mem = HREngine.Bots.Debugger.Serialize(bestBoard);
+                        writer.Write(mem.GetLength(0));
+                        writer.Write(mem);
+                        
                     }
-                }
-                catch
-                {
-                    Console.WriteLine("Compiler error");
-                }
-                Thread.Sleep(100);
-                bestBoard = HREngine.Bots.Debugger.BinaryDeSerialize(File.ReadAllBytes(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed.out")) as Board;
+                    mutex.ReleaseMutex();
+                    */
+                    Stream stream = new FileStream(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed", FileMode.Create, FileAccess.Write, FileShare.None);
+                    byte[] mem = HREngine.Bots.Debugger.Serialize(bestBoard);
+                    stream.Write(mem, 0, mem.GetLength(0));
+                    stream.Close();
+                    // Use ProcessStartInfo class
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.CreateNoWindow = true;
+                    startInfo.UseShellExecute = false;
+                    startInfo.FileName = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "ExternalSimulationThread.exe";
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
-                
+                    startInfo.Arguments = "\"" + CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed" + "\"";
+
+                    try
+                    {
+                        // Start the process with the info we specified.
+                        // Call WaitForExit and then the using statement will close.
+                        using (Process exeProcess = Process.Start(startInfo))
+                        {
+                            exeProcess.WaitForExit();
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Compiler error");
+                    }
+                    bestBoard = HREngine.Bots.Debugger.BinaryDeSerialize(File.ReadAllBytes(CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Threads" + Path.DirectorySeparatorChar + "board.seed.out")) as Board;
+
+/*
+                    mutex.WaitOne();
+                    using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+                    {
+                        BinaryReader reader = new BinaryReader(stream);
+                        int index = reader.ReadInt32();
+                        byte[] mem = reader.ReadBytes(index);
+                        bestBoard = HREngine.Bots.Debugger.BinaryDeSerialize(mem) as Board;
+                    }
+                    mutex.ReleaseMutex();
+ * */
+               // }
+         
             }
             else
             {
