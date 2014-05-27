@@ -91,7 +91,7 @@ namespace HREngine.Bots
             int maxWide = 10000;
             int skipped = 0;
             root.Update();
-            bool tryToSkipEqualBoards = true;
+            bool tryToSkipEqualBoards = false;
             Board bestBoard = root;
             Log("ROOTBOARD : ");
             Log(root.ToString());
@@ -158,7 +158,7 @@ namespace HREngine.Bots
                 if (nbThread > 0)
                     maxWidePerThread = parsed / nbThread;
 
-                bool useQuickSearch = true;
+                bool useQuickSearch = false;
                 int lastStartRange = 0;
                 List<Thread> tt = new List<Thread>();
                 for (int i = 0; i < nbThread; i++)
@@ -441,31 +441,19 @@ namespace HREngine.Bots
                     {
                         wide++;
                         Board bb = b.ExecuteAction(a);
+                        childaas.Add(bb);
 
-                        bool found = false;
-                        foreach (Board lol in childaas)
+                        if (bb.GetValue() > 10000)
                         {
-                            if (bb.Equals(lol))
-                            {
-                                found = true;
-                                break;
-                            }
+                            ShouldStop = true;
+                            BestBoard = bb;
                         }
-
-                        if (!found)
-                        {
-                            childaas.Add(bb);
-                            if (bb.GetValue() > 10000)
-                                ShouldStop = true;
-                        }
-
                         if (wide > maxWide)
                             break;
                         if (ShouldStop)
                             break;
 
-                        if (BestBoard == null)
-                            BestBoard = bb;
+                        
                     }
                     if (wide > maxWide)
                         break;
@@ -474,6 +462,8 @@ namespace HREngine.Bots
                 }
                 foreach (Board baa in childaas)
                 {
+                    if (BestBoard == null)
+                        BestBoard = baa;
                     if (baa.GetValue() > BestBoard.GetValue())
                         BestBoard = baa;
                 }

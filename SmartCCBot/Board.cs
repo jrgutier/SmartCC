@@ -123,23 +123,29 @@ namespace HREngine.Bots
 
         public bool PlayCardFromHand(int id)
         {
-            foreach (Card c in Hand.ToArray())
+            List<Card> tmp = new List<Card>();
+            foreach(Card c in Hand)
             {
-                if (c.Id == id)
+                tmp.Add(c);
+            }
+            for (int i = 0; i < tmp.Count; i++ )
+            {
+                if (tmp[i].Id == id)
                 {
-                    if (SecretEnemy)
-                    {
-                        Resimulate();
-                    }
-                    Hand.Remove(c);
-                    if (c.Type != Card.CType.WEAPON)
+                     if (SecretEnemy)
+                      {
+                          Resimulate();
+                      }
+                    //int idx = Hand.IndexOf(c);
+                    Hand.RemoveAt(i);
+                    if (tmp[i].Type != Card.CType.WEAPON)
                         FriendCardDraw--;
-                    ManaAvailable -= c.CurrentCost;
-                    if (c.Type == Card.CType.WEAPON)
+                    ManaAvailable -= tmp[i].CurrentCost;
+                    if (tmp[i].Type == Card.CType.WEAPON)
                     {
-                        WeaponFriend = c;
+                        WeaponFriend = tmp[i];
                     }
-
+                    
                     return true;
                 }
             }
