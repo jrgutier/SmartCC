@@ -404,7 +404,6 @@ namespace HREngine.Bots
 
     class SimulationThread
     {
-        static volatile bool ShouldStop = false;
         int maxWide = 0;
         List<Board> input = null;
         List<Board> output = null;
@@ -431,8 +430,6 @@ namespace HREngine.Bots
 
             while (input.Count > 0)
             {
-                if (ShouldStop)
-                    break;
                 childaas.Clear();
                 wide = 0;
                 foreach (Board b in input)
@@ -442,22 +439,10 @@ namespace HREngine.Bots
                         wide++;
                         Board bb = b.ExecuteAction(a);
                         childaas.Add(bb);
-
-                        if (bb.GetValue() > 10000)
-                        {
-                            ShouldStop = true;
-                            BestBoard = bb;
-                        }
                         if (wide > maxWide)
-                            break;
-                        if (ShouldStop)
-                            break;
-
-                        
+                            break;                        
                     }
                     if (wide > maxWide)
-                        break;
-                    if (ShouldStop)
                         break;
                 }
                 foreach (Board baa in childaas)
@@ -467,8 +452,6 @@ namespace HREngine.Bots
                     if (baa.GetValue() > BestBoard.GetValue())
                         BestBoard = baa;
                 }
-                if (ShouldStop)
-                    break;
                 input.Clear();
                 foreach (Board aaa in childaas)
                 {

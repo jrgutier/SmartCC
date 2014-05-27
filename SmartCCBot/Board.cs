@@ -155,35 +155,39 @@ namespace HREngine.Bots
 
         public bool PlayMinion(int id)
         {
-
-            foreach (Card c in Hand.ToArray())
+            List<Card> tmp = new List<Card>();
+            foreach (Card c in Hand)
             {
-                if (c.Id == id)
+                tmp.Add(c);
+            }
+            for (int i = 0; i < tmp.Count; i++)
+            {
+                if (tmp[i].Id == id)
                 {
                     if (SecretEnemy)
                     {
                         Resimulate();
                     }
-                    Hand.Remove(c);
-                    ManaAvailable -= c.CurrentCost;
-                    if (c.Type == Card.CType.MINION)
+                    Hand.RemoveAt(i);
+                    ManaAvailable -= tmp[i].CurrentCost;
+                    if (tmp[i].Type == Card.CType.MINION)
                     {
-                        if (c.IsCharge)
+                        if (tmp[i].IsCharge)
                         {
-                            c.IsTired = false;
+                            tmp[i].IsTired = false;
                         }
                         else
                         {
-                            c.IsTired = true;
+                            tmp[i].IsTired = true;
                         }
 
                         foreach (Card ca in MinionFriend)
                         {
-                            if (ca.Index >= c.Index)
+                            if (ca.Index >= tmp[i].Index)
                                 ca.Index++;
                         }
 
-                        MinionFriend.Add(c);
+                        MinionFriend.Add(tmp[i]);
 
                     }
 
@@ -312,44 +316,62 @@ namespace HREngine.Bots
 
         public bool RemoveCardFromBoard(int id)
         {
-            foreach (Card c in MinionFriend.ToArray())
+             List<Card> tmp = new List<Card>();
+             foreach (Card c in MinionFriend)
             {
-                if (c.Id == id)
+                tmp.Add(c);
+            }
+            for (int i = 0; i < tmp.Count; i++)
+            {
+                if (tmp[i].Id == id)
                 {
                     foreach (Card ca in MinionFriend)
                     {
-                        if (ca == c)
+                        if (ca == tmp[i])
                             continue;
 
-                        if (c.Index < ca.Index)
+                        if (tmp[i].Index < ca.Index)
                             ca.Index--;
                     }
 
-                    MinionFriend.Remove(c);
+                    MinionFriend.RemoveAt(i);
                     return true;
                 }
             }
-            foreach (Card c in MinionEnemy.ToArray())
+
+            tmp.Clear();
+            foreach (Card c in MinionEnemy)
             {
-                if (c.Id == id)
+                tmp.Add(c);
+            }
+            for (int i = 0; i < tmp.Count; i++)
+            {
+                if (tmp[i].Id == id)
                 {
                     foreach (Card ca in MinionEnemy)
                     {
-                        if (ca == c)
+                        if (ca == tmp[i])
                             continue;
 
-                        if (c.Index < ca.Index)
+                        if (tmp[i].Index < ca.Index)
                             ca.Index--;
                     }
-                    MinionEnemy.Remove(c);
+                    MinionEnemy.RemoveAt(i);
                     return true;
                 }
             }
-            foreach (Card c in Secret.ToArray())
+
+             tmp.Clear();
+            foreach (Card c in Secret)
             {
-                if (c.Id == id)
+                tmp.Add(c);
+            }
+            for (int i = 0; i < tmp.Count; i++)
+            {
+
+                if (tmp[i].Id == id)
                 {
-                    Secret.Remove(c);
+                    Secret.RemoveAt(i);
                     return true;
                 }
             }
