@@ -808,20 +808,6 @@ namespace HREngine.Bots
             List<Card> attackers = new List<Card>();
             foreach (Card minion in MinionFriend)
             {
-                bool alreadyAttacked = false;
-                foreach(Card c in attackers)
-                {
-                    if (c.Equals(minion))
-                    {
-                        alreadyAttacked  = true;
-                        break;
-                    } 
-                }
-                if (alreadyAttacked)
-                    continue;
-
-                attackers.Add(minion);
-
                 if (!minion.CanAttack || !minion.Behavior.ShouldAttack(this))
                     continue;
 
