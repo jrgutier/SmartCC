@@ -307,8 +307,9 @@ namespace HREngine.Bots
                 }
             }
 
-
             Action actionPrior = null;
+
+            /*
             foreach (Action acc in bestBoard.ActionsStack)
             {
                 if (actionPrior == null && acc.Actor != null)
@@ -318,7 +319,7 @@ namespace HREngine.Bots
                         Console.WriteLine("Action priori found");
                         if (acc.Type == Action.ActionType.CAST_MINION && acc.Actor.Behavior.ShouldBePlayed(root))
                         {
-                            if (bestBoard.MinionFriend.Count < 7)
+                            if (root.MinionFriend.Count < 7)
                                 actionPrior = acc;
 
                         }
@@ -330,7 +331,7 @@ namespace HREngine.Bots
                     }
                 }
             }
-
+            */
 
             List<Action> finalStack = new List<Action>();
             if (actionPrior != null)
