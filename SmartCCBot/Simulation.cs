@@ -130,7 +130,32 @@ namespace HREngine.Bots
                     else
                         roll++;
                 }
-                int maxWidePerThread = 10000/nbThread;
+
+                int parsed = 0;
+                StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/searchLevel");
+                    string use = str.ReadLine();
+
+                    str.Close();
+
+                    if (use == "low")
+                    {
+                        parsed = 5000;
+                    }
+                    else if(use == "medium")
+                    {
+                        parsed = 10000;
+                    }
+                    else if(use == "high")
+                    {
+                        parsed = 15000;
+                    }
+                    else if(use == "ultra")
+                    {
+                        parsed = 20000;
+                    }
+
+              
+                    int maxWidePerThread = parsed / nbThread;
 
                 bool useQuickSearch = true;
                 int lastStartRange = 0;
