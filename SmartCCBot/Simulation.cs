@@ -130,13 +130,8 @@ namespace HREngine.Bots
                     else
                         roll++;
                 }
-                int maxWidePerThread = 1;
-                if(nbThread > 0)
-                {
-                    maxWidePerThread = 10000 / nbThread;
-                }
-                
-                Console.WriteLine("Max per thread :" + maxWidePerThread.ToString());
+                int maxWidePerThread = 10000;
+
                 bool useQuickSearch = true;
                 int lastStartRange = 0;
                 List<Thread> tt = new List<Thread>();
@@ -460,6 +455,8 @@ namespace HREngine.Bots
                     if (baa.GetValue() > BestBoard.GetValue())
                         BestBoard = baa;
                 }
+                if (ShouldStop)
+                    break;
                 input.Clear();
                 foreach(Board aaa in childaas)
                 {

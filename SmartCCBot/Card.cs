@@ -44,9 +44,6 @@ namespace HREngine.Bots
                 if (IsFrozen)
                     value -= ValuesInterface.ValueFrozen;
 
-                if (currentAtk == 0)
-                    value -= 2;
-
             }
             else if (Type == CType.WEAPON)
             {
