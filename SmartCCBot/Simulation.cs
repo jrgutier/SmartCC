@@ -133,29 +133,30 @@ namespace HREngine.Bots
 
                 int parsed = 0;
                 StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/searchLevel");
-                    string use = str.ReadLine();
+                string use = str.ReadLine();
 
-                    str.Close();
+                str.Close();
 
-                    if (use == "low")
-                    {
-                        parsed = 5000;
-                    }
-                    else if(use == "medium")
-                    {
-                        parsed = 10000;
-                    }
-                    else if(use == "high")
-                    {
-                        parsed = 15000;
-                    }
-                    else if(use == "ultra")
-                    {
-                        parsed = 20000;
-                    }
+                if (use == "low")
+                {
+                    parsed = 5000;
+                }
+                else if (use == "medium")
+                {
+                    parsed = 10000;
+                }
+                else if (use == "high")
+                {
+                    parsed = 15000;
+                }
+                else if (use == "ultra")
+                {
+                    parsed = 20000;
+                }
 
-              
-                    int maxWidePerThread = parsed / nbThread;
+                int maxWidePerThread = parsed;
+                if (nbThread > 0)
+                    maxWidePerThread = parsed / nbThread;
 
                 bool useQuickSearch = true;
                 int lastStartRange = 0;
@@ -168,11 +169,11 @@ namespace HREngine.Bots
                     lastStartRange += tab[i];
                     if (i == 0 && useQuickSearch)
                     {
-                        SimulationThread threadQuickSearch = new SimulationThread(maxWidePerThread/3);
+                        SimulationThread threadQuickSearch = new SimulationThread(maxWidePerThread / 3);
                         Thread threadlQuickSearch = new Thread(new ParameterizedThreadStart(threadQuickSearch.Calculate));
 
                         List<Board> quickSearchBoards = new List<Board>();
-                        foreach(Board v in input)
+                        foreach (Board v in input)
                         {
                             quickSearchBoards.Add(Board.Clone(v));
                         }
@@ -479,7 +480,7 @@ namespace HREngine.Bots
                 if (ShouldStop)
                     break;
                 input.Clear();
-                foreach(Board aaa in childaas)
+                foreach (Board aaa in childaas)
                 {
                     input.Add(aaa);
                 }
