@@ -130,7 +130,7 @@ namespace HREngine.Bots
                     else
                         roll++;
                 }
-                int maxWidePerThread = 10000;
+                int maxWidePerThread = 10000/nbThread;
 
                 bool useQuickSearch = true;
                 int lastStartRange = 0;
@@ -410,11 +410,8 @@ namespace HREngine.Bots
                 wide = 0;
                 foreach (Board b in input)
                 {
-                    int boardWide = 0;
-                    float maxWidePerBoard = maxWide/input.Count;
                     foreach (HREngine.Bots.Action a in b.CalculateAvailableActions())
                     {
-                        boardWide++;
                         wide++;
                         Board bb = b.ExecuteAction(a);
 
@@ -435,8 +432,6 @@ namespace HREngine.Bots
                                 ShouldStop = true;
                         }
 
-                        if (boardWide > maxWidePerBoard)
-                            break;
                         if (wide > maxWide)
                             break;
                         if (ShouldStop)
