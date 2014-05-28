@@ -239,7 +239,7 @@ namespace HREngine.Bots
 
                 if (CurrentHealth < MaxHealth)
                 {
-                    if (HasEnrage && !IsEnraged)
+                    if (HasEnrage && !IsEnraged && !IsSilenced)
                     {
                         board.GetCard(Id).OnEnrage(true, ref board);
                         board.GetCard(Id).IsEnraged = true;
@@ -285,7 +285,7 @@ namespace HREngine.Bots
                 if (CurrentHealth + amount >= MaxHealth)
                 {
                     CurrentHealth = MaxHealth;
-                    if (HasEnrage && IsEnraged)
+                    if (HasEnrage && IsEnraged && !IsSilenced)
                     {
                         OnEnrage(false, ref board);
                         IsEnraged = false;
@@ -349,7 +349,7 @@ namespace HREngine.Bots
                 }
                 if (CurrentHealth < MaxHealth)
                 {
-                    if (HasEnrage && !IsEnraged)
+                    if (HasEnrage && !IsEnraged && !IsSilenced)
                     {
                         OnEnrage(true, ref board);
                         IsEnraged = true;
