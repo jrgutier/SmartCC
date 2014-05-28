@@ -310,7 +310,7 @@ namespace HREngine.Bots
 
             Action actionPrior = null;
 
-            /*
+            
             foreach (Action acc in bestBoard.ActionsStack)
             {
                 if (actionPrior == null && acc.Actor != null)
@@ -332,7 +332,7 @@ namespace HREngine.Bots
                     }
                 }
             }
-            */
+            
 
             List<Action> finalStack = new List<Action>();
             if (actionPrior != null)
