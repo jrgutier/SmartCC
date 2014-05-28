@@ -19,18 +19,24 @@ namespace HREngine.Bots
         public bool SecretEnemy { get; set; }
         public int ManaAvailable { get; set; }
         public Card Ability { get; set; }
+        public Card EnemyAbility { get; set; }
 
 
         public int HealFactor { get; set; }
         public int FriendCardDraw { get; set; }
         public int EnemyCardDraw { get; set; }
         public int WastedATK { get; set; }
+        public int EnemyTurnValue { get; set; }
+        public Board EnemyTurnWorseBoard { get; set; }
+
 
         static int lastIdGen = 10000;
 
-        public float GetValue()
+
+
+        public int GetValue()
         {
-            float value = 0;
+            int value = 0;
 
             foreach (Card c in MinionEnemy)
             {
@@ -63,8 +69,131 @@ namespace HREngine.Bots
             if (HeroEnemy.CurrentHealth < 1)
                 value += 100000;
 
+            if (HeroFriend.CurrentHealth < 1)
+                value -= 100000;
 
-            return value;
+            return value + EnemyTurnValue;
+        }
+
+        public Board CalculateEnemyTurnValue()
+        {
+            List<Action> enemyActions = CalculateEnemyAvailableActions();
+
+            List<Board> childss = new List<Board>();
+            childss.Add(Board.Clone(this));
+            Board worseBoard = null;
+
+            int maxWide = 50;
+            int wide = 0;
+            while (childss.Count != 0)
+            {
+                wide = 0;
+                List<Board> childs = new List<Board>();
+
+                foreach (Board b in childss)
+                {
+                    List<Action> actions = b.CalculateEnemyAvailableActions();
+
+                    foreach (Action a in actions)
+                    {
+                        if (wide >= maxWide)
+                            break;
+                        wide++;
+
+                        Board bb = b.ExecuteAction(a);
+                        childs.Add(bb);
+                    }
+                    if (wide >= maxWide)
+                        break;
+                }
+
+                foreach (Board baa in childs)
+                {
+                    if (worseBoard == null)
+                        worseBoard = baa;
+                    if (worseBoard.GetValue() > baa.GetValue())
+                    {
+                        worseBoard = baa;
+                    }
+                }
+                childss = childs;
+            }
+
+
+            return worseBoard;
+        }
+
+
+        public List<Action> CalculateEnemyAvailableActions()
+        {
+            List<Action> enemyActions = new List<Action>();
+            List<Card> taunts = new List<Card>();
+
+            foreach (Card Friend in MinionFriend)
+            {
+                if (Friend.IsTaunt && !Friend.IsStealth)
+                    taunts.Add(Friend);
+            }
+
+            List<Card> attackers = new List<Card>();
+
+            foreach (Card minion in MinionEnemy)
+            {
+                if (!minion.CanAttack)
+                    continue;
+                if (taunts.Count == 0)
+                {
+                    foreach (Card Friend in MinionFriend)
+                    {
+                        if (Friend.IsStealth)
+                            continue;
+
+                        Action a = new Action(Action.ActionType.MINION_ATTACK, minion, Friend);
+                        enemyActions.Add(a);
+                    }
+                    Action ac = new Action(Action.ActionType.MINION_ATTACK, minion, HeroFriend);
+                    enemyActions.Add(ac);
+                }
+                else
+                {
+                    foreach (Card taunt in taunts)
+                    {
+                        Action a = new Action(Action.ActionType.MINION_ATTACK, minion, taunt);
+                        enemyActions.Add(a);
+                    }
+                }
+
+            }
+
+            if (WeaponEnemy != null)
+            {
+                if (WeaponEnemy.CurrentDurability > 0 && WeaponEnemy.CanAttack)
+                {
+                    if (taunts.Count == 0)
+                    {
+                        foreach (Card Friend in MinionFriend)
+                        {
+                            if (Friend.IsStealth)
+                                continue;
+                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponEnemy, Friend);
+                            enemyActions.Add(a);
+                        }
+                        Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponEnemy, HeroEnemy);
+                        enemyActions.Add(ac);
+                    }
+                    else
+                    {
+                        foreach (Card taunt in taunts)
+                        {
+                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponEnemy, taunt);
+                            enemyActions.Add(a);
+                        }
+                    }
+                }
+            }
+
+            return enemyActions;
+
         }
 
         public int GetSpellPower()
@@ -124,18 +253,18 @@ namespace HREngine.Bots
         public bool PlayCardFromHand(int id)
         {
             List<Card> tmp = new List<Card>();
-            foreach(Card c in Hand)
+            foreach (Card c in Hand)
             {
                 tmp.Add(c);
             }
-            for (int i = 0; i < tmp.Count; i++ )
+            for (int i = 0; i < tmp.Count; i++)
             {
                 if (tmp[i].Id == id)
                 {
-                     if (SecretEnemy)
-                      {
-                          Resimulate();
-                      }
+                    if (SecretEnemy)
+                    {
+                        Resimulate();
+                    }
                     //int idx = Hand.IndexOf(c);
                     Hand.RemoveAt(i);
                     if (tmp[i].Type != Card.CType.WEAPON)
@@ -145,7 +274,7 @@ namespace HREngine.Bots
                     {
                         WeaponFriend = tmp[i];
                     }
-                    
+
                     return true;
                 }
             }
@@ -316,8 +445,8 @@ namespace HREngine.Bots
 
         public bool RemoveCardFromBoard(int id)
         {
-             List<Card> tmp = new List<Card>();
-             foreach (Card c in MinionFriend)
+            List<Card> tmp = new List<Card>();
+            foreach (Card c in MinionFriend)
             {
                 tmp.Add(c);
             }
@@ -361,7 +490,7 @@ namespace HREngine.Bots
                 }
             }
 
-             tmp.Clear();
+            tmp.Clear();
             foreach (Card c in Secret)
             {
                 tmp.Add(c);
@@ -854,7 +983,7 @@ namespace HREngine.Bots
                         availableActions.Add(a);
                     }
                 }
-                
+
             }
 
             if (WeaponFriend != null)
@@ -925,6 +1054,8 @@ namespace HREngine.Bots
             {
                 c.OnEndTurn(this);
             }
+
+            EnemyTurnWorseBoard = CalculateEnemyTurnValue();
 
             /*  if(ActionsStack.Count == 1)
               {

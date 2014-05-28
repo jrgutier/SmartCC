@@ -88,7 +88,7 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 15000;
+            int maxWide = 10000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = false;
@@ -198,6 +198,7 @@ namespace HREngine.Bots
                 {
                     Board endBoard = Board.Clone(b);
                     endBoard.EndTurn();
+                    endBoard = endBoard.EnemyTurnWorseBoard;
 
                     if (BestBoard == null)
                         BestBoard = endBoard;
@@ -234,7 +235,7 @@ namespace HREngine.Bots
                             childsCount++;
 
                             Board bb = b.ExecuteAction(a);
-                            /* 
+                            /*
                               Console.WriteLine(a.ToString());
                               Console.WriteLine("**************************************");
                               Console.WriteLine(bb.ToString());
@@ -286,9 +287,23 @@ namespace HREngine.Bots
                         {
                             Board endBoard = Board.Clone(baa);
                             endBoard.EndTurn();
-                            if (endBoard.GetValue() > bestBoard.GetValue())
+                            Board worstBoard = endBoard.EnemyTurnWorseBoard;
+                            if (worstBoard == null)
+                                worstBoard = endBoard;
+
+                            if(bestBoard.EnemyTurnWorseBoard != null)
                             {
-                                bestBoard = endBoard;
+                                if (worstBoard.GetValue() > bestBoard.EnemyTurnWorseBoard.GetValue())
+                                {
+                                    bestBoard = endBoard;
+                                }
+                            }
+                            else
+                            {
+                                if (endBoard.GetValue() > bestBoard.GetValue())
+                                {
+                                    bestBoard = endBoard;
+                                }
                             }
                         }
                     }

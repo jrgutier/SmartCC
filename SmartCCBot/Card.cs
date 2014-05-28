@@ -54,7 +54,7 @@ namespace HREngine.Bots
 
                 if (currentAtk == 0)
                     value -= 2;
-
+                
             }
             else if (Type == CType.WEAPON)
             {
