@@ -19,17 +19,25 @@ namespace HREngine.Bots
             if (Type == CType.MINION)
             {
                 value += ValuesInterface.ValueHealthMinion * CurrentHealth;
-                value += ValuesInterface.ValueAttackMinion * CurrentAtk;
+                value += ValuesInterface.ValueAttackMinion * currentAtk;
 
                 if (IsTaunt && IsFriend)
                 {
-                    if (board.HeroFriend.CurrentHealth > 20 && board.HeroFriend.CurrentHealth < 25)
+                    if (board.HeroFriend.CurrentHealth >= 20 && board.HeroFriend.CurrentHealth < 25)
                     {
                         value += ValuesInterface.ValueTaunt * 2;
                     }
-                    else if (board.HeroFriend.CurrentHealth < 20)
+                    else if (board.HeroFriend.CurrentHealth >= 15 && board.HeroFriend.CurrentHealth < 20)
                     {
                         value += ValuesInterface.ValueTaunt * 3;
+                    }
+                    else if (board.HeroFriend.CurrentHealth >= 10 && board.HeroFriend.CurrentHealth < 15)
+                    {
+                        value += ValuesInterface.ValueTaunt * 4;
+                    }
+                    else if (board.HeroFriend.CurrentHealth < 10)
+                    {
+                        value += ValuesInterface.ValueTaunt * 6;
                     }
 
                 }
@@ -43,6 +51,9 @@ namespace HREngine.Bots
 
                 if (IsFrozen)
                     value -= ValuesInterface.ValueFrozen;
+
+                if (currentAtk == 0)
+                    value -= 2;
 
             }
             else if (Type == CType.WEAPON)
