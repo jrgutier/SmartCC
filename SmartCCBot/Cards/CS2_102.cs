@@ -29,8 +29,15 @@ public class CS2_102 : Card
         {
             base.OnPlay(ref board, target,index);
             //Console.WriteLine("Ondpelayarmorup");
+            if(IsFriend)
+            {
+                board.HeroFriend.CurrentArmor += 2;
 
-            board.HeroFriend.CurrentArmor += 2;
+            }
+            else
+            {
+                board.HeroEnemy.CurrentArmor += 2;
+            }
         }
 
         public override void OnDeath(ref Board board)

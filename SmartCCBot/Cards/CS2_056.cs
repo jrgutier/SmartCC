@@ -28,9 +28,13 @@ public class CS2_056 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.FriendCardDraw++;
-            board.HeroFriend.CurrentHealth -= 2;
-            board.Resimulate();
+            if(IsFriend)
+            {
+                board.FriendCardDraw++;
+                board.HeroFriend.CurrentHealth -= 2;
+                board.Resimulate();
+            }
+            
         }
 
         public override void OnDeath(ref Board board)

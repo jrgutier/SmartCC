@@ -20,7 +20,17 @@ public class EX1_575 : Card
             
         }
 
-
+        public override int GetValue(Board board)
+        {
+            if(!IsFriend)
+            {
+                return base.GetValue(board) + 5;
+            }
+            else
+            {
+                return base.GetValue(board);
+            }
+        }
         public override void Init()
         {
             base.Init();

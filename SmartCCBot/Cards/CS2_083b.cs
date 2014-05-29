@@ -28,7 +28,17 @@ public class CS2_083b : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.ReplaceWeapon("CS2_082");
+
+            if(IsFriend)
+            {
+                board.ReplaceWeapon("CS2_082");
+
+            }
+            else
+            {
+                board.ReplaceEnemyWeapon("CS2_082");
+
+            }
         }
 
         public override void OnDeath(ref Board board)

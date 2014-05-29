@@ -88,10 +88,10 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 8000;
+            int maxWide = 10000;
             int skipped = 0;
             root.Update();
-            bool tryToSkipEqualBoards = false;
+            bool tryToSkipEqualBoards = true;
             Board bestBoard = root;
             Log("ROOTBOARD : ");
             Log(root.ToString());
@@ -217,7 +217,6 @@ namespace HREngine.Bots
 
                     wide = 0;
                     skipped = 0;
-                    int childsCount = 0;
                     List<Board> childs = new List<Board>();
 
 
@@ -232,7 +231,6 @@ namespace HREngine.Bots
                             if (wide >= maxWide)
                                 break;
                             wide++;
-                            childsCount++;
 
                             Board bb = b.ExecuteAction(a);
                             /*
@@ -287,12 +285,15 @@ namespace HREngine.Bots
                         {
                             Board endBoard = Board.Clone(baa);
                             endBoard.EndTurn();
-                            Board worstBoard = endBoard.EnemyTurnWorseBoard;
-                            if (worstBoard == null)
-                                worstBoard = endBoard;
 
+                            bestBoard.CalculateEnemyTurn();
                             if(bestBoard.EnemyTurnWorseBoard != null)
                             {
+                                endBoard.CalculateEnemyTurn();
+                                Board worstBoard = endBoard.EnemyTurnWorseBoard;
+                                if (worstBoard == null)
+                                    worstBoard = endBoard;
+
                                 if (worstBoard.GetValue() > bestBoard.EnemyTurnWorseBoard.GetValue())
                                 {
                                     bestBoard = endBoard;

@@ -28,7 +28,7 @@ public class CS2_101 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.AddCardToBoard("CS2_101t", true);
+            board.AddCardToBoard("CS2_101t", IsFriend);
         }
 
         public override void OnDeath(ref Board board)

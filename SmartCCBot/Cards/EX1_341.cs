@@ -25,6 +25,19 @@ public class EX1_341 : Card
             base.Init();
         }
 
+        public override int GetValue(Board board)
+        {
+            if(!IsFriend)
+            {
+                return base.GetValue(board) + 5;
+
+            }
+            else
+            {
+                return base.GetValue(board);
+            }
+        }
+
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);

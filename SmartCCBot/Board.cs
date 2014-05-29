@@ -21,14 +21,14 @@ namespace HREngine.Bots
         public Card Ability { get; set; }
         public Card EnemyAbility { get; set; }
 
-
+        public int EnemyHealFactor { get; set; }
         public int HealFactor { get; set; }
         public int FriendCardDraw { get; set; }
         public int EnemyCardDraw { get; set; }
         public int WastedATK { get; set; }
         public int EnemyTurnValue { get; set; }
         public Board EnemyTurnWorseBoard { get; set; }
-
+        public bool EnemyTurnCalculated = false;
 
         static int lastIdGen = 10000;
 
@@ -83,7 +83,19 @@ namespace HREngine.Bots
             childss.Add(Board.Clone(this));
             Board worseBoard = null;
 
-            int maxWide = 5;
+            int maxWide = 3;
+            foreach (Card Friend in MinionFriend)
+            {
+                if (Friend.IsTaunt && !Friend.IsStealth)
+                {
+                    maxWide = 8;
+                    break;
+                }
+                    
+            }
+
+
+            
             int wide = 0;
             while (childss.Count != 0)
             {
@@ -127,6 +139,57 @@ namespace HREngine.Bots
         public List<Action> CalculateEnemyAvailableActions()
         {
             List<Action> enemyActions = new List<Action>();
+
+            if (EnemyAbility != null)
+            {
+                if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.MINION_ENEMY || EnemyAbility.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
+                           || EnemyAbility.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || EnemyAbility.TargetTypeOnPlay == Card.TargetType.ALL)
+                    {
+                        foreach (Card Friend in MinionFriend)
+                        {
+                            if (!Friend.IsTargetable || Friend.IsStealth)
+                                continue;
+                            Action a = null;
+                            a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, Friend);
+                            enemyActions.Add(a);
+                        }
+                    }
+                if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.MINION_FRIEND || EnemyAbility.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
+                        || EnemyAbility.TargetTypeOnPlay == Card.TargetType.BOTH_FRIEND || EnemyAbility.TargetTypeOnPlay == Card.TargetType.ALL)
+                    {
+                        foreach (Card Enemy in MinionEnemy)
+                        {
+                            if (!Enemy.IsTargetable || Enemy.IsStealth)
+                                continue;
+                            Action a = null;
+                            a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, Enemy);
+                            enemyActions.Add(a);
+                        }
+                    }
+                if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.HERO_ENEMY || EnemyAbility.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
+                        || EnemyAbility.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || EnemyAbility.TargetTypeOnPlay == Card.TargetType.ALL)
+                    {
+                        Action a = null;
+                        a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, HeroFriend);
+                        enemyActions.Add(a);
+                    }
+                if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.HERO_FRIEND || EnemyAbility.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
+                        || EnemyAbility.TargetTypeOnPlay == Card.TargetType.BOTH_FRIEND || EnemyAbility.TargetTypeOnPlay == Card.TargetType.ALL)
+                    {
+                        Action a = null;
+                        a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, HeroEnemy);
+                        enemyActions.Add(a);
+                    }
+
+                if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.NONE)
+                    {
+                        Action a = null;
+                        a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility);
+                        enemyActions.Add(a);
+                    }
+                
+            }
+
             List<Card> taunts = new List<Card>();
 
             foreach (Card Friend in MinionFriend)
@@ -215,39 +278,13 @@ namespace HREngine.Bots
             HeroEnemy = null;
             HeroFriend = null;
             Ability = null;
+            EnemyAbility = null;
             Secret = new List<Card>();
             SecretEnemy = false;
             ManaAvailable = 0;
             ActionsStack = new List<Action>();
             HealFactor = 1;
-        }
-        public Board(List<Card> hand, List<Card> minionFriend, List<Card> minionEnemy, Card weaponEnemy, Card weaponFriend, Card heroEnemy, Card heroFriend, Card ability, List<Card> secret, bool secretEnemy, int manaAvailable)
-        {
-            foreach (Card c in hand)
-            {
-                Hand.Add(Card.Clone(c));
-            }
-            foreach (Card c in minionFriend)
-            {
-                MinionFriend.Add(Card.Clone(c));
-            }
-            foreach (Card c in minionEnemy)
-            {
-                MinionEnemy.Add(Card.Clone(c));
-            }
-            WeaponEnemy = Card.Clone(weaponEnemy);
-            WeaponFriend = Card.Clone(weaponFriend);
-            HeroEnemy = Card.Clone(heroEnemy);
-            HeroFriend = Card.Clone(heroFriend);
-            Ability = Card.Clone(ability);
-
-            foreach (Card c in secret)
-            {
-                Secret.Add(Card.Clone(c));
-            }
-            SecretEnemy = secretEnemy;
-            ManaAvailable = manaAvailable;
-            ActionsStack = new List<Action>();
+            EnemyHealFactor = 1;
         }
 
         public bool PlayCardFromHand(int id)
@@ -337,6 +374,11 @@ namespace HREngine.Bots
             }
         }
 
+        public void PlayEnemyAbility()
+        {
+            EnemyAbility = null;
+        }
+
         public void Resimulate()
         {
             ActionsStack.Add(new Action(Action.ActionType.RESIMULATE, null));
@@ -415,6 +457,14 @@ namespace HREngine.Bots
 
             WeaponFriend = Card.Create(id, true, randomNumber);
             Resimulate();
+        }
+
+        public void ReplaceEnemyWeapon(string id)
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(88888, 99999);
+
+            WeaponEnemy = Card.Create(id, false, randomNumber);
         }
 
         public Card GetMinionByIndex(int idx, bool friend)
@@ -1055,7 +1105,6 @@ namespace HREngine.Bots
                 c.OnEndTurn(this);
             }
 
-            EnemyTurnWorseBoard = CalculateEnemyTurnValue();
 
             /*  if(ActionsStack.Count == 1)
               {
@@ -1063,6 +1112,16 @@ namespace HREngine.Bots
                       ActionsStack.Clear();
               }*/
         }
+
+        public void CalculateEnemyTurn()
+        {
+            if (EnemyTurnCalculated)
+                return;
+
+            EnemyTurnWorseBoard = CalculateEnemyTurnValue();
+            EnemyTurnCalculated = true;
+        }
+
         public void Update()
         {
             foreach (Card c in MinionEnemy.ToArray())
@@ -1277,7 +1336,15 @@ namespace HREngine.Bots
             {
                 newBoard.Ability = null;
             }
+            if (baseInstance.EnemyAbility != null)
+            {
+                newBoard.EnemyAbility = Card.Clone(baseInstance.EnemyAbility);
 
+            }
+            else
+            {
+                newBoard.EnemyAbility = null;
+            }
 
             newBoard.HeroEnemy = Card.Clone(baseInstance.HeroEnemy);
             newBoard.HeroFriend = Card.Clone(baseInstance.HeroFriend);
@@ -1297,6 +1364,7 @@ namespace HREngine.Bots
                 newBoard.ActionsStack.Add(a);
             }
             newBoard.HealFactor = baseInstance.HealFactor;
+            newBoard.EnemyHealFactor = baseInstance.EnemyHealFactor;
 
             newBoard.EnemyCardDraw = baseInstance.EnemyCardDraw;
             newBoard.FriendCardDraw = baseInstance.FriendCardDraw;
@@ -1404,7 +1472,7 @@ namespace HREngine.Bots
             /*if (GetValue() != b.GetValue())
                 return false;
             */
-
+            /*
             if (HeroEnemy != null)
             {
                 if (b.HeroEnemy == null)
@@ -1423,6 +1491,8 @@ namespace HREngine.Bots
                     return false;
                 }
             }
+             * */
+            /*
             if (Ability != null)
             {
                 if (b.Ability == null)
@@ -1432,6 +1502,8 @@ namespace HREngine.Bots
                     return false;
                 }
             }
+             * */
+            /*
             if (WeaponEnemy != null)
             {
                 if (b.WeaponEnemy == null)
@@ -1450,6 +1522,7 @@ namespace HREngine.Bots
                     return false;
                 }
             }
+             * */
             if (!ListEquals(MinionEnemy, b.MinionEnemy))
                 return false;
             if (!ListEquals(MinionFriend, b.MinionFriend))

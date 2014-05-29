@@ -28,8 +28,16 @@ public class CS2_017 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.HeroFriend.TempAtk++;
-            board.HeroFriend.CurrentArmor++;
+            if(IsFriend)
+            {
+                board.HeroFriend.TempAtk++;
+                board.HeroFriend.CurrentArmor++;
+            }
+            else
+            {
+                board.HeroEnemy.TempAtk++;
+                board.HeroEnemy.CurrentArmor++;
+            }
         }
 
         public override void OnDeath(ref Board board)

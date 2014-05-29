@@ -31,27 +31,31 @@ namespace HREngine.Bots
         {
             base.OnPlay(ref board, target, index);
 
-            bool hasHealTotem = false;
-            bool hasIncenTotem = false;
-            bool hasSpellTotem = false;
-            bool hasTauntTotem = false;
-
-            foreach (Card c in board.MinionFriend)
+            if(IsFriend)
             {
-                if (c.template.Id == "CS2_052")
-                    hasSpellTotem = true;
-                if (c.template.Id == "CS2_051")
-                    hasTauntTotem = true;
-                if (c.template.Id == "NEW1_009")
-                    hasHealTotem = true;
-                if (c.template.Id == "CS2_050")
-                    hasIncenTotem = true;
-            }
+                bool hasHealTotem = false;
+                bool hasIncenTotem = false;
+                bool hasSpellTotem = false;
+                bool hasTauntTotem = false;
 
-            if (!hasSpellTotem)
-                board.AddCardToBoard("CS2_052", true);
-            else
-                board.AddCardToBoard("CS2_051", true);
+                foreach (Card c in board.MinionFriend)
+                {
+                    if (c.template.Id == "CS2_052")
+                        hasSpellTotem = true;
+                    if (c.template.Id == "CS2_051")
+                        hasTauntTotem = true;
+                    if (c.template.Id == "NEW1_009")
+                        hasHealTotem = true;
+                    if (c.template.Id == "CS2_050")
+                        hasIncenTotem = true;
+                }
+
+                if (!hasSpellTotem)
+                    board.AddCardToBoard("CS2_052", true);
+                else
+                    board.AddCardToBoard("CS2_051", true);
+            }
+            
 
         }
 

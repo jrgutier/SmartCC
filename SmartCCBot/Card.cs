@@ -7,7 +7,7 @@ namespace HREngine.Bots
     [Serializable]
     public class Card : IEquatable<Card>
     {
-        static Assembly assembly =Assembly.LoadFile(CardTemplate.DatabasePath + "/Bots/SmartCC/Profile.dll");
+        static Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath + "/Bots/SmartCC/Profile.dll");
 
 
         public Behavior Behavior { get; set; }
@@ -54,7 +54,7 @@ namespace HREngine.Bots
 
                 if (currentAtk == 0)
                     value -= 2;
-                
+
             }
             else if (Type == CType.WEAPON)
             {
@@ -94,7 +94,16 @@ namespace HREngine.Bots
         {
             if (Type == CType.HERO_POWER)
             {
-                board.PlayAbility();
+                if (board.Ability != null)
+                {
+                    if (board.Ability.Id == Id)
+                        board.PlayAbility();
+                }
+                if (board.EnemyAbility != null)
+                {
+                    if (board.EnemyAbility.Id == Id)
+                        board.PlayEnemyAbility();
+                }
             }
             else
             {
@@ -162,7 +171,7 @@ namespace HREngine.Bots
 
         public virtual void OnAttack(ref Board board, Card target)
         {
-           
+
             Card me = board.GetCard(Id);
             Card tar = board.GetCard(target.Id);
 
@@ -177,13 +186,27 @@ namespace HREngine.Bots
             {
                 me.CurrentDurability--;
                 me.CountAttack++;
-                board.HeroFriend.CountAttack++;
-                board.HeroFriend.TempAtk += me.CurrentAtk;
-                board.HeroFriend.OnHit(ref board, tar);
-                tar.OnHit(ref board, board.HeroFriend);
-                // tar.OnHit(ref board, me);
-                if (me.CurrentDurability < 1)
-                    board.WeaponFriend = null;
+                if (me.IsFriend)
+                {
+                    board.HeroFriend.CountAttack++;
+                    board.HeroFriend.TempAtk += me.CurrentAtk;
+                    board.HeroFriend.OnHit(ref board, tar);
+                    tar.OnHit(ref board, board.HeroFriend);
+                    // tar.OnHit(ref board, me);
+                    if (me.CurrentDurability < 1)
+                        board.WeaponFriend = null;
+                }
+                else
+                {
+                    board.HeroEnemy.CountAttack++;
+                    board.HeroEnemy.TempAtk += me.CurrentAtk;
+                    board.HeroEnemy.OnHit(ref board, tar);
+                    tar.OnHit(ref board, board.HeroEnemy);
+                    // tar.OnHit(ref board, me);
+                    if (me.CurrentDurability < 1)
+                        board.WeaponEnemy = null;
+                }
+
             }
             else if (me.Type == CType.HERO)
             {
@@ -219,7 +242,7 @@ namespace HREngine.Bots
                     c.OnOtherMinionDamage(ref board);
                 }
             }
-            
+
             OnDamage();
 
             if (actor.HasFreeze)
@@ -239,7 +262,7 @@ namespace HREngine.Bots
                 }
                 else
                 {
-                    
+
                     CurrentHealth -= (actor.CurrentAtk - CurrentArmor);
                     CurrentArmor -= (actor.CurrentAtk);
                     if (CurrentArmor <= 0)
@@ -556,7 +579,7 @@ namespace HREngine.Bots
 
             currentAtk += b.Atk;
             CurrentHealth += b.Hp;
-            
+
         }
 
         public void RemoveBuffById(int id)
@@ -567,7 +590,7 @@ namespace HREngine.Bots
                 {
                     buffs.Remove(b);
                     currentAtk -= b.Atk;
-                    if(CurrentHealth > MaxHealth)
+                    if (CurrentHealth > MaxHealth)
                         CurrentHealth -= b.Hp;
                 }
             }
@@ -2993,34 +3016,52 @@ namespace HREngine.Bots
 
             if (c == null)
                 return false;
-
-            if (TestAllIndexOnPlay)
+            if(IsFriend)
             {
                 if (Index != c.Index)
                     return false;
+                if (CanAttack != c.CanAttack)
+                    return false;
             }
-            if (CanAttack != c.CanAttack)
-                return false;
+            
+            
             /*if (template != c.template)
                 return false;*/
             if (CurrentAtk != c.CurrentAtk)
                 return false;
-            if (CurrentArmor != c.CurrentArmor)
-                return false;
+            
+            if(Type == CType.HERO)
+            {
+                if (CurrentArmor != c.CurrentArmor)
+                    return false;
+            }
+            
             /*if (CurrentCost != c.CurrentCost)
                 return false;*/
-            if (CurrentDurability != c.CurrentDurability)
-                return false;
-            if (CurrentHealth != c.CurrentHealth)
-                return false;
+            if(Type == CType.WEAPON)
+            {
+                if (CurrentDurability != c.CurrentDurability)
+                    return false;
+            }
+            else
+            {
+                if (CurrentHealth != c.CurrentHealth)
+                    return false;
+
+            }
+            if(Type == CType.MINION)
+            {
+                if (IsDivineShield != c.IsDivineShield)
+                    return false;
+            }
+           
             /*  if (MaxHealth != c.MaxHealth)
                   return false;
               /* if (IsTaunt != c.IsTaunt)
                    return false;
                if (IsCharge != c.IsCharge)
                    return false;*/
-            if (IsDivineShield != c.IsDivineShield)
-                return false;
+            
             /* if (IsEnraged != c.IsEnraged)
                  return false;
              if (IsFrozen != c.IsFrozen)

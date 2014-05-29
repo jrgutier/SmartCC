@@ -28,7 +28,22 @@ public class EX1_350 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.HealFactor *= 2;
+
+            if (IsFriend)
+            {
+                board.HealFactor *= 2;
+            }
+            
+        }
+
+        public override void OnUpdate(Board board)
+        {
+            base.OnUpdate(board);
+
+            if(!IsFriend && board.EnemyHealFactor == 1 || board.EnemyHealFactor == -1)
+            {
+                board.EnemyHealFactor *= 2;
+            }
         }
 
         public override void OnDeath(ref Board board)

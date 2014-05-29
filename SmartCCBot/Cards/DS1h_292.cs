@@ -29,7 +29,16 @@ public class DS1h_292 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            board.HeroEnemy.CurrentHealth -= 2;
+            if(IsFriend)
+            {
+                board.HeroEnemy.CurrentHealth -= 2;
+
+            }
+            else
+            {
+                board.HeroFriend.CurrentHealth -= 2;
+
+            }
             
         }
 

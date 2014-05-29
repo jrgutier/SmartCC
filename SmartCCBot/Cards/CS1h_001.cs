@@ -29,10 +29,22 @@ public class CS1h_001 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
-            if (target != null)
+
+            if(IsFriend)
             {
-                target.Heal(2 * board.HealFactor,ref board);
+                if (target != null)
+                {
+                    target.Heal(2 * board.HealFactor, ref board);
+                }
             }
+            else
+            {
+                if (target != null)
+                {
+                    target.Heal(2 * board.EnemyHealFactor, ref board);
+                }
+            }
+            
         }
 
         public override void OnDeath(ref Board board)

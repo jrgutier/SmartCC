@@ -10,6 +10,8 @@ namespace HREngine.Bots
     public class SmartCC : HREngine.Basics.BasicBot
     {
         private Simulation SmartCc = null;
+        private bool ActionWaiting = false;
+        Action ActionToDo = null;
         public SmartCC()
         {
             try
@@ -224,7 +226,10 @@ namespace HREngine.Bots
             {
                 root.Ability = Card.Create(HRPlayer.GetLocalPlayer().GetHeroPower().GetCardId(), true, HRPlayer.GetLocalPlayer().GetHeroPower().GetEntityId());
             }
-
+            if (!HRPlayer.GetEnemyPlayer().GetHeroPower().IsExhausted())
+            {
+                root.EnemyAbility = Card.Create(HRPlayer.GetEnemyPlayer().GetHeroPower().GetCardId(), false, HRPlayer.GetEnemyPlayer().GetHeroPower().GetEntityId());
+            }
             SmartCc.root = root;
         }
 
@@ -281,7 +286,7 @@ namespace HREngine.Bots
                 }
 
 
-                Action ActionToDo = SmartCc.GetNextAction();
+                ActionToDo = SmartCc.GetNextAction();
                 try
                 {
                     switch (ActionToDo.Type)
@@ -291,12 +296,10 @@ namespace HREngine.Bots
                             if (ActionToDo.Target != null)
                             {
                                 HREntity target = GetEntityById(ActionToDo.Target.Id);
-                                SmartCc.ActionStack.Remove(ActionToDo);
                                 return new HREngine.API.Actions.PlayCardAction(cardAbility, target, ActionToDo.Index + 1);
                             }
                             else
                             {
-                                SmartCc.ActionStack.Remove(ActionToDo);
                                 return new HREngine.API.Actions.PlayCardAction(cardAbility, null, ActionToDo.Index + 1);
                             }
                         case Action.ActionType.CAST_WEAPON:
@@ -307,12 +310,10 @@ namespace HREngine.Bots
                             if (ActionToDo.Target != null)
                             {
                                 HREntity target = GetEntityById(ActionToDo.Target.Id);
-                                SmartCc.ActionStack.Remove(ActionToDo);
                                 return new HREngine.API.Actions.PlayCardAction(card, target, ActionToDo.Index + 1);
                             }
                             else
                             {
-                                SmartCc.ActionStack.Remove(ActionToDo);
                                 return new HREngine.API.Actions.PlayCardAction(card, null, ActionToDo.Index + 1);
                             }
 
