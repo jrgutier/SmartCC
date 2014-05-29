@@ -26,6 +26,11 @@ public class EX1_310 : Card
             IsCharge = true;
         }
 
+        public override int GetValue(Board board)
+        {
+            return base.GetValue(board) + 6;
+        }
+
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);

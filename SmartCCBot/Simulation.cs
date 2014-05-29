@@ -88,7 +88,7 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 10000;
+            int maxWide = 8000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -230,7 +230,6 @@ namespace HREngine.Bots
                         {
                             if (wide >= maxWide)
                                 break;
-                            wide++;
 
                             Board bb = b.ExecuteAction(a);
                             /*
@@ -261,6 +260,8 @@ namespace HREngine.Bots
 
                                     if (!found)
                                     {
+                                        wide++;
+
                                         childs.Add(bb);
                                     }
                                     else
@@ -270,6 +271,8 @@ namespace HREngine.Bots
                                 }
                                 else
                                 {
+                                    wide++;
+
                                     childs.Add(bb);
                                 }
                             }

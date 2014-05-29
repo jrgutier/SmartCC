@@ -25,6 +25,11 @@ public class CS2_237 : Card
             base.Init();
         }
 
+        public override int GetValue(Board board)
+        {
+            return base.GetValue(board) + 5;
+        }
+
         public override void OnPlay(ref Board board, Card target = null,int index = 0)
         {
             base.OnPlay(ref board, target,index);
