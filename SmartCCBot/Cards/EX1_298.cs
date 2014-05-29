@@ -23,12 +23,14 @@ public class EX1_298 : Card
 		public override void OnUpdate(Board board)
 		{
 				if(IsSilenced)
-					IsTired = false;
+                    IsStuck = false;
 		}
 
         public override void Init()
         {
             base.Init();
+            if (!IsSilenced)
+                IsStuck = true;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0)

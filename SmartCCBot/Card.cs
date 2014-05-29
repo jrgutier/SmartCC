@@ -541,7 +541,7 @@ namespace HREngine.Bots
         public bool IsSilenced { get; set; }
         public bool IsDestroyed { get; set; }
         public bool IsImmune { get; set; }
-
+        public bool IsStuck { get; set; }
         public bool HasFreeze { get; set; }
         public bool HasPoison { get; set; }
         public bool HasEnrage { get; set; }
@@ -554,6 +554,8 @@ namespace HREngine.Bots
         {
             get
             {
+                if (IsStuck)
+                    return false;
                 if (IsTired)
                     return false;
                 if (CurrentAtk < 1)
@@ -597,6 +599,35 @@ namespace HREngine.Bots
             }
         }
 
+        public bool HasGoodBuffs()
+        {
+            if (CurrentAtk > template.Atk)
+                return true;
+            if (CurrentHealth > template.Health)
+                return true;
+            if (IsTaunt)
+                return true;
+            if (IsDivineShield)
+                return true;
+            if (HasEnrage)
+                return true;
+            if (IsWindfury)
+                return true;
+            return false;
+        }
+        public bool HasBadBuffs()
+        {
+            if (CurrentAtk < template.Atk)
+                return true;
+            if (CurrentHealth < template.Health)
+                return true;
+            if (IsFrozen)
+                return true;
+            if (IsStuck)
+                return true;
+
+            return false;
+        }
         public void InitInstance(CardTemplate newTemplate, bool isFriend, int id)
         {
             buffs = new List<Buff>();
@@ -764,6 +795,7 @@ namespace HREngine.Bots
             HasFreeze = false;
             HasPoison = false;
             IsImmune = false;
+            IsStuck = false;
             CountAttack = 0;
             Init();
         }
@@ -2962,7 +2994,7 @@ namespace HREngine.Bots
             clone.CountAttack = baseInstance.CountAttack;
             clone.Index = baseInstance.Index;
             clone.TestAllIndexOnPlay = baseInstance.TestAllIndexOnPlay;
-
+            clone.IsStuck = baseInstance.IsStuck;
             foreach (Buff b in baseInstance.buffs)
             {
                 Buff ba = new Buff();
