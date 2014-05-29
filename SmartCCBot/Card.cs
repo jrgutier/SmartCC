@@ -171,7 +171,8 @@ namespace HREngine.Bots
 
         public virtual void OnAttack(ref Board board, Card target)
         {
-
+            if (target == null)
+                return;
             Card me = board.GetCard(Id);
             Card tar = board.GetCard(target.Id);
 

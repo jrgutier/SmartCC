@@ -30,10 +30,14 @@ public class EX1_249 : Card
             base.OnEndTurn(board);
             foreach(Card c in board.MinionEnemy)
             {
+                if (c.Id == Id)
+                    continue;
                 c.Damage(2, ref board);
             }
             foreach(Card c in board.MinionFriend)
             {
+                if (c.Id == Id)
+                    continue;
                 c.Damage(2, ref board);
             }
             board.HeroEnemy.Damage(2, ref board);
