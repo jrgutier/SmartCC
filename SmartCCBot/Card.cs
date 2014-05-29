@@ -262,8 +262,10 @@ namespace HREngine.Bots
                 }
                 else
                 {
-
-                    CurrentHealth -= (actor.CurrentAtk - CurrentArmor);
+                    int dam = (actor.CurrentAtk - CurrentArmor);
+                    if (dam < 0)
+                        dam = 0;
+                    CurrentHealth -= dam;
                     CurrentArmor -= (actor.CurrentAtk);
                     if (CurrentArmor <= 0)
                     {
