@@ -88,7 +88,7 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 8000;
+            int maxWide = 6000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
