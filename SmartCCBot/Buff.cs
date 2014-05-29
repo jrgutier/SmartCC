@@ -56,11 +56,16 @@ namespace HREngine.Bots
                 b.Atk = 2;
                 b.Hp = 1;
             }
-            else if (id.Contains("CS2_122"))
+            else if (id.Contains("CS2_222"))
             {
                 b = new Buff();
                 b.Atk = 1;
                 b.Hp = 1;
+            }
+            else if (id.Contains("CS2_122"))
+            {
+                b = new Buff();
+                b.Atk = 1;
             }
             else if (id.Contains("NEW1_027"))
             {
