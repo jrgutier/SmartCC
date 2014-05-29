@@ -32,7 +32,7 @@ public class CS2_022 : Card
             if(target != null)
             {
                 board.MinionEnemy.Remove(target);
-                board.MinionEnemy.Add(Card.Create("CS2_tk1", false, target.Id));
+                board.AddCardToBoard("CS2_tk1", target.IsFriend);
                 board.Resimulate();
             }
         }

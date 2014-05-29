@@ -672,7 +672,6 @@ namespace HREngine.Bots
             }*/
 
             List<Action> availableActions = new List<Action>();
-
             if (Ability != null)
             {
                 if (Ability.CurrentCost <= ManaAvailable && Ability.Behavior.ShouldBePlayed(this))
@@ -1104,7 +1103,7 @@ namespace HREngine.Bots
             {
                 c.OnEndTurn(this);
             }
-
+            Update();
 
             /*  if(ActionsStack.Count == 1)
               {
