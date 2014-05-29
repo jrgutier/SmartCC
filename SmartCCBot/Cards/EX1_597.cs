@@ -30,14 +30,14 @@ namespace HREngine.Bots
         public override void OnEndTurn(Board board)
         {
             base.OnEndTurn(board);
-
+            /*
             board.AddCardToBoard("EX1_598", IsFriend);
 
             if(CurrentHealth > 0)
             {
                 Damage(1, ref board);
 
-            }
+            }*/
         }
 
         public override void OnPlay(ref Board board, Card target = null, int index = 0)
