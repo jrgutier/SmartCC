@@ -45,13 +45,13 @@ namespace HREngine.Bots
 
             value += Secret.Count * ValuesInterface.ValueSecret;
 
-            value -= (HeroEnemy.CurrentHealth * ValuesInterface.ValueHealthEnemy) + HeroEnemy.CurrentArmor * ValuesInterface.ValueArmorEnemy;
+            value -= ((HeroEnemy.CurrentHealth * ValuesInterface.ValueHealthEnemy) + HeroEnemy.CurrentArmor * ValuesInterface.ValueArmorEnemy);
 
             foreach (Card c in MinionFriend)
             {
                 value += c.GetValue(this);
             }
-            value += (HeroFriend.CurrentHealth * ValuesInterface.ValueHealthFriend) + HeroFriend.CurrentArmor * ValuesInterface.ValueArmorFriend;
+            value += ((HeroFriend.CurrentHealth * ValuesInterface.ValueHealthFriend) + HeroFriend.CurrentArmor * ValuesInterface.ValueArmorFriend);
 
             value += FriendCardDraw * ValuesInterface.ValueFriendCardDraw;
             value -= EnemyCardDraw * ValuesInterface.ValueEnemyCardDraw;
@@ -602,7 +602,7 @@ namespace HREngine.Bots
                     {
                         a.Actor.OnPlay(ref child, null, a.Index);
                     }
-
+                    child.Update();
                     foreach (Card c in child.GetAllMinionsOnBoard())
                     {
                         if (a.Actor.Equals(c))
@@ -620,6 +620,9 @@ namespace HREngine.Bots
                         a.Actor.OnPlay(ref child, child.GetCard(a.Target.Id));
                     else
                         a.Actor.OnPlay(ref child, null);
+
+                    child.Update();
+
                     foreach (Card c in child.GetAllMinionsOnBoard())
                     {
                         c.OnCastSpell(ref child, child.GetCard(a.Actor.Id));
@@ -1376,7 +1379,7 @@ namespace HREngine.Bots
         {
             string ret = "";
 
-            ret += "Board --- (" + HeroFriend.CurrentHealth.ToString() + "-" + HeroEnemy.CurrentHealth.ToString() + "): " + Environment.NewLine;
+            ret += "Board --- (" + HeroFriend.CurrentHealth.ToString() + "/" + HeroFriend.CurrentArmor.ToString() + "-" + HeroEnemy.CurrentHealth.ToString() + "/" + HeroEnemy.CurrentArmor.ToString() + "): " + Environment.NewLine;
             ret += "Mana : " + ManaAvailable.ToString() + Environment.NewLine;
             ret += "Enemy secret: " + SecretEnemy.ToString() + Environment.NewLine;
 

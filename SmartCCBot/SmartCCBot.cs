@@ -337,7 +337,7 @@ namespace HREngine.Bots
                             HRLog.Write("EndTurn");
                             SmartCc.TurnCount++;
                             SmartCc.SimuCount = 0;
-                            HRBattle.FinishRound();
+                            //HRBattle.FinishRound();
                             return null;
 
                         case Action.ActionType.RESIMULATE:

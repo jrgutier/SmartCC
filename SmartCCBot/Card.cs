@@ -188,7 +188,7 @@ namespace HREngine.Bots
                 if (me.IsFriend)
                 {
                     board.HeroFriend.CountAttack++;
-                    board.HeroFriend.TempAtk += me.CurrentAtk;
+                    //board.HeroFriend.TempAtk += me.CurrentAtk;
                     board.HeroFriend.OnHit(ref board, tar);
                     tar.OnHit(ref board, board.HeroFriend);
                     // tar.OnHit(ref board, me);
@@ -216,7 +216,7 @@ namespace HREngine.Bots
             }
         }
 
-        public virtual void OnOtherMinionDamage(ref Board board)
+        public virtual void OnOtherMinionDamage(ref Board board,Card minionDamaged)
         {
 
         }
@@ -234,11 +234,11 @@ namespace HREngine.Bots
             {
                 foreach (Card c in board.MinionFriend)
                 {
-                    c.OnOtherMinionDamage(ref board);
+                    c.OnOtherMinionDamage(ref board,this);
                 }
                 foreach (Card c in board.MinionEnemy)
                 {
-                    c.OnOtherMinionDamage(ref board);
+                    c.OnOtherMinionDamage(ref board,this);
                 }
             }
 
@@ -351,12 +351,12 @@ namespace HREngine.Bots
             {
                 foreach (Card c in board.MinionFriend)
                 {
-                    c.OnOtherMinionDamage(ref board);
+                    c.OnOtherMinionDamage(ref board,this);
                 }
 
                 foreach (Card c in board.MinionEnemy)
                 {
-                    c.OnOtherMinionDamage(ref board);
+                    c.OnOtherMinionDamage(ref board,this);
                 }
             }
 
@@ -375,13 +375,16 @@ namespace HREngine.Bots
                 }
                 else
                 {
-                    CurrentHealth -= (amount - CurrentArmor);
+                    int dam = (amount - CurrentArmor);
+                    if (dam < 0)
+                        dam = 0;
+                    CurrentHealth -= dam;
                     CurrentArmor -= (amount);
                     if (CurrentArmor <= 0)
                     {
                         CurrentArmor = 0;
                     }
-                }
+                } 
                 if (CurrentHealth < MaxHealth)
                 {
                     if (HasEnrage && !IsEnraged && !IsSilenced)

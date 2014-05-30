@@ -39,15 +39,15 @@ public class EX1_402 : Card
 
             }
         }
-        public override void OnOtherMinionDamage( ref Board board)
+        public override void OnOtherMinionDamage(ref Board board,Card minionDamaged)
         {
-            base.OnOtherMinionDamage(ref board);
-            if (IsFriend)
+            base.OnOtherMinionDamage(ref board, minionDamaged);
+            if (IsFriend && minionDamaged.IsFriend)
             {
                 board.HeroFriend.CurrentArmor++;
 
             }
-            else
+            else if (!IsFriend && !minionDamaged.IsFriend)
             {
                 board.HeroEnemy.CurrentArmor++;
 

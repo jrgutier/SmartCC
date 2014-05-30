@@ -42,7 +42,6 @@ public class NEW1_020 : Card
 
         public override void OnCastSpell(ref Board board, Card Spell)
         {
-		    base.OnCastSpell(ref board, Spell);
             if(IsFriend)
             {
                 foreach (Card c in board.MinionFriend)
@@ -54,6 +53,8 @@ public class NEW1_020 : Card
                     c.Damage(1, ref board);
                 }
             }
+            base.OnCastSpell(ref board, Spell);
+
         }
 		
 	
