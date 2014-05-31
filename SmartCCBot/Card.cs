@@ -187,8 +187,9 @@ namespace HREngine.Bots
                 me.CountAttack++;
                 if (me.IsFriend)
                 {
+
                     board.HeroFriend.CountAttack++;
-                    //board.HeroFriend.TempAtk += me.CurrentAtk;
+                    board.HeroFriend.currentAtk = me.CurrentAtk;
                     board.HeroFriend.OnHit(ref board, tar);
                     tar.OnHit(ref board, board.HeroFriend);
                     // tar.OnHit(ref board, me);

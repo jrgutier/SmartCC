@@ -111,6 +111,7 @@ namespace HREngine.Bots
             root.HeroEnemy.CurrentArmor = HeroEnemy.GetArmor();
             root.HeroFriend.CurrentHealth = HeroFriend.GetHealth() - HeroFriend.GetDamage();
             root.HeroFriend.MaxHealth = 30;
+            root.HeroFriend.IsFrozen = HeroFriend.IsFrozen();
 
             root.HeroFriend.CurrentArmor = HeroFriend.GetArmor();
             root.HeroFriend.CurrentAtk = HeroFriend.GetATK();

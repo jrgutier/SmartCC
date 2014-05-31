@@ -91,11 +91,11 @@ namespace HREngine.Bots
                     maxWide = 8;
                     break;
                 }
-                    
+
             }
 
 
-            
+
             int wide = 0;
             while (childss.Count != 0)
             {
@@ -144,50 +144,50 @@ namespace HREngine.Bots
             {
                 if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.MINION_ENEMY || EnemyAbility.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
                            || EnemyAbility.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || EnemyAbility.TargetTypeOnPlay == Card.TargetType.ALL)
+                {
+                    foreach (Card Friend in MinionFriend)
                     {
-                        foreach (Card Friend in MinionFriend)
-                        {
-                            if (!Friend.IsTargetable || Friend.IsStealth)
-                                continue;
-                            Action a = null;
-                            a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, Friend);
-                            enemyActions.Add(a);
-                        }
+                        if (!Friend.IsTargetable || Friend.IsStealth)
+                            continue;
+                        Action a = null;
+                        a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, Friend);
+                        enemyActions.Add(a);
                     }
+                }
                 if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.MINION_FRIEND || EnemyAbility.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
                         || EnemyAbility.TargetTypeOnPlay == Card.TargetType.BOTH_FRIEND || EnemyAbility.TargetTypeOnPlay == Card.TargetType.ALL)
+                {
+                    foreach (Card Enemy in MinionEnemy)
                     {
-                        foreach (Card Enemy in MinionEnemy)
-                        {
-                            if (!Enemy.IsTargetable || Enemy.IsStealth)
-                                continue;
-                            Action a = null;
-                            a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, Enemy);
-                            enemyActions.Add(a);
-                        }
+                        if (!Enemy.IsTargetable || Enemy.IsStealth)
+                            continue;
+                        Action a = null;
+                        a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, Enemy);
+                        enemyActions.Add(a);
                     }
+                }
                 if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.HERO_ENEMY || EnemyAbility.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
                         || EnemyAbility.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || EnemyAbility.TargetTypeOnPlay == Card.TargetType.ALL)
-                    {
-                        Action a = null;
-                        a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, HeroFriend);
-                        enemyActions.Add(a);
-                    }
+                {
+                    Action a = null;
+                    a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, HeroFriend);
+                    enemyActions.Add(a);
+                }
                 if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.HERO_FRIEND || EnemyAbility.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
                         || EnemyAbility.TargetTypeOnPlay == Card.TargetType.BOTH_FRIEND || EnemyAbility.TargetTypeOnPlay == Card.TargetType.ALL)
-                    {
-                        Action a = null;
-                        a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, HeroEnemy);
-                        enemyActions.Add(a);
-                    }
+                {
+                    Action a = null;
+                    a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility, HeroEnemy);
+                    enemyActions.Add(a);
+                }
 
                 if (EnemyAbility.TargetTypeOnPlay == Card.TargetType.NONE)
-                    {
-                        Action a = null;
-                        a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility);
-                        enemyActions.Add(a);
-                    }
-                
+                {
+                    Action a = null;
+                    a = new Action(Action.ActionType.CAST_ABILITY, EnemyAbility);
+                    enemyActions.Add(a);
+                }
+
             }
 
             List<Card> taunts = new List<Card>();
@@ -417,35 +417,13 @@ namespace HREngine.Bots
 
         public bool HasFriendBuffer()
         {
-            int foundIndex = -1;
-
             foreach (Card c in MinionFriend)
             {
                 if (c.TestAllIndexOnPlay)
                 {
-                    foundIndex = c.Index;
-                    break;
+                    return true;
                 }
             }
-            if (foundIndex != -1)
-            {
-                bool right = false;
-                bool left = false;
-
-                foreach (Card c in MinionFriend)
-                {
-                    if (c.Index == foundIndex - 1)
-                        right = true;
-                    if (c.Index == foundIndex + 1)
-                        left = true;
-                }
-
-                if (right && left)
-                    return false;
-
-                return true;
-            }
-
 
             return false;
         }
@@ -731,9 +709,27 @@ namespace HREngine.Bots
             {
                 if (c.CurrentCost <= ManaAvailable && c.Behavior.ShouldBePlayed(this))
                 {
+
+                    if (c.TargetTypeOnPlay == Card.TargetType.MINION_BOTH)
+                    {
+                        Action a = null;
+                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 1 && MinionEnemy.Count < 1)
+                        {
+                            a = new Action(Action.ActionType.CAST_MINION, c);
+                            availableActions.Add(a);
+                        }
+                    }
+
                     if (c.TargetTypeOnPlay == Card.TargetType.MINION_ENEMY || c.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
                         || c.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || c.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
+                        Action a = null;
+                        if (c.Type == Card.CType.MINION && MinionEnemy.Count < 1 && c.TargetTypeOnPlay != Card.TargetType.MINION_BOTH)
+                        {
+                            a = new Action(Action.ActionType.CAST_MINION, c);
+                            availableActions.Add(a);
+                        }
+
                         foreach (Card Enemy in MinionEnemy)
                         {
                             if (c.Type == Card.CType.SPELL)
@@ -744,7 +740,6 @@ namespace HREngine.Bots
 
                             if (Enemy.IsStealth)
                                 continue;
-                            Action a = null;
                             if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                             {
                                 if (c.TestAllIndexOnPlay || HasFriendBuffer())
@@ -799,6 +794,12 @@ namespace HREngine.Bots
                     if (c.TargetTypeOnPlay == Card.TargetType.MINION_FRIEND || c.TargetTypeOnPlay == Card.TargetType.MINION_BOTH
                         || c.TargetTypeOnPlay == Card.TargetType.BOTH_FRIEND || c.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
+                        Action a = null;
+                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 1 && c.TargetTypeOnPlay != Card.TargetType.MINION_BOTH)
+                        {
+                            a = new Action(Action.ActionType.CAST_MINION, c);
+                            availableActions.Add(a);
+                        }
 
                         foreach (Card friend in MinionFriend)
                         {
@@ -808,7 +809,6 @@ namespace HREngine.Bots
                                     continue;
                             }
 
-                            Action a = null;
                             if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
                             {
                                 if (c.TestAllIndexOnPlay || HasFriendBuffer())
@@ -1040,7 +1040,7 @@ namespace HREngine.Bots
 
             if (WeaponFriend != null)
             {
-                if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack)
+                if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack && !HeroFriend.IsFrozen)
                 {
                     if (taunts.Count == 0)
                     {
