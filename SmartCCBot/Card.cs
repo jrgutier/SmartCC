@@ -176,9 +176,10 @@ namespace HREngine.Bots
             if (me.Type == CType.MINION)
             {
                 me.CountAttack++;
+                me.OnHit(ref board, tar);
 
                 tar.OnHit(ref board, me);
-                me.OnHit(ref board, tar);
+
             }
             else if (me.Type == CType.WEAPON)
             {
@@ -211,8 +212,9 @@ namespace HREngine.Bots
             {
                 me.CountAttack++;
 
-                tar.OnHit(ref board, me);
                 me.OnHit(ref board, tar);
+                tar.OnHit(ref board, me);
+
             }
         }
 

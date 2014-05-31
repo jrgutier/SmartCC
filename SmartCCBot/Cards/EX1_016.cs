@@ -29,7 +29,7 @@ namespace HREngine.Bots
 
         public override int GetValue(Board board)
         {
-            return base.GetValue(board) +10;
+            return base.GetValue(board) +20;
         }
 
         public override void OnPlay(ref Board board, Card target = null, int index = 0)
@@ -49,14 +49,14 @@ namespace HREngine.Bots
                 {
                     if (worstMinion == null)
                         worstMinion = c;
-                    if (c.GetValue(board) < worstMinion.GetValue(board) && c.CurrentHealth > 0)
+                    if (c.GetValue(board) < worstMinion.GetValue(board))
                         worstMinion = c;
                 }
 
                 if (worstMinion != null)
                 {
-                    board.RemoveCardFromBoard(worstMinion.Id);
-                    board.AddCardToBoard(worstMinion.template.Id, true);
+                    board.MinionEnemy.Remove(worstMinion);
+                    board.MinionFriend.Add(worstMinion);
                 }
                     
 
@@ -69,14 +69,14 @@ namespace HREngine.Bots
                 {
                     if (bestMinion == null)
                         bestMinion = c;
-                    if (c.GetValue(board) > bestMinion.GetValue(board) && c.CurrentHealth > 0)
+                    if (c.GetValue(board) > bestMinion.GetValue(board))
                         bestMinion = c;
                 }
 
                 if (bestMinion != null)
                 {
-                    board.RemoveCardFromBoard(bestMinion.Id);
-                    board.AddCardToBoard(bestMinion.template.Id, false);
+                    board.MinionFriend.Remove(bestMinion);
+                    board.MinionEnemy.Add(bestMinion);
                 }
                     
 
