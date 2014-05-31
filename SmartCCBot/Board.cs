@@ -417,6 +417,7 @@ namespace HREngine.Bots
 
         public bool HasFriendBuffer()
         {
+            return true;
             foreach (Card c in MinionFriend)
             {
                 if (c.TestAllIndexOnPlay)
@@ -744,17 +745,8 @@ namespace HREngine.Bots
                             {
                                 if (c.TestAllIndexOnPlay || HasFriendBuffer())
                                 {
-                                    for (int i = 0; i < MinionFriend.Count; i++)
+                                    for (int i = 0; i <= MinionFriend.Count; i++)
                                     {
-                                        if (MinionFriend.Count > 1 && !HasFriendBuffer())
-                                        {
-                                            if (i == 0)
-                                                continue;
-                                            if (i == MinionFriend.Count)
-                                                continue;
-                                        }
-
-
                                         a = new Action(Action.ActionType.CAST_MINION, c, Enemy, i);
                                         if (c.Behavior.ShouldBePlayedOnTarget(Enemy))
                                         {
@@ -813,15 +805,8 @@ namespace HREngine.Bots
                             {
                                 if (c.TestAllIndexOnPlay || HasFriendBuffer())
                                 {
-                                    for (int i = 0; i < MinionFriend.Count; i++)
+                                    for (int i = 0; i <= MinionFriend.Count; i++)
                                     {
-                                        if (MinionFriend.Count > 1 && !HasFriendBuffer())
-                                        {
-                                            if (i == 0)
-                                                continue;
-                                            if (i == MinionFriend.Count)
-                                                continue;
-                                        }
                                         a = new Action(Action.ActionType.CAST_MINION, c, friend, i);
                                         if (c.Behavior.ShouldBePlayedOnTarget(friend))
                                         {
@@ -866,15 +851,8 @@ namespace HREngine.Bots
                         {
                             if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
-                                for (int i = 0; i < MinionFriend.Count; i++)
+                                for (int i = 0; i <= MinionFriend.Count; i++)
                                 {
-                                    if (MinionFriend.Count > 1 && !HasFriendBuffer())
-                                    {
-                                        if (i == 0)
-                                            continue;
-                                        if (i == MinionFriend.Count)
-                                            continue;
-                                    }
                                     a = new Action(Action.ActionType.CAST_MINION, c, HeroEnemy, i);
                                     if (c.Behavior.ShouldBePlayedOnTarget(HeroEnemy))
                                     {
@@ -916,15 +894,8 @@ namespace HREngine.Bots
                         {
                             if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
-                                for (int i = 0; i < MinionFriend.Count; i++)
+                                for (int i = 0; i <= MinionFriend.Count; i++)
                                 {
-                                    if (MinionFriend.Count > 1 && !HasFriendBuffer())
-                                    {
-                                        if (i == 0)
-                                            continue;
-                                        if (i == MinionFriend.Count)
-                                            continue;
-                                    }
                                     a = new Action(Action.ActionType.CAST_MINION, c, HeroFriend, i);
                                     if (c.Behavior.ShouldBePlayedOnTarget(HeroFriend))
                                     {
@@ -966,15 +937,8 @@ namespace HREngine.Bots
                         {
                             if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
-                                for (int i = 0; i < MinionFriend.Count; i++)
+                                for (int i = 0; i <= MinionFriend.Count; i++)
                                 {
-                                    if (MinionFriend.Count > 1 && !HasFriendBuffer())
-                                    {
-                                        if (i == 0)
-                                            continue;
-                                        if (i == MinionFriend.Count)
-                                            continue;
-                                    }
                                     a = new Action(Action.ActionType.CAST_MINION, c, null, i);
 
                                     availableActions.Add(a);
@@ -1101,10 +1065,14 @@ namespace HREngine.Bots
             foreach (Card c in MinionEnemy)
             {
                 c.OnEndTurn(this);
+                c.TempAtk = 0;
+                c.IsImmune = false;
             }
             foreach (Card c in MinionFriend)
             {
                 c.OnEndTurn(this);
+                c.TempAtk = 0;
+                c.IsImmune = false;
             }
             Update();
 

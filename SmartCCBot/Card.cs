@@ -19,7 +19,7 @@ namespace HREngine.Bots
             if (Type == CType.MINION)
             {
                 value += ValuesInterface.ValueHealthMinion * CurrentHealth;
-                value += ValuesInterface.ValueAttackMinion * currentAtk;
+                value += ValuesInterface.ValueAttackMinion * CurrentAtk;
 
                 if (IsTaunt && IsFriend)
                 {
@@ -147,8 +147,7 @@ namespace HREngine.Bots
 
         public virtual void OnEndTurn(Board board)
         {
-            TempAtk = 0;
-            IsImmune = false;
+            
         }
 
         public virtual void OnCastSpell(ref Board board, Card Spell)
