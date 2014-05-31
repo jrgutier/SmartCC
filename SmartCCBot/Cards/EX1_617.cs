@@ -37,7 +37,7 @@ namespace HREngine.Bots
             {
                 if (worseMinion == null)
                     worseMinion = c;
-                if (c.GetValue(board) > worseMinion.GetValue(board))
+                if (c.GetValue(board) < worseMinion.GetValue(board))
                     worseMinion = c;
             }
 
