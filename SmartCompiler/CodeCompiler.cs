@@ -50,6 +50,10 @@ namespace SmartCompiler
                     {
                     }
 
+                    foreach(CompilerError s in results.Errors)
+                    {
+                        Console.WriteLine(s.ErrorText);
+                    }
                     return (results.Errors.Count == 0);
                 }
             }

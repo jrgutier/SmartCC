@@ -61,6 +61,7 @@ namespace HREngine.Bots
             }
 
             ValuesInterface.LoadValuesFromFile();
+            ProfileInterface.LoadBehavior();
 
 
         }

@@ -95,6 +95,7 @@ namespace DebugSmartCC
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
             ValuesInterface.LoadValuesFromFile();
+            ProfileInterface.LoadBehavior();
             s.Simulate(false);
 
             stopWatch.Stop();
@@ -108,7 +109,9 @@ namespace DebugSmartCC
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
+
             ValuesInterface.LoadValuesFromFile();
+            ProfileInterface.LoadBehavior();
             s.Simulate(true);
 
             stopWatch.Stop();

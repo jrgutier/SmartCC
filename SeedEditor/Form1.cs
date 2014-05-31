@@ -68,6 +68,7 @@ namespace SeedEditor
             }
             s = new Simulation();
             ValuesInterface.LoadValuesFromFile();
+            ProfileInterface.LoadBehavior();
 
             Seed = new Board();
             Seed.HeroEnemy = Card.Create("HERO_01", true, GenerateId());

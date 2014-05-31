@@ -9,6 +9,15 @@ namespace HREngine.Bots
     [Serializable]
     public class Behavior
     {
+
+        public enum KILLPRIORITY
+        {
+            LOW = 0,
+            MEDIUM = 3,
+            HIGH = 6,
+            ULTRA = 10
+        }
+
         public Behavior()
         {
 
@@ -37,6 +46,11 @@ namespace HREngine.Bots
         public virtual int GetPriorityPlay(Board board)
         {
             return 1;
+        }
+
+        public virtual KILLPRIORITY GetKillPriority(Board board)
+        {
+            return KILLPRIORITY.LOW;
         }
 
     }

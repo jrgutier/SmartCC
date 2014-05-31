@@ -40,7 +40,7 @@ namespace HREngine.Bots
 
             foreach (Card c in MinionEnemy)
             {
-                value -= c.GetValue(this);
+                value -= c.GetValue(this) + (int)c.Behavior.GetKillPriority(this);
             }
 
             value += Secret.Count * ValuesInterface.ValueSecret;
@@ -645,14 +645,6 @@ namespace HREngine.Bots
 
         public List<Action> CalculateAvailableActions()
         {
-            /*if(ActionsStack.Count > 0)
-            {
-                if (ActionsStack[ActionsStack.Count - 1].Type == Action.ActionType.RESIMULATE)
-                {
-                    return new List<Action>();
-                }
-            }*/
-
             List<Action> availableActions = new List<Action>();
             if (Ability != null)
             {
@@ -714,7 +706,7 @@ namespace HREngine.Bots
                     if (c.TargetTypeOnPlay == Card.TargetType.MINION_BOTH)
                     {
                         Action a = null;
-                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 1 && MinionEnemy.Count < 1)
+                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 1 && MinionEnemy.Count < 1 && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
                         {
                             a = new Action(Action.ActionType.CAST_MINION, c);
                             availableActions.Add(a);
@@ -725,7 +717,7 @@ namespace HREngine.Bots
                         || c.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || c.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
                         Action a = null;
-                        if (c.Type == Card.CType.MINION && MinionEnemy.Count < 1 && c.TargetTypeOnPlay != Card.TargetType.MINION_BOTH)
+                        if (c.Type == Card.CType.MINION && MinionEnemy.Count < 1 && c.TargetTypeOnPlay != Card.TargetType.MINION_BOTH && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
                         {
                             a = new Action(Action.ActionType.CAST_MINION, c);
                             availableActions.Add(a);
@@ -741,7 +733,7 @@ namespace HREngine.Bots
 
                             if (Enemy.IsStealth)
                                 continue;
-                            if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
+                            if (c.Type == Card.CType.MINION && MinionFriend.Count < 7 && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
                             {
                                 if (c.TestAllIndexOnPlay || HasFriendBuffer())
                                 {
@@ -787,7 +779,7 @@ namespace HREngine.Bots
                         || c.TargetTypeOnPlay == Card.TargetType.BOTH_FRIEND || c.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
                         Action a = null;
-                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 1 && c.TargetTypeOnPlay != Card.TargetType.MINION_BOTH)
+                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 1 && c.TargetTypeOnPlay != Card.TargetType.MINION_BOTH && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
                         {
                             a = new Action(Action.ActionType.CAST_MINION, c);
                             availableActions.Add(a);
@@ -801,7 +793,7 @@ namespace HREngine.Bots
                                     continue;
                             }
 
-                            if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
+                            if (c.Type == Card.CType.MINION && MinionFriend.Count < 7 && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
                             {
                                 if (c.TestAllIndexOnPlay || HasFriendBuffer())
                                 {
@@ -847,7 +839,7 @@ namespace HREngine.Bots
                     {
 
                         Action a = null;
-                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
+                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 7 && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
                         {
                             if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
@@ -890,7 +882,7 @@ namespace HREngine.Bots
                         || c.TargetTypeOnPlay == Card.TargetType.BOTH_FRIEND || c.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
                         Action a = null;
-                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
+                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 7 && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
                         {
                             if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
@@ -933,7 +925,7 @@ namespace HREngine.Bots
                     if (c.TargetTypeOnPlay == Card.TargetType.NONE || c.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
                         Action a = null;
-                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 7)
+                        if (c.Type == Card.CType.MINION && MinionFriend.Count < 7 && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
                         {
                             if (c.TestAllIndexOnPlay || HasFriendBuffer())
                             {
