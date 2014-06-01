@@ -29,7 +29,12 @@ namespace HREngine.Bots
 
         public override int GetValue(Board board)
         {
-            return base.GetValue(board) +20;
+            if(!IsFriend)
+            {
+                return base.GetValue(board) +5;
+
+            }
+            return base.GetValue(board);
         }
 
         public override void OnPlay(ref Board board, Card target = null, int index = 0)
