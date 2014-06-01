@@ -26,14 +26,13 @@ namespace HREngine.Bots
         public int FriendCardDraw { get; set; }
         public int EnemyCardDraw { get; set; }
         public int WastedATK { get; set; }
-        public int EnemyTurnValue { get; set; }
         public Board EnemyTurnWorseBoard { get; set; }
         public bool EnemyTurnCalculated = false;
 
         static int lastIdGen = 10000;
 
 
-
+        private int Value = 0;
         public int GetValue()
         {
             int value = 0;
@@ -72,7 +71,8 @@ namespace HREngine.Bots
             if (HeroFriend.CurrentHealth < 1)
                 value -= 100000;
 
-            return value + EnemyTurnValue;
+            Value = value;
+            return value ;
         }
 
         public Board CalculateEnemyTurnValue()
@@ -1046,8 +1046,6 @@ namespace HREngine.Bots
                 }
 
             }
-
-
 
             return availableActions;
         }

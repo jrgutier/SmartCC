@@ -290,6 +290,8 @@ namespace HREngine.Bots
                             Board endBoard = Board.Clone(baa);
                             endBoard.EndTurn();
 
+
+
                             bestBoard.CalculateEnemyTurn();
                             if(bestBoard.EnemyTurnWorseBoard != null)
                             {
@@ -302,6 +304,14 @@ namespace HREngine.Bots
                                 {
                                     bestBoard = endBoard;
                                 }
+                                else if(worstBoard.GetValue() == bestBoard.EnemyTurnWorseBoard.GetValue())
+                                {
+                                    if (endBoard.GetValue() > bestBoard.GetValue())
+                                    {
+                                        bestBoard = endBoard;
+                                    }
+                                }
+
                             }
                             else
                             {
