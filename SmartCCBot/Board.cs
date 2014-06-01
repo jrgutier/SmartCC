@@ -996,7 +996,7 @@ namespace HREngine.Bots
 
             if (WeaponFriend != null)
             {
-                if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack && !HeroFriend.IsFrozen)
+                if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack && !HeroFriend.IsFrozen && ProfileInterface.Behavior.ShouldAttackWithWeapon(this))
                 {
                     if (taunts.Count == 0)
                     {
@@ -1004,11 +1004,19 @@ namespace HREngine.Bots
                         {
                             if (Enemy.IsStealth)
                                 continue;
+
+                            if (!ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(Enemy))
+                                continue;
                             Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, Enemy);
                             availableActions.Add(a);
                         }
-                        Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnemy);
-                        availableActions.Add(ac);
+
+                        if (ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(HeroEnemy))
+                        {
+                            Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnemy);
+                            availableActions.Add(ac);
+                        }
+                        
                     }
                     else
                     {
@@ -1046,6 +1054,7 @@ namespace HREngine.Bots
                 }
 
             }
+
 
             return availableActions;
         }
