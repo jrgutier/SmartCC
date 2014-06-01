@@ -34,7 +34,7 @@ namespace HREngine.Bots
             }
 
             Action ActionToDo = ActionStack[0];
-            ActionStack.Remove(ActionToDo);
+            ActionStack.RemoveAt(0);
 
             return ActionToDo;
         }
@@ -399,8 +399,6 @@ namespace HREngine.Bots
             Console.WriteLine(bestBoard.ToString());
             Console.WriteLine("---------------------------------");
 
-            Log("");
-            Log("Actions:");
 
             foreach (HREngine.Bots.Action a in ActionStack)
             {
