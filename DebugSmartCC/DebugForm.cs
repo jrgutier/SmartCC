@@ -128,14 +128,17 @@ namespace DebugSmartCC
             rootb.HeroFriend.CurrentHealth = 20;
             rootb.HeroFriend.MaxHealth = 30;
 
-            rootb.HeroEnemy.CurrentHealth = 3;
+            rootb.HeroEnemy.CurrentHealth = 30;
             rootb.HeroEnemy.MaxHealth = 30;
 
-            rootb.ManaAvailable = 10;
+            rootb.ManaAvailable = 1;
 
-            rootb.Hand.Add(Card.Create("CS2_046", true, 2));
 
-            rootb.MinionFriend.Add(Card.Create("EX1_575", true, 3));
+            rootb.Hand.Add(Card.Create("CS2_065", true, 2));
+            rootb.Hand.Add(Card.Create("EX1_004", true, 3));
+            rootb.Hand.Add(Card.Create("GAME_005", true, 4));
+
+
             root = rootb;
         }
     }

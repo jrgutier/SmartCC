@@ -64,6 +64,8 @@ namespace HREngine.Bots
 
         public void SerializeRoot()
         {
+            if (TurnCount > 40)
+                return;
             Stream stream = new FileStream(CurrentFolder + "" + Path.DirectorySeparatorChar + "Turn" + TurnCount.ToString() + "_" + SimuCount.ToString() + ".seed", FileMode.Create, FileAccess.Write, FileShare.None);
             byte[] mem = Debugger.Serialize(root);
             stream.Write(mem, 0, mem.GetLength(0));
@@ -72,6 +74,8 @@ namespace HREngine.Bots
 
         public void Log(string msg)
         {
+            if (TurnCount > 40)
+                return;
             StreamWriter sw = new StreamWriter(CurrentFolder + "" + Path.DirectorySeparatorChar + "Turn" + TurnCount.ToString() + ".log", true);
             sw.WriteLine(msg);
             sw.Close();
