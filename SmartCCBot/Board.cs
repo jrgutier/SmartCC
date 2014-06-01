@@ -1005,13 +1005,13 @@ namespace HREngine.Bots
                             if (Enemy.IsStealth)
                                 continue;
 
-                            if (!ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(Enemy))
+                            if (!ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(WeaponFriend,Enemy))
                                 continue;
                             Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, Enemy);
                             availableActions.Add(a);
                         }
 
-                        if (ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(HeroEnemy))
+                        if (ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(WeaponFriend,HeroEnemy))
                         {
                             Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnemy);
                             availableActions.Add(ac);

@@ -25,7 +25,7 @@ namespace HREngine.Bots
             return true;
         }
 
-        public virtual bool ShouldAttackTargetWithWeapon(Card target)
+        public virtual bool ShouldAttackTargetWithWeapon(Card weapon,Card target)
         {
             return true;
         }
