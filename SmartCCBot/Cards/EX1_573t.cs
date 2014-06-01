@@ -23,9 +23,10 @@ public class EX1_573t : Card
         public override void Init()
         {
             base.Init();
+            IsTaunt = true;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
         }

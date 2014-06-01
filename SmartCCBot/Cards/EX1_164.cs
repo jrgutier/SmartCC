@@ -23,11 +23,20 @@ public class EX1_164 : Card
         public override void Init()
         {
             base.Init();
+            HasChoices = true;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+            if(choice == 1)
+            {
+
+            }
+            else if(choice == 2)
+            {
+                board.FriendCardDraw += 3;
+            }
         }
 
         public override void OnDeath(ref Board board)

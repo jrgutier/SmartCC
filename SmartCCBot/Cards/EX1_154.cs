@@ -23,11 +23,26 @@ public class EX1_154 : Card
         public override void Init()
         {
             base.Init();
+            ChoiceOneTarget = true;
+            ChoiceTwoTarget = true;
+            TargetTypeOnPlay = TargetType.MINION_ENEMY;
+            HasChoices = true;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+
+            if(choice == 1)
+            {
+                target.Damage(3 + board.GetSpellPower(), ref board);
+            }
+            else if(choice == 2)
+            {
+                target.Damage(1 + board.GetSpellPower(), ref board);
+                board.FriendCardDraw++;
+                board.Resimulate();
+            }
         }
 
         public override void OnDeath(ref Board board)

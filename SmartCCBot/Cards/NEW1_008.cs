@@ -23,11 +23,26 @@ public class NEW1_008 : Card
         public override void Init()
         {
             base.Init();
+            HasChoices = true;
+            ChoiceTwoTarget = true;
+            TargetTypeOnPlay = TargetType.ALL;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+            board.SpawnMinion(template.Id, index, CurrentCost);
+            if(choice == 1)
+            {
+                board.FriendCardDraw += 2;
+            }
+            else if(choice == 2)
+            {
+                if(target != null)
+                {
+                    target.Heal(5, ref board);
+                }
+            }
         }
 
         public override void OnDeath(ref Board board)

@@ -23,11 +23,31 @@ public class EX1_166 : Card
         public override void Init()
         {
             base.Init();
+            HasChoices = true;
+            ChoiceOneTarget = true;
+            ChoiceTwoTarget = true;
+            TargetTypeOnPlay = TargetType.ALL;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+            board.SpawnMinion(template.Id, index, CurrentCost);
+            if(choice == 1)
+            {
+                if (target != null)
+                    target.Damage(2, ref board);
+            }
+            else if(choice == 2)
+            {
+                if(target != null)
+                {
+                    if(target.Type != CType.HERO)
+                    {
+                        target.Silence();
+                    }
+                }
+            }
         }
 
         public override void OnDeath(ref Board board)

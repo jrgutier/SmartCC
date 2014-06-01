@@ -36,7 +36,7 @@ public class EX1_399 : Card
             currentAtk += 3;
 
         }
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
         }

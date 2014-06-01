@@ -9,9 +9,16 @@ namespace HREngine.Bots
     {
         static Assembly assembly = Assembly.LoadFile(CardTemplate.DatabasePath + "/Bots/SmartCC/Profile.dll");
 
+        //CHOICE STUFF
+        public bool HasChoices { get; set; }
+        public bool ChoiceOneTarget { get; set; }
+        public bool ChoiceTwoTarget { get; set; }
+
+        public string ChoiceIdOne { get; set; }
+        public string ChoiceIdTwo { get; set; }
+        public int ChoiceSelected { get; set; }
 
         public Behavior Behavior { get; set; }
-
 
         public virtual int GetValue(Board board)
         {
@@ -88,7 +95,7 @@ namespace HREngine.Bots
 
         }
 
-        public virtual void OnPlay(ref Board board, Card target = null, int index = 0)
+        public virtual void OnPlay(ref Board board, Card target = null, int index = 0, int choice = 0)
         {
             if (Type == CType.HERO_POWER)
             {
@@ -107,14 +114,29 @@ namespace HREngine.Bots
             {
                 if (Type == CType.MINION)
                 {
-                    board.GetCard(Id).Index = index;
-                    board.PlayMinion(Id);
+                    if(!HasChoices)
+                    {
+                        board.GetCard(Id).Index = index;
+                        board.PlayMinion(Id);
+                    }
+                    else
+                    {
+                        board.RemoveCardFromHand(Id);
+                    }
 
                 }
                 else if (Type == CType.SPELL || Type == CType.WEAPON)
                 {
-                    board.PlayCardFromHand(Id);
-
+                    if (!HasChoices)
+                    {
+                        board.PlayCardFromHand(Id);
+                    }
+                    else
+                    {
+                        board.ManaAvailable -= CurrentCost;
+                        board.RemoveCardFromHand(Id);
+                    }
+                   
                 }
             }
         }
@@ -147,7 +169,7 @@ namespace HREngine.Bots
 
         public virtual void OnEndTurn(Board board)
         {
-            
+
         }
 
         public virtual void OnCastSpell(ref Board board, Card Spell)
@@ -176,7 +198,7 @@ namespace HREngine.Bots
             if (me.Type == CType.MINION)
             {
                 me.CountAttack++;
-                if(target.Type != CType.HERO)
+                if (target.Type != CType.HERO)
                     me.OnHit(ref board, tar);
 
                 tar.OnHit(ref board, me);
@@ -219,7 +241,7 @@ namespace HREngine.Bots
             }
         }
 
-        public virtual void OnOtherMinionDamage(ref Board board,Card minionDamaged)
+        public virtual void OnOtherMinionDamage(ref Board board, Card minionDamaged)
         {
 
         }
@@ -237,15 +259,15 @@ namespace HREngine.Bots
             {
                 foreach (Card c in board.MinionFriend)
                 {
-                    c.OnOtherMinionDamage(ref board,this);
+                    c.OnOtherMinionDamage(ref board, this);
                 }
                 foreach (Card c in board.MinionEnemy)
                 {
-                    c.OnOtherMinionDamage(ref board,this);
+                    c.OnOtherMinionDamage(ref board, this);
                 }
             }
-            
-           
+
+
 
             OnDamage();
 
@@ -356,12 +378,12 @@ namespace HREngine.Bots
             {
                 foreach (Card c in board.MinionFriend)
                 {
-                    c.OnOtherMinionDamage(ref board,this);
+                    c.OnOtherMinionDamage(ref board, this);
                 }
 
                 foreach (Card c in board.MinionEnemy)
                 {
-                    c.OnOtherMinionDamage(ref board,this);
+                    c.OnOtherMinionDamage(ref board, this);
                 }
             }
 
@@ -389,7 +411,7 @@ namespace HREngine.Bots
                     {
                         CurrentArmor = 0;
                     }
-                } 
+                }
                 if (CurrentHealth < MaxHealth)
                 {
                     if (HasEnrage && !IsEnraged && !IsSilenced)
@@ -564,7 +586,7 @@ namespace HREngine.Bots
             {
                 if (IsStuck)
                     return false;
-                if (IsTired)
+                if (IsTired && !IsCharge)
                     return false;
                 if (CurrentAtk < 1)
                     return false;
@@ -719,7 +741,14 @@ namespace HREngine.Bots
             HasPoison = false;
             IsImmune = false;
             CountAttack = 0;
+            HasChoices = false;
+            ChoiceIdOne = String.Empty;
+            ChoiceIdTwo = String.Empty;
+            ChoiceSelected = -1;
+            ChoiceOneTarget = false;
+            ChoiceTwoTarget = false;
             Init();
+
         }
         public Card(CardTemplate newTemplate, bool isFriend, int id)
         {
@@ -3011,8 +3040,12 @@ namespace HREngine.Bots
                 ba.OwnerId = b.OwnerId;
                 clone.buffs.Add(ba);
             }
-
-
+            clone.HasChoices = baseInstance.HasChoices;
+            clone.ChoiceIdOne = baseInstance.ChoiceIdOne;
+            clone.ChoiceIdTwo = baseInstance.ChoiceIdTwo;
+            clone.ChoiceSelected = baseInstance.ChoiceSelected;
+            clone.ChoiceOneTarget = baseInstance.ChoiceOneTarget;
+            clone.ChoiceTwoTarget = baseInstance.ChoiceTwoTarget;
             return clone;
         }
 
@@ -3023,12 +3056,12 @@ namespace HREngine.Bots
             ret += template.Name + "[" + template.Id + "]";
             if (Type == CType.MINION)
             {
-                ret += "-T[" + IsTired.ToString() + "]CA[" + CountAttack.ToString() + "][" + CurrentAtk.ToString() + "/" + CurrentHealth.ToString() + "]CAN[" + CanAttack.ToString() + "]IDX[" + Index.ToString() + "]SP[" + SpellPower.ToString() + "]BUF[" + buffs.Count.ToString() + "]";
+                ret += "-T[" + IsTired.ToString() + "][" + CurrentAtk.ToString() + "/" + CurrentHealth.ToString() + "]CAN[" + CanAttack.ToString() + "]IDX[" + Index.ToString() + "]";
 
             }
             else if (Type == CType.WEAPON)
             {
-                ret += "-CA[" + CountAttack.ToString() + "][" + CurrentAtk.ToString() + "/" + CurrentDurability.ToString() + "]";
+                ret += "[" + CurrentAtk.ToString() + "/" + CurrentDurability.ToString() + "]";
 
             }
 
@@ -3057,29 +3090,25 @@ namespace HREngine.Bots
 
             if (c == null)
                 return false;
-            if(IsFriend)
+
+            if (IsFriend)
             {
                 if (Index != c.Index)
                     return false;
                 if (CanAttack != c.CanAttack)
                     return false;
             }
-            
-            
-            /*if (template != c.template)
-                return false;*/
+
             if (CurrentAtk != c.CurrentAtk)
                 return false;
-            
-            if(Type == CType.HERO)
+
+            if (Type == CType.HERO)
             {
                 if (CurrentArmor != c.CurrentArmor)
                     return false;
             }
-            
-            /*if (CurrentCost != c.CurrentCost)
-                return false;*/
-            if(Type == CType.WEAPON)
+
+            if (Type == CType.WEAPON)
             {
                 if (CurrentDurability != c.CurrentDurability)
                     return false;
@@ -3090,32 +3119,11 @@ namespace HREngine.Bots
                     return false;
 
             }
-            if(Type == CType.MINION)
+            if (Type == CType.MINION)
             {
                 if (IsDivineShield != c.IsDivineShield)
                     return false;
             }
-           
-            /*  if (MaxHealth != c.MaxHealth)
-                  return false;
-              /* if (IsTaunt != c.IsTaunt)
-                   return false;
-               if (IsCharge != c.IsCharge)
-                   return false;*/
-            
-            /* if (IsEnraged != c.IsEnraged)
-                 return false;
-             if (IsFrozen != c.IsFrozen)
-                 return false;*/
-            /* if (IsSilenced != c.IsSilenced)
-                 return false;*/
-            /*if (IsStealth != c.IsStealth)
-                return false;*/
-            /* if (IsTired != c.IsTired)
-                 return false;*/
-
-            /*  if (IsWindfury != c.IsWindfury)
-                  return false;*/
 
             return true;
         }

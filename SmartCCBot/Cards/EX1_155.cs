@@ -23,11 +23,31 @@ public class EX1_155 : Card
         public override void Init()
         {
             base.Init();
+            HasChoices = true;
+            ChoiceOneTarget = true;
+            ChoiceTwoTarget = true;
+            TargetTypeOnPlay = TargetType.MINION_BOTH;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+            if(choice == 1)
+            {
+                if(target != null)
+                {
+                    target.currentAtk += 4;
+                }
+            }
+            else if(choice == 2)
+            {
+                if (target != null)
+                {
+                    target.maxHealth += 4;
+                    target.CurrentHealth += 4;
+                    target.IsTaunt = true;
+                }
+            }
         }
 
         public override void OnDeath(ref Board board)

@@ -16,24 +16,28 @@ namespace HREngine.Bots
             CAST_WEAPON = 4,
             END_TURN = 5,
             CAST_ABILITY = 6,
-            RESIMULATE = 7
+            RESIMULATE = 7,
+            CHOICE = 8,
+            TARGET = 9
         }
 
         public Card Target { get; set; }
         public Card Actor { get; set; }
         public ActionType Type { get; set; }
         public int Index { get; set; }
+        public int Choice { get; set; }
 
         public Action()
         {
 
         }
-        public Action(ActionType actionType, Card actor, Card target = null, int index = 0)
+        public Action(ActionType actionType, Card actor, Card target = null, int index = 0,int choice = 0)
         {
             Target = target;
             Actor = actor;
             Type = actionType;
             Index = index;
+            Choice = choice;
         }
 
         public override string ToString()
@@ -82,6 +86,14 @@ namespace HREngine.Bots
             if (Type == ActionType.CAST_MINION)
             {
                 tmp += "INDEX : " + Index.ToString();
+            }
+
+            if(Actor != null)
+            {
+                if(Actor.HasChoices)
+                {
+                    tmp += " | CHOICE : " + Choice.ToString();
+                }
             }
 
             return tmp;

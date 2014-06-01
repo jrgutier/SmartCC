@@ -21,6 +21,8 @@ namespace HREngine.Bots
 
         public int SimuCount { get; set; }
 
+        public Card ChoiceTarget { get; set; }
+
 
 
         private string CurrentFolder { get; set; }
@@ -39,12 +41,22 @@ namespace HREngine.Bots
             return ActionToDo;
         }
 
+        public void InsertChoiceAction(int choice)
+        {
+            ActionStack.Insert(0, new Action(Action.ActionType.CHOICE, null,null,0,choice));
+        }
+        public void InsertTargetAction(Card target)
+        {
+            ActionStack.Insert(0, new Action(Action.ActionType.TARGET,null,target));
+        }
+
         public Simulation()
         {
             root = null;
             ActionStack = new List<Action>();
             NeedCalculation = true;
             SimuCount = 0;
+            ChoiceTarget = null;
         }
 
         public bool SeedSimulation(Board b)
@@ -57,7 +69,9 @@ namespace HREngine.Bots
 
         public void CreateLogFolder()
         {
-            string nameFolder = DateTime.Now.ToString().Replace("/", "-").Replace(":", "-");
+            DateTime time = DateTime.Now;             
+            string format = "dd-MM-yy HH-mm-ss";           
+            string nameFolder = time.ToString(format);
             System.IO.Directory.CreateDirectory(CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar + "" + nameFolder);
             CurrentFolder = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar + "" + nameFolder;
         }
@@ -390,8 +404,6 @@ namespace HREngine.Bots
                         }
                     }
                 }
-
-
             }
             else
             {

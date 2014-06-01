@@ -23,11 +23,26 @@ public class EX1_160 : Card
         public override void Init()
         {
             base.Init();
+            HasChoices = true;
+
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+            if(choice == 1)
+            {
+                foreach(Card c in board.MinionFriend)
+                {
+                    c.currentAtk++;
+                    c.maxHealth++;
+                    c.CurrentHealth++;
+                }
+            }
+            else if(choice == 2)
+            {
+                board.AddCardToBoard("EX1_160t", true);
+            }
         }
 
         public override void OnDeath(ref Board board)

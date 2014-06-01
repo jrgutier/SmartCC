@@ -35,7 +35,7 @@ namespace HREngine.Bots
                 StreamReader str = new StreamReader(CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Config" + Path.DirectorySeparatorChar + "useProfiles");
 
 
-                startInfo.Arguments = "\"" + CardTemplate.DatabasePath+ Path.DirectorySeparatorChar + "\"" + " " + str.ReadLine();
+                startInfo.Arguments = "\"" + CardTemplate.DatabasePath + Path.DirectorySeparatorChar + "\"" + " " + str.ReadLine();
                 str.Close();
 
                 try
@@ -293,6 +293,24 @@ namespace HREngine.Bots
                 {
                     switch (ActionToDo.Type)
                     {
+                        case Action.ActionType.TARGET:
+                            HREntity targett = GetEntityById(ActionToDo.Target.Id);
+                            return new HREngine.API.Actions.TargetAction(targett);
+                        case Action.ActionType.CHOICE:
+                            if(HREngine.API.HRChoice.IsChoiceActive())
+                            {
+                                List<HREntity> choices = HRChoice.GetChoiceCards();
+                                if(SmartCc.ChoiceTarget != null)
+                                {
+                                    SmartCc.InsertTargetAction(SmartCc.ChoiceTarget);
+                                    SmartCc.ChoiceTarget = null;
+                                }
+                                return new HREngine.API.Actions.ChoiceAction(choices[ActionToDo.Choice - 1]);
+                            }
+                            else
+                            {
+                                return null;
+                            }
                         case Action.ActionType.CAST_ABILITY:
                             HRCard cardAbility = HRPlayer.GetLocalPlayer().GetHeroPower().GetCard();
                             if (ActionToDo.Target != null)
@@ -309,6 +327,13 @@ namespace HREngine.Bots
                         case Action.ActionType.CAST_SPELL:
 
                             HRCard card = GetCardById(ActionToDo.Actor.Id);
+                            if (ActionToDo.Actor.HasChoices)
+                            {
+                                HRLog.Write("CARD HAS CHOICES");
+                                if (ActionToDo.Target != null)
+                                    SmartCc.ChoiceTarget = ActionToDo.Target;
+                                SmartCc.InsertChoiceAction(ActionToDo.Choice);
+                            }
                             if (ActionToDo.Target != null)
                             {
                                 HREntity target = GetEntityById(ActionToDo.Target.Id);
@@ -318,6 +343,7 @@ namespace HREngine.Bots
                             {
                                 return new HREngine.API.Actions.PlayCardAction(card, null, ActionToDo.Index + 1);
                             }
+
 
                         case Action.ActionType.HERO_ATTACK:
 

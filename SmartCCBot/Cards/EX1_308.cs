@@ -28,7 +28,7 @@ public class EX1_308 : Card
             TargetTypeOnPlay = TargetType.BOTH_ENEMY;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
             target.Damage(4 + board.GetSpellPower(), ref board);

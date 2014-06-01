@@ -25,7 +25,7 @@ public class EX1_084 : Card
             base.Init();
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
         }
@@ -38,7 +38,9 @@ public class EX1_084 : Card
         public override void OnPlayOtherMinion(ref Board board, Card Minion)
         {
             base.OnPlayOtherMinion(ref board, Minion);
-            if(Minion.CurrentAtk <= 3)
+
+            
+            if(Minion.CurrentAtk <= 3 && Minion.Id != Id)
             {
                 Minion.IsCharge = true;
             }

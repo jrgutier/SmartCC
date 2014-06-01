@@ -23,11 +23,26 @@ public class NEW1_007 : Card
         public override void Init()
         {
             base.Init();
+            HasChoices = true;
+            ChoiceOneTarget = true;
+            TargetTypeOnPlay = TargetType.MINION_BOTH;
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0)
+        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+            if(choice == 1)
+            {
+                if (target != null)
+                    target.Damage(5 + board.GetSpellPower(), ref board);
+            }
+            else if(choice == 2)
+            {
+                foreach(Card c in board.MinionEnemy)
+                {
+                    c.Damage(2 + board.GetSpellPower(), ref board);
+                }
+            }
         }
 
         public override void OnDeath(ref Board board)
