@@ -27,11 +27,11 @@ namespace HREngine.Bots
             base.Init();
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
+        public override void OnPlay(ref Board board, Card target = null, int index = 0, int choice = 0)
         {
             base.OnPlay(ref board, target, index);
 
-            if(IsFriend)
+            if (IsFriend)
             {
                 bool hasHealTotem = false;
                 bool hasIncenTotem = false;
@@ -50,12 +50,24 @@ namespace HREngine.Bots
                         hasIncenTotem = true;
                 }
 
-                if (!hasSpellTotem)
-                    board.AddCardToBoard("CS2_052", true);
-                else
+                int enemyPotentialDamage = 0;
+                foreach(Card c in board.MinionEnemy)
+                {
+                    enemyPotentialDamage += c.CurrentAtk;
+                }
+                if(board.WeaponEnemy != null)
+                {
+                    enemyPotentialDamage += board.WeaponEnemy.CurrentAtk;
+                }
+
+
+                if (hasSpellTotem || enemyPotentialDamage >= board.HeroFriend.CurrentHealth)
                     board.AddCardToBoard("CS2_051", true);
+                else
+                    board.AddCardToBoard("CS2_052", true);
+
             }
-            
+
 
         }
 
@@ -74,6 +86,6 @@ namespace HREngine.Bots
             base.OnCastSpell(ref board, Spell);
         }
 
-      
+
     }
 }

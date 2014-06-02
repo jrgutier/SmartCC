@@ -29,10 +29,35 @@ public class CS2_114 : Card
         {
             base.OnPlay(ref board, target,index);
 
+            Card first = null;
+            Card second = null;
+
+
             foreach(Card c in board.MinionEnemy)
             {
-                c.Damage(2, ref board);
+                if (first == null)
+                    first = c;
+
+                if (c.CurrentHealth < first.CurrentHealth)
+                    first = c;
             }
+
+            foreach(Card c in board.MinionEnemy)
+            {
+                if (second == null && c != first)
+                    second = c;
+
+                if (c.CurrentHealth <= second.CurrentHealth && c != first)
+                    second = c;
+            }
+
+
+            if (first == null || second == null)
+                return;
+
+
+            first.Damage(2, ref board);
+            second.Damage(2, ref board);
             board.Resimulate();
         }
 
