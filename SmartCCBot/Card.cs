@@ -114,7 +114,7 @@ namespace HREngine.Bots
             {
                 if (Type == CType.MINION)
                 {
-                    if(!HasChoices)
+                    if (!HasChoices)
                     {
                         board.GetCard(Id).Index = index;
                         board.PlayMinion(Id);
@@ -136,7 +136,7 @@ namespace HREngine.Bots
                         board.ManaAvailable -= CurrentCost;
                         board.RemoveCardFromHand(Id);
                     }
-                   
+
                 }
             }
         }
@@ -3124,6 +3124,24 @@ namespace HREngine.Bots
                 if (IsDivineShield != c.IsDivineShield)
                     return false;
             }
+
+            return true;
+        }
+
+        public bool IsSimilar(Card c)
+        {
+
+            if (c == null)
+                return false;
+
+            if (CurrentAtk != c.CurrentAtk)
+                return false;
+
+            if (CurrentHealth != c.CurrentHealth)
+                return false;
+
+            if (IsDivineShield != c.IsDivineShield)
+                return false;
 
             return true;
         }

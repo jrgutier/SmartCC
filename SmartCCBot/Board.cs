@@ -1319,6 +1319,17 @@ namespace HREngine.Bots
                 if (!minion.CanAttack || !minion.Behavior.ShouldAttack(this))
                     continue;
 
+                bool containsSimilarMinion = false;
+                foreach(Card cc in attackers)
+                {
+                    if (cc.IsSimilar(minion))
+                        containsSimilarMinion = true;
+                }
+                if (containsSimilarMinion)
+                    continue;
+
+                attackers.Add(minion);
+
                 if (taunts.Count == 0)
                 {
                     foreach (Card Enemy in MinionEnemy)
