@@ -230,6 +230,8 @@ namespace HREngine.Bots
             }
             else
             {
+                float widePerTree = 0;
+                float wideTree = 0;
                 while (boards.Count != 0)
                 {
                     if (depth >= maxDepth)
@@ -239,16 +241,18 @@ namespace HREngine.Bots
                     skipped = 0;
                     List<Board> childs = new List<Board>();
 
+                    widePerTree = maxWide / boards.Count;
 
                     foreach (Board b in boards)
                     {
-
+                        wideTree = 0;
 
                         List<Action> actions = b.CalculateAvailableActions();
-
                         foreach (Action a in actions)
                         {
-                            if (wide >= maxWide)
+                            if (wide > maxWide)
+                                break;
+                            if (wideTree >= widePerTree)
                                 break;
 
                             Board bb = b.ExecuteAction(a);
@@ -280,8 +284,8 @@ namespace HREngine.Bots
 
                                     if (!found)
                                     {
+                                        wideTree++;
                                         wide++;
-
                                         childs.Add(bb);
                                     }
                                     else
@@ -291,8 +295,8 @@ namespace HREngine.Bots
                                 }
                                 else
                                 {
+                                    wideTree++;
                                     wide++;
-
                                     childs.Add(bb);
                                 }
                             }
