@@ -38,7 +38,7 @@ namespace HREngine.Bots
             }
 
             Action ActionToDo = ActionStack[0];
-            ActionStack.RemoveAt(0);
+            ActionStack.Remove(ActionToDo);
 
             return ActionToDo;
         }

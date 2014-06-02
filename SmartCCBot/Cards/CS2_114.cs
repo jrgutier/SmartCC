@@ -37,9 +37,12 @@ public class CS2_114 : Card
             {
                 if (first == null)
                     first = c;
-
-                if (c.CurrentHealth < first.CurrentHealth)
-                    first = c;
+                if(first != null)
+                {
+                    if (c.CurrentHealth < first.CurrentHealth)
+                        first = c;
+                }
+                
             }
 
             foreach(Card c in board.MinionEnemy)
@@ -47,8 +50,12 @@ public class CS2_114 : Card
                 if (second == null && c != first)
                     second = c;
 
-                if (c.CurrentHealth <= second.CurrentHealth && c != first)
-                    second = c;
+                if(second != null)
+                {
+                    if (c.CurrentHealth <= second.CurrentHealth && c != first)
+                        second = c;
+                }
+                
             }
 
 
