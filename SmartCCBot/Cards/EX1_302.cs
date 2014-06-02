@@ -35,7 +35,9 @@ public class EX1_302 : Card
                     board.FriendCardDraw++;
 
                 target.Damage(1 + board.GetSpellPower(), ref board);
+                board.Resimulate();
             }
+            
         }
 
         public override void OnDeath(ref Board board)
