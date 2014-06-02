@@ -26,6 +26,8 @@ namespace HREngine.Bots
         public int FriendCardDraw { get; set; }
         public int EnemyCardDraw { get; set; }
         public int WastedATK { get; set; }
+        public int TurnCount { get; set; }
+
         public Board EnemyTurnWorseBoard { get; set; }
         public bool EnemyTurnCalculated = false;
 
@@ -285,6 +287,7 @@ namespace HREngine.Bots
             ActionsStack = new List<Action>();
             HealFactor = 1;
             EnemyHealFactor = 1;
+            TurnCount = 1;
         }
 
         public bool PlayCardFromHand(int id)
@@ -1612,6 +1615,7 @@ namespace HREngine.Bots
         public static Board Clone(Board baseInstance)
         {
             Board newBoard = new Board();
+            newBoard.TurnCount = baseInstance.TurnCount;
             foreach (Card c in baseInstance.Hand)
             {
                 newBoard.Hand.Add(Card.Clone(c));

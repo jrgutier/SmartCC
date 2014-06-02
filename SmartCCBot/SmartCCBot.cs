@@ -232,6 +232,7 @@ namespace HREngine.Bots
             {
                 root.EnemyAbility = Card.Create(HRPlayer.GetEnemyPlayer().GetHeroPower().GetCardId(), false, HRPlayer.GetEnemyPlayer().GetHeroPower().GetEntityId());
             }
+            root.TurnCount = SmartCc.TurnCount + 1;
             SmartCc.root = root;
         }
 
