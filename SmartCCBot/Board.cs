@@ -85,18 +85,7 @@ namespace HREngine.Bots
             childss.Add(Board.Clone(this));
             Board worseBoard = null;
 
-            int maxWide = 100;
-            foreach (Card Friend in MinionFriend)
-            {
-                if (Friend.IsTaunt && !Friend.IsStealth)
-                {
-                    maxWide = 200;
-                    break;
-                }
-
-            }
-
-
+            int maxWide = 25;
 
             int wide = 0;
             while (childss.Count != 0)
