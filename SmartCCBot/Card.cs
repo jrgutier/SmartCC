@@ -188,6 +188,11 @@ namespace HREngine.Bots
 
         }
 
+        public virtual void OnWeaponDeath(ref Board board)
+        {
+            board.WeaponEnemy = null;
+        }
+
         public virtual void OnAttack(ref Board board, Card target)
         {
             if (target == null)
@@ -217,7 +222,7 @@ namespace HREngine.Bots
                     tar.OnHit(ref board, board.HeroFriend);
                     // tar.OnHit(ref board, me);
                     if (me.CurrentDurability < 1)
-                        board.WeaponFriend = null;
+                        OnWeaponDeath(ref board);
                 }
                 else
                 {
