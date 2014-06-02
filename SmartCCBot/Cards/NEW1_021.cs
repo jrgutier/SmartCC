@@ -23,7 +23,7 @@ public class NEW1_021 : Card
         public override void OnEndTurn(Board board)
         {
             base.OnEndTurn(board);
-            if(!IsFriend)
+            if(!IsFriend && !IsSilenced)
             {
                 foreach(Card c in board.MinionFriend.ToArray())
                 {
