@@ -15,6 +15,11 @@ namespace HREngine.Bots
 
         }
 
+        public virtual List<Card> HandleMulligan(List<Card> Choices)
+        {
+            return Choices;
+        }
+
         public virtual bool ShouldPlayMoreMinions(Board board)
         {
             return true;

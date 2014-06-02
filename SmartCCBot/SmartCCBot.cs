@@ -77,15 +77,32 @@ namespace HREngine.Bots
             if (HRMulligan.IsMulliganActive())
             {
                 List<HRCard> Choices = HRCard.GetCards(HRPlayer.GetLocalPlayer(), HRCardZone.HAND);
+                List<Card> ParsedChoices = new List<Card>();
+                foreach (HRCard card in Choices)
+                {
+                    HREntity entity = card.GetEntity();
+                    Card c = Card.Create(entity.GetCardId(), true, entity.GetEntityId());
+                    c.CurrentCost = entity.GetCost();
+                    ParsedChoices.Add(c);
+                }
+
+                List<HRCard> CardsToKeep = new List<HRCard>();
+                foreach(Card c in ProfileInterface.Behavior.HandleMulligan(ParsedChoices))
+                {
+                    foreach (HRCard card in Choices)
+                    {
+                        if (c.Id == card.GetEntity().GetEntityId())
+                            CardsToKeep.Add(card);
+                    }
+                }
 
                 foreach (HRCard card in Choices)
                 {
-                    if (card.GetEntity().GetCost() >= 4)
-                    {
+                    if (!CardsToKeep.Contains(card))
                         HRMulligan.ToggleCard(card);
-                    }
                 }
                 return null;
+           
             }
             return null;
 
