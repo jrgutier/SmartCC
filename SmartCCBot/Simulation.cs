@@ -363,7 +363,7 @@ namespace HREngine.Bots
             }
 
             Action actionPrior = null;
-
+            
             
             foreach (Action acc in bestBoard.ActionsStack)
             {
@@ -387,7 +387,7 @@ namespace HREngine.Bots
                 }
             }
             
-
+          
             List<Action> finalStack = new List<Action>();
             if (actionPrior != null)
             {
@@ -402,12 +402,17 @@ namespace HREngine.Bots
                         }
 
                     }
-                    foreach (Action a in bestBoard.ActionsStack)
+                    
+                }
+
+                foreach (Action a in bestBoard.ActionsStack)
+                {
+                    if (a != actionPrior || a.Type == Action.ActionType.RESIMULATE)
                     {
-                        if (!finalStack.Contains(a))
-                        {
-                            finalStack.Add(a);
-                        }
+                        if (a.Type == Action.ActionType.RESIMULATE && finalStack[finalStack.Count - 1].Type == Action.ActionType.RESIMULATE)
+                            continue;
+
+                        finalStack.Add(a);
                     }
                 }
             }
@@ -415,7 +420,7 @@ namespace HREngine.Bots
             {
                 finalStack = bestBoard.ActionsStack;
             }
-
+            
 
 
 

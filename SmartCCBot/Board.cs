@@ -51,12 +51,12 @@ namespace HREngine.Bots
 
             EnemyValue = ((HeroEnemy.CurrentHealth * ValuesInterface.ValueHealthEnemy) + HeroEnemy.CurrentArmor * ValuesInterface.ValueArmorEnemy);
             value -= EnemyValue;
-            
+
             foreach (Card c in MinionFriend)
             {
                 value += c.GetValue(this);
             }
-            
+
             FriendValue = ((HeroFriend.CurrentHealth * ValuesInterface.ValueHealthFriend) + HeroFriend.CurrentArmor * ValuesInterface.ValueArmorFriend);
             value += FriendValue;
 
@@ -91,7 +91,7 @@ namespace HREngine.Bots
             childss.Add(Board.Clone(this));
             Board worseBoard = null;
 
-            int maxWide = 30;
+            int maxWide = 20;
 
             int wide = 0;
             while (childss.Count != 0)
@@ -415,7 +415,16 @@ namespace HREngine.Bots
 
         public void Resimulate()
         {
-            ActionsStack.Add(new Action(Action.ActionType.RESIMULATE, null));
+            if (ActionsStack.Count > 0)
+            {
+                if (ActionsStack[ActionsStack.Count - 1].Type != Action.ActionType.RESIMULATE)
+                    ActionsStack.Add(new Action(Action.ActionType.RESIMULATE, null));
+            }
+            else
+            {
+
+            }
+
         }
 
         public static int GenId()
@@ -1315,7 +1324,7 @@ namespace HREngine.Bots
                     continue;
 
                 bool containsSimilarMinion = false;
-                foreach(Card cc in attackers)
+                foreach (Card cc in attackers)
                 {
                     if (cc.IsSimilar(minion))
                         containsSimilarMinion = true;
@@ -1410,8 +1419,8 @@ namespace HREngine.Bots
 
             }
 
-          //  Console.WriteLine("");
-        //    Console.ReadLine();
+            //  Console.WriteLine("");
+            //    Console.ReadLine();
 
 
 
