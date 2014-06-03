@@ -28,6 +28,26 @@ public class EX1_625 : Card
         public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+            if(board.Ability == null)
+            {
+                board.Ability = Card.Create("EX1_625t", true, 999999);
+                board.Resimulate();
+                return;
+            }
+            if (board.Ability.template.Id == "CS1h_001")
+            {
+
+                board.Ability = Card.Create("EX1_625t", true, board.Ability.Id);
+                board.Resimulate();
+                return;
+
+            }
+            else if (board.Ability.template.Id == "EX1_625t")
+            {
+                board.Ability = Card.Create("EX1_625t2", true, board.Ability.Id);
+                board.Resimulate();
+                return;
+            }
         }
 
         public override void OnDeath(ref Board board)

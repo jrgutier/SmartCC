@@ -23,11 +23,16 @@ public class EX1_625t2 : Card
         public override void Init()
         {
             base.Init();
+            TargetTypeOnPlay = TargetType.ALL;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
         {
             base.OnPlay(ref board, target,index);
+            if (target != null)
+            {
+                target.Damage(3, ref board);
+            }
         }
 
         public override void OnDeath(ref Board board)
