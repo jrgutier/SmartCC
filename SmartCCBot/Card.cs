@@ -60,6 +60,7 @@ namespace HREngine.Bots
             {
                 if (!IsSilenced)
                     OnDeath(ref board);
+                IsDestroyed = true;
             }
 
         }
