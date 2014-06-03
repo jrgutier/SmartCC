@@ -39,7 +39,7 @@ namespace HREngine.Bots
 
                 if (IsDivineShield)
                     value += ValuesInterface.ValueDivineShield;
-
+                
                 if (IsFrozen)
                     value -= ValuesInterface.ValueFrozen;
 

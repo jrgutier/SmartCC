@@ -314,13 +314,12 @@ namespace HREngine.Bots
                             Board endBoard = Board.Clone(baa);
                             endBoard.EndTurn();
 
-
-
                             bestBoard.CalculateEnemyTurn();
                             if(bestBoard.EnemyTurnWorseBoard != null)
                             {
                                 endBoard.CalculateEnemyTurn();
                                 Board worstBoard = endBoard.EnemyTurnWorseBoard;
+
                                 if (worstBoard == null)
                                     worstBoard = endBoard;
 
