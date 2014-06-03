@@ -91,7 +91,7 @@ namespace HREngine.Bots
             childss.Add(Board.Clone(this));
             Board worseBoard = null;
 
-            int maxWide = 40;
+            int maxWide = 20;
 
             int wide = 0;
             while (childss.Count != 0)
@@ -460,7 +460,6 @@ namespace HREngine.Bots
 
         public bool HasFriendBuffer()
         {
-            return true;
             foreach (Card c in MinionFriend)
             {
                 if (c.TestAllIndexOnPlay)
@@ -689,6 +688,132 @@ namespace HREngine.Bots
         public List<Action> CalculateAvailableActions()
         {
             List<Action> availableActions = new List<Action>();
+            bool HasLethal = false;
+
+            List<Card> taunts = new List<Card>();
+
+            foreach (Card Enemy in MinionEnemy)
+            {
+                if (Enemy.IsTaunt && !Enemy.IsStealth)
+                    taunts.Add(Enemy);
+            }
+
+
+            if (taunts.Count == 0)
+            {
+                int totalDamage = 0;
+                foreach(Card c in MinionFriend)
+                {
+                    totalDamage += c.CurrentAtk;
+                }
+                if (totalDamage >= HeroEnemy.CurrentHealth + HeroEnemy.CurrentArmor)
+                    HasLethal = true;
+            }
+
+
+            List<Card> attackers = new List<Card>();
+            foreach (Card minion in MinionFriend)
+            {
+                if (!minion.CanAttack || !minion.Behavior.ShouldAttack(this))
+                    continue;
+
+                bool containsSimilarMinion = false;
+                foreach (Card cc in attackers)
+                {
+                    if (cc.IsSimilar(minion))
+                        containsSimilarMinion = true;
+                }
+                if (containsSimilarMinion)
+                    continue;
+
+                attackers.Add(minion);
+
+                if (taunts.Count == 0)
+                {
+                    foreach (Card Enemy in MinionEnemy)
+                    {
+                        if (Enemy.IsStealth)
+                            continue;
+                        if (HasLethal)
+                            continue;
+                        Action a = new Action(Action.ActionType.MINION_ATTACK, minion, Enemy);
+                        availableActions.Add(a);
+                    }
+                    Action ac = new Action(Action.ActionType.MINION_ATTACK, minion, HeroEnemy);
+                    availableActions.Add(ac);
+                }
+                else
+                {
+                    foreach (Card taunt in taunts)
+                    {
+                        Action a = new Action(Action.ActionType.MINION_ATTACK, minion, taunt);
+                        availableActions.Add(a);
+                    }
+                }
+
+            }
+
+            if (WeaponFriend != null)
+            {
+                if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack && !HeroFriend.IsFrozen && ProfileInterface.Behavior.ShouldAttackWithWeapon(this))
+                {
+                    if (taunts.Count == 0)
+                    {
+                        foreach (Card Enemy in MinionEnemy)
+                        {
+                            if (Enemy.IsStealth)
+                                continue;
+
+                            if (!ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(WeaponFriend, Enemy))
+                                continue;
+                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, Enemy);
+                            availableActions.Add(a);
+                        }
+
+                        if (ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(WeaponFriend, HeroEnemy))
+                        {
+                            Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnemy);
+                            availableActions.Add(ac);
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (Card taunt in taunts)
+                        {
+                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, taunt);
+                            availableActions.Add(a);
+                        }
+                    }
+                }
+            }
+            else if (HeroFriend.CurrentAtk > 0 && HeroFriend.CanAttack)
+            {
+
+                if (taunts.Count == 0)
+                {
+                    foreach (Card Enemy in MinionEnemy)
+                    {
+                        if (Enemy.IsStealth)
+                            continue;
+                        Action a = new Action(Action.ActionType.HERO_ATTACK, HeroFriend, Enemy);
+                        availableActions.Add(a);
+                    }
+                    Action ac = new Action(Action.ActionType.HERO_ATTACK, HeroFriend, HeroEnemy);
+                    availableActions.Add(ac);
+                }
+                else
+                {
+                    foreach (Card taunt in taunts)
+                    {
+                        Action a = new Action(Action.ActionType.HERO_ATTACK, HeroFriend, taunt);
+                        availableActions.Add(a);
+                    }
+
+                }
+
+            }
+
             if (Ability != null)
             {
                 if (Ability.CurrentCost <= ManaAvailable && Ability.Behavior.ShouldBePlayed(this))
@@ -699,6 +824,8 @@ namespace HREngine.Bots
                         foreach (Card Enemy in MinionEnemy)
                         {
                             if (!Enemy.IsTargetable || Enemy.IsStealth)
+                                continue;
+                            if (!Ability.Behavior.ShouldBePlayedOnTarget(Enemy))
                                 continue;
                             Action a = null;
                             a = new Action(Action.ActionType.CAST_ABILITY, Ability, Enemy);
@@ -712,6 +839,8 @@ namespace HREngine.Bots
                         {
                             if (!friend.IsTargetable || friend.IsStealth)
                                 continue;
+                            if (!Ability.Behavior.ShouldBePlayedOnTarget(friend))
+                                continue;
                             Action a = null;
                             a = new Action(Action.ActionType.CAST_ABILITY, Ability, friend);
                             availableActions.Add(a);
@@ -720,16 +849,25 @@ namespace HREngine.Bots
                     if (Ability.TargetTypeOnPlay == Card.TargetType.HERO_ENEMY || Ability.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
                         || Ability.TargetTypeOnPlay == Card.TargetType.BOTH_ENEMY || Ability.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
+
                         Action a = null;
                         a = new Action(Action.ActionType.CAST_ABILITY, Ability, HeroEnemy);
-                        availableActions.Add(a);
+                        if (Ability.Behavior.ShouldBePlayedOnTarget(HeroEnemy))
+                        {
+                            availableActions.Add(a);
+
+                        }
                     }
                     if (Ability.TargetTypeOnPlay == Card.TargetType.HERO_FRIEND || Ability.TargetTypeOnPlay == Card.TargetType.HERO_BOTH
                         || Ability.TargetTypeOnPlay == Card.TargetType.BOTH_FRIEND || Ability.TargetTypeOnPlay == Card.TargetType.ALL)
                     {
                         Action a = null;
                         a = new Action(Action.ActionType.CAST_ABILITY, Ability, HeroFriend);
-                        availableActions.Add(a);
+                        if (Ability.Behavior.ShouldBePlayedOnTarget(HeroFriend))
+                        {
+                            availableActions.Add(a);
+
+                        }
                     }
 
                     if (Ability.TargetTypeOnPlay == Card.TargetType.NONE)
@@ -740,9 +878,19 @@ namespace HREngine.Bots
                     }
                 }
             }
-
+            List<Card> castedCards = new List<Card>();
             foreach (Card c in Hand)
             {
+                bool alreadyCasted = false;
+                foreach(Card cc in castedCards)
+                {
+                    if (cc.template.Id == c.template.Id)
+                        alreadyCasted = true;
+                }
+                if (alreadyCasted)
+                    continue;
+
+                castedCards.Add(c);
                 if (c.CurrentCost <= ManaAvailable && c.Behavior.ShouldBePlayed(this))
                 {
 
@@ -1309,115 +1457,10 @@ namespace HREngine.Bots
                 }
             }
 
-            List<Card> taunts = new List<Card>();
 
-            foreach (Card Enemy in MinionEnemy)
-            {
-                if (Enemy.IsTaunt && !Enemy.IsStealth)
-                    taunts.Add(Enemy);
-            }
 
-            List<Card> attackers = new List<Card>();
-            foreach (Card minion in MinionFriend)
-            {
-                if (!minion.CanAttack || !minion.Behavior.ShouldAttack(this))
-                    continue;
-
-                bool containsSimilarMinion = false;
-                foreach (Card cc in attackers)
-                {
-                    if (cc.IsSimilar(minion))
-                        containsSimilarMinion = true;
-                }
-                if (containsSimilarMinion)
-                    continue;
-
-                attackers.Add(minion);
-
-                if (taunts.Count == 0)
-                {
-                    foreach (Card Enemy in MinionEnemy)
-                    {
-                        if (Enemy.IsStealth)
-                            continue;
-
-                        Action a = new Action(Action.ActionType.MINION_ATTACK, minion, Enemy);
-                        availableActions.Add(a);
-                    }
-                    Action ac = new Action(Action.ActionType.MINION_ATTACK, minion, HeroEnemy);
-                    availableActions.Add(ac);
-                }
-                else
-                {
-                    foreach (Card taunt in taunts)
-                    {
-                        Action a = new Action(Action.ActionType.MINION_ATTACK, minion, taunt);
-                        availableActions.Add(a);
-                    }
-                }
-
-            }
-
-            if (WeaponFriend != null)
-            {
-                if (WeaponFriend.CurrentDurability > 0 && WeaponFriend.CanAttack && !HeroFriend.IsFrozen && ProfileInterface.Behavior.ShouldAttackWithWeapon(this))
-                {
-                    if (taunts.Count == 0)
-                    {
-                        foreach (Card Enemy in MinionEnemy)
-                        {
-                            if (Enemy.IsStealth)
-                                continue;
-
-                            if (!ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(WeaponFriend, Enemy))
-                                continue;
-                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, Enemy);
-                            availableActions.Add(a);
-                        }
-
-                        if (ProfileInterface.Behavior.ShouldAttackTargetWithWeapon(WeaponFriend, HeroEnemy))
-                        {
-                            Action ac = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, HeroEnemy);
-                            availableActions.Add(ac);
-                        }
-
-                    }
-                    else
-                    {
-                        foreach (Card taunt in taunts)
-                        {
-                            Action a = new Action(Action.ActionType.HERO_ATTACK, WeaponFriend, taunt);
-                            availableActions.Add(a);
-                        }
-                    }
-                }
-            }
-            else if (HeroFriend.CurrentAtk > 0 && HeroFriend.CanAttack)
-            {
-
-                if (taunts.Count == 0)
-                {
-                    foreach (Card Enemy in MinionEnemy)
-                    {
-                        if (Enemy.IsStealth)
-                            continue;
-                        Action a = new Action(Action.ActionType.HERO_ATTACK, HeroFriend, Enemy);
-                        availableActions.Add(a);
-                    }
-                    Action ac = new Action(Action.ActionType.HERO_ATTACK, HeroFriend, HeroEnemy);
-                    availableActions.Add(ac);
-                }
-                else
-                {
-                    foreach (Card taunt in taunts)
-                    {
-                        Action a = new Action(Action.ActionType.HERO_ATTACK, HeroFriend, taunt);
-                        availableActions.Add(a);
-                    }
-
-                }
-
-            }
+           // Console.WriteLine("");
+         //   Console.ReadLine();
 
             return availableActions;
         }

@@ -31,7 +31,7 @@ public class CS1_129 : Card
             base.OnPlay(ref board, target,index);
             if(target != null)
             {
-                target.CurrentAtk = CurrentHealth;
+                target.CurrentAtk = target.CurrentHealth;
             }
 
         }

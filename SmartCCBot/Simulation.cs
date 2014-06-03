@@ -45,11 +45,11 @@ namespace HREngine.Bots
 
         public void InsertChoiceAction(int choice)
         {
-            ActionStack.Insert(0, new Action(Action.ActionType.CHOICE, null,null,0,choice));
+            ActionStack.Insert(0, new Action(Action.ActionType.CHOICE, null, null, 0, choice));
         }
         public void InsertTargetAction(Card target)
         {
-            ActionStack.Insert(0, new Action(Action.ActionType.TARGET,null,target));
+            ActionStack.Insert(0, new Action(Action.ActionType.TARGET, null, target));
         }
 
         public Simulation()
@@ -71,8 +71,8 @@ namespace HREngine.Bots
 
         public void CreateLogFolder()
         {
-            DateTime time = DateTime.Now;             
-            string format = "dd-MM-yy HH-mm-ss";           
+            DateTime time = DateTime.Now;
+            string format = "dd-MM-yy HH-mm-ss";
             string nameFolder = time.ToString(format);
             System.IO.Directory.CreateDirectory(CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar + "" + nameFolder);
             CurrentFolder = CardTemplate.DatabasePath + "" + Path.DirectorySeparatorChar + "Bots" + Path.DirectorySeparatorChar + "SmartCC" + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar + "" + nameFolder;
@@ -108,7 +108,8 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 3000;
+            int maxWide = 10000;
+            int maxBoards = 1000;
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -308,14 +309,23 @@ namespace HREngine.Bots
 
                     if (!foundearly)
                     {
+                        List<Board> bestBoards = new List<Board>();
+
+                        int limit = maxBoards;
+                        if (childs.Count < maxBoards)
+                            limit = childs.Count;
+
+                        childs.Sort((x, y) => y.GetValue().CompareTo(x.GetValue()));
+                        childs = new List<Board>(childs.GetRange(0, limit));
+
                         foreach (Board baa in childs)
                         {
-                            
+
                             Board endBoard = Board.Clone(baa);
                             endBoard.EndTurn();
 
                             bestBoard.CalculateEnemyTurn();
-                            if(bestBoard.EnemyTurnWorseBoard != null)
+                            if (bestBoard.EnemyTurnWorseBoard != null)
                             {
                                 endBoard.CalculateEnemyTurn();
                                 Board worstBoard = endBoard.EnemyTurnWorseBoard;
@@ -327,7 +337,7 @@ namespace HREngine.Bots
                                 {
                                     bestBoard = endBoard;
                                 }
-                                else if(worstBoard.GetValue() == bestBoard.EnemyTurnWorseBoard.GetValue())
+                                else if (worstBoard.GetValue() == bestBoard.EnemyTurnWorseBoard.GetValue())
                                 {
                                     if (endBoard.GetValue() > bestBoard.GetValue())
                                     {
@@ -362,8 +372,8 @@ namespace HREngine.Bots
             }
 
             Action actionPrior = null;
-            
-            
+
+
             foreach (Action acc in bestBoard.ActionsStack)
             {
                 if (actionPrior == null && acc.Actor != null)
@@ -385,8 +395,8 @@ namespace HREngine.Bots
                     }
                 }
             }
-            
-          
+
+
             List<Action> finalStack = new List<Action>();
             if (actionPrior != null)
             {
@@ -401,7 +411,7 @@ namespace HREngine.Bots
                         }
 
                     }
-                    
+
                 }
 
                 foreach (Action a in bestBoard.ActionsStack)
@@ -419,7 +429,7 @@ namespace HREngine.Bots
             {
                 finalStack = bestBoard.ActionsStack;
             }
-            
+
 
 
 
@@ -494,7 +504,7 @@ namespace HREngine.Bots
                         Board bb = b.ExecuteAction(a);
                         childaas.Add(bb);
                         if (wide > maxWide)
-                            break;                        
+                            break;
                     }
                     if (wide > maxWide)
                         break;

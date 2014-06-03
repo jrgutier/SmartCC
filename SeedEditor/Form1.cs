@@ -332,6 +332,42 @@ namespace SeedEditor
                 Seed.Secret.Add(item.Value);
             }
             Seed.ManaAvailable = (int)Mana.Value;
+
+            Card AbilityFriend = null;
+            string hero = "";
+            switch (cmbBoxLocalHero.Text)
+            {
+                case "Druid":
+                    AbilityFriend = Card.Create("CS2_017", true, GenerateId());
+                    break;
+                case "Hunter":
+                    AbilityFriend = Card.Create("DS1h_292", true, GenerateId());
+                    break;
+                case "Mage":
+                    AbilityFriend = Card.Create("CS2_034", true, GenerateId());
+                    break;
+                case "Paladin":
+                    AbilityFriend = Card.Create("CS2_101", true, GenerateId());
+                    break;
+                case "Priest":
+                    AbilityFriend = Card.Create("CS1h_001", true, GenerateId());
+                    break;
+                case "Rogue":
+                    AbilityFriend = Card.Create("CS2_083b", true, GenerateId());
+                    break;
+                case "Shaman":
+                    AbilityFriend = Card.Create("CS2_049", true, GenerateId());
+                    break;
+                case "Warlock":
+                    AbilityFriend = Card.Create("CS2_056", true, GenerateId());
+                    break;
+                case "Warrior":
+                    AbilityFriend = Card.Create("CS2_102", true, GenerateId());
+                    break;
+                default:
+                    break;
+            }
+            Seed.Ability = AbilityFriend;
         }
 
         public void ClearSeed()

@@ -32,10 +32,13 @@ public class EX1_619 : Card
             foreach(Card c in board.MinionFriend)
             {
                 c.CurrentHealth = 1;
+                c.maxHealth = 1;
             }
             foreach (Card c in board.MinionEnemy)
             {
                 c.CurrentHealth = 1;
+                c.maxHealth = 1;
+
             }
         }
 

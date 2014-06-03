@@ -847,7 +847,9 @@ namespace HREngine.Bots
             }
             else if (MaxHealth < template.Health)
             {
-                maxHealth = template.Health + (CurrentHealth - MaxHealth);
+                int dam = MaxHealth - CurrentHealth;
+                maxHealth = template.Health;
+                CurrentHealth = maxHealth -dam ;
             }
 
 

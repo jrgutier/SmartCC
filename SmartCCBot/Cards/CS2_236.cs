@@ -23,7 +23,7 @@ public class CS2_236 : Card
         public override void Init()
         {
             base.Init();
-            TargetTypeOnPlay = TargetType.MINION_BOTH;
+            TargetTypeOnPlay = TargetType.MINION_FRIEND;
         }
 
         public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
@@ -32,8 +32,8 @@ public class CS2_236 : Card
             if(target != null)
             {
                 
-                target.CurrentHealth = (target.CurrentHealth * 2);
                 target.maxHealth = (target.CurrentHealth * 2);
+                target.CurrentHealth = (target.CurrentHealth * 2);
 
             }
         }
