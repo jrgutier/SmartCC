@@ -33,6 +33,7 @@ public class EX1_308 : Card
             base.OnPlay(ref board, target,index);
             target.Damage(4 + board.GetSpellPower(), ref board);
 
+
             board.FriendCardDraw--;
 
             board.Resimulate();
