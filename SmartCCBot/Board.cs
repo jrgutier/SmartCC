@@ -35,6 +35,9 @@ namespace HREngine.Bots
 
 
         private int Value = 0;
+        private int FriendValue = 0;
+        private int EnemyValue = 0;
+
         public int GetValue()
         {
             int value = 0;
@@ -46,13 +49,16 @@ namespace HREngine.Bots
 
             value += Secret.Count * ValuesInterface.ValueSecret;
 
-            value -= ((HeroEnemy.CurrentHealth * ValuesInterface.ValueHealthEnemy) + HeroEnemy.CurrentArmor * ValuesInterface.ValueArmorEnemy);
-
+            EnemyValue = ((HeroEnemy.CurrentHealth * ValuesInterface.ValueHealthEnemy) + HeroEnemy.CurrentArmor * ValuesInterface.ValueArmorEnemy);
+            value -= EnemyValue;
+            
             foreach (Card c in MinionFriend)
             {
                 value += c.GetValue(this);
             }
-            value += ((HeroFriend.CurrentHealth * ValuesInterface.ValueHealthFriend) + HeroFriend.CurrentArmor * ValuesInterface.ValueArmorFriend);
+            
+            FriendValue = ((HeroFriend.CurrentHealth * ValuesInterface.ValueHealthFriend) + HeroFriend.CurrentArmor * ValuesInterface.ValueArmorFriend);
+            value += FriendValue;
 
             value += FriendCardDraw * ValuesInterface.ValueFriendCardDraw;
             value -= EnemyCardDraw * ValuesInterface.ValueEnemyCardDraw;
@@ -85,7 +91,7 @@ namespace HREngine.Bots
             childss.Add(Board.Clone(this));
             Board worseBoard = null;
 
-            int maxWide = 25;
+            int maxWide = 30;
 
             int wide = 0;
             while (childss.Count != 0)
@@ -1220,7 +1226,7 @@ namespace HREngine.Bots
                         }
                     }
 
-                    if (c.TargetTypeOnPlay == Card.TargetType.NONE || c.TargetTypeOnPlay == Card.TargetType.ALL || (c.HasChoices && (!c.ChoiceOneTarget || !c.ChoiceTwoTarget)))
+                    if (c.TargetTypeOnPlay == Card.TargetType.NONE || (c.HasChoices && (!c.ChoiceOneTarget || !c.ChoiceTwoTarget)))
                     {
                         Action a = null;
                         if (c.Type == Card.CType.MINION && MinionFriend.Count < 7 && ProfileInterface.Behavior.ShouldPlayMoreMinions(this))
@@ -1403,6 +1409,11 @@ namespace HREngine.Bots
                 }
 
             }
+
+          //  Console.WriteLine("");
+        //    Console.ReadLine();
+
+
 
             return availableActions;
         }

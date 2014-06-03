@@ -30,23 +30,7 @@ namespace HREngine.Bots
 
                 if (IsTaunt && IsFriend)
                 {
-                    if (board.HeroFriend.CurrentHealth >= 20 && board.HeroFriend.CurrentHealth < 25)
-                    {
-                        value += ValuesInterface.ValueTaunt * 2;
-                    }
-                    else if (board.HeroFriend.CurrentHealth >= 15 && board.HeroFriend.CurrentHealth < 20)
-                    {
-                        value += ValuesInterface.ValueTaunt * 3;
-                    }
-                    else if (board.HeroFriend.CurrentHealth >= 10 && board.HeroFriend.CurrentHealth < 15)
-                    {
-                        value += ValuesInterface.ValueTaunt * 4;
-                    }
-                    else if (board.HeroFriend.CurrentHealth < 10)
-                    {
-                        value += ValuesInterface.ValueTaunt * 6;
-                    }
-
+                      value += ValuesInterface.ValueTaunt * 2;
                 }
                 else if (IsTaunt && !IsFriend)
                 {
