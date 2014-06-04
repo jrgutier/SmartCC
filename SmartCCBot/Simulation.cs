@@ -118,8 +118,12 @@ namespace HREngine.Bots
             int wide = 0;
             int depth = 0;
             int maxDepth = 15;
-            int maxWide = 10000;
-            int maxBoards = 1000;
+            int maxWide = 3000;
+            int maxBoards = 2000;
+
+            int maxWideT = 5000;
+            int maxBoardsT = 3000;
+
             int skipped = 0;
             root.Update();
             bool tryToSkipEqualBoards = true;
@@ -134,9 +138,6 @@ namespace HREngine.Bots
             List<Board> Childs = new List<Board>();
             if (threaded)
             {
-                int nbThread = Environment.ProcessorCount;
-
-
                 foreach (HREngine.Bots.Action a in root.CalculateAvailableActions())
                 {
                     Board tmp = root.ExecuteAction(a);
@@ -144,102 +145,102 @@ namespace HREngine.Bots
                     Childs.Add(tmp);
                 }
 
-                if (Roots.Count < nbThread)
-                    nbThread = Roots.Count;
-
                 Childs.Add(root);
-                int[] tab = new int[nbThread];
 
-                int roll = 0;
-                //lazy dispatch(tired lol)
-                for (int i = Roots.Count; i > 0; i--)
+               
+
+                while (Roots.Count > 0)
                 {
+                    wide = Roots.Count;
+                    if (Roots.Count > maxWideT)
+                        wide = maxWideT;
 
-                    tab[roll]++;
+                    float widePerTree = 0;
+                    float wideTree = 0;
+                    widePerTree =2;
 
-                    if (roll == nbThread - 1)
-                        roll = 0;
-                    else
-                        roll++;
-                }
+                    ManualResetEvent[] doneEvents = new ManualResetEvent[wide];
 
-                int parsed = 0;
-                StreamReader str = new StreamReader(CardTemplate.DatabasePath + "Bots/SmartCC/Config/searchLevel");
-                string use = str.ReadLine();
-
-                str.Close();
-
-                if (use == "low")
-                {
-                    parsed = 5000;
-                }
-                else if (use == "medium")
-                {
-                    parsed = 10000;
-                }
-                else if (use == "high")
-                {
-                    parsed = 15000;
-                }
-                else if (use == "ultra")
-                {
-                    parsed = 20000;
-                }
-
-                int maxWidePerThread = parsed;
-                if (nbThread > 0)
-                    maxWidePerThread = parsed / 6;
-
-                List<Thread> tt = new List<Thread>();
-                ManualResetEvent[] doneEvents = new ManualResetEvent[Roots.Count];
-
-                for (int i = 0; i < Roots.Count; i++)
-                {
-                    doneEvents[i] = new ManualResetEvent(false);
-                    SimulationThread thread = new SimulationThread();
-
-                    ThreadPool.QueueUserWorkItem(thread.Calculate, (object)new SimulationThreadStart(Roots[i], ref Childs, doneEvents[i]));
-                }
-                foreach (var e in doneEvents)
-                    e.WaitOne();
-
-                foreach (Board baa in Childs)
-                {
-                    if (Childs == null)
-                        continue;
-                    Board endBoard = Board.Clone(baa);
-                    endBoard.EndTurn();
-
-                    bestBoard.CalculateEnemyTurn();
-                    if (bestBoard.EnemyTurnWorseBoard != null)
+                    for (int i = 0; i < wide; i++)
                     {
-                        endBoard.CalculateEnemyTurn();
-                        Board worstBoard = endBoard.EnemyTurnWorseBoard;
+                        doneEvents[i] = new ManualResetEvent(false);
+                        SimulationThread thread = new SimulationThread();
 
-                        if (worstBoard == null)
-                            worstBoard = endBoard;
+                        ThreadPool.QueueUserWorkItem(thread.Calculate, (object)new SimulationThreadStart(Roots[i], ref Childs, doneEvents[i], widePerTree));
+                    }
+                    foreach (var e in doneEvents)
+                        e.WaitOne();
 
-                        if (worstBoard.GetValue() > bestBoard.EnemyTurnWorseBoard.GetValue())
+                    bool foundLethal = false;
+                    foreach (Board baa in Childs)
+                    {
+                        if (baa == null)
+                            continue;
+
+                        if(baa.GetValue() > 10000)
                         {
-                            bestBoard = endBoard;
+                            foundLethal = true;
+                            bestBoard = baa;
+                            break;
                         }
-                        else if (worstBoard.GetValue() == bestBoard.EnemyTurnWorseBoard.GetValue())
+
+
+
+                        Board endBoard = Board.Clone(baa);
+                        endBoard.EndTurn();
+
+                        bestBoard.CalculateEnemyTurn();
+                        if (bestBoard.EnemyTurnWorseBoard != null)
+                        {
+                            endBoard.CalculateEnemyTurn();
+                            Board worstBoard = endBoard.EnemyTurnWorseBoard;
+
+                            if (worstBoard == null)
+                                worstBoard = endBoard;
+
+                            if (worstBoard.GetValue() > bestBoard.EnemyTurnWorseBoard.GetValue())
+                            {
+                                bestBoard = endBoard;
+                            }
+                            else if (worstBoard.GetValue() == bestBoard.EnemyTurnWorseBoard.GetValue())
+                            {
+                                if (endBoard.GetValue() > bestBoard.GetValue())
+                                {
+                                    bestBoard = endBoard;
+                                }
+                            }
+
+                        }
+                        else
                         {
                             if (endBoard.GetValue() > bestBoard.GetValue())
                             {
                                 bestBoard = endBoard;
                             }
                         }
+                    }
 
-                    }
-                    else
+                    if (foundLethal)
+                        break;
+                    Roots.Clear();
+                    int boardsAdded = 0;
+                    //Childs.RemoveAll(item => item == null);
+                    //Childs.Sort((x, y) => y.GetValue().CompareTo(x.GetValue()));
+
+                    foreach (Board bbb in Childs)
                     {
-                        if (endBoard.GetValue() > bestBoard.GetValue())
+                        if (bbb != null)
                         {
-                            bestBoard = endBoard;
+                            Roots.Add(bbb);
+                            boardsAdded++;
+                            if (boardsAdded > maxBoardsT)
+                                break;
                         }
+                           
                     }
+                    Childs.Clear();
                 }
+
 
             }
             else
@@ -330,7 +331,7 @@ namespace HREngine.Bots
 
                         childs.Sort((x, y) => y.GetValue().CompareTo(x.GetValue()));
                         childs = new List<Board>(childs.GetRange(0, limit));
-
+                        
                         foreach (Board baa in childs)
                         {
 
@@ -473,12 +474,15 @@ namespace HREngine.Bots
         public Board root = null;
         public List<Board> output = null;
         public ManualResetEvent doneEvent;
+        public float maxWidePerTree = 0;
 
-        public SimulationThreadStart(Board root, ref List<Board> output, ManualResetEvent doneEvent)
+        public SimulationThreadStart(Board root, ref List<Board> output, ManualResetEvent doneEvent,float maxWidePerTree)
         {
             this.root = root;
             this.output = output;
             this.doneEvent = doneEvent;
+            this.maxWidePerTree = maxWidePerTree;
+
         }
     }
 
@@ -487,181 +491,117 @@ namespace HREngine.Bots
         Board root = null;
         List<Board> output = null;
         public ManualResetEvent doneEvent;
-        public bool STOPNOW = false;
-
+        public float maxWidePerTree = 0;
+        public static volatile bool FoundLethal = false;
         public SimulationThread()
         {
         }
 
         public void Calculate(object start)
         {
+
             SimulationThreadStart st = (SimulationThreadStart)start;
             root = st.root;
             output = st.output;
             doneEvent = st.doneEvent;
+            maxWidePerTree = st.maxWidePerTree;
+            if(FoundLethal)
+            {
+                doneEvent.Set();
+                return;
+            }
+
 
             int wide = 0;
-            int depth = 0;
-            int maxDepth = 15;
-            int maxWide = 1000;
-            int maxBoards = 80;
             int skipped = 0;
-            float widePerTree = 0;
+
             List<Board> boards = new List<Board>();
 
             boards.Add(root);
             root.Update();
 
 
-            bool tryToSkipEqualBoards = true;
+            bool tryToSkipEqualBoards = false;
             Board bestBoard = null;
-            bool foundearly = false;
-            float wideTree = 0;
-            while (boards.Count != 0)
+
+            wide = 0;
+            skipped = 0;
+            List<Board> childs = new List<Board>();
+
+            foreach (Board b in boards)
             {
-                if (depth >= maxDepth)
-                    break;
-                if (STOPNOW)
-                    break;
-                wide = 0;
-                skipped = 0;
-                List<Board> childs = new List<Board>();
-
-
-
-                foreach (Board b in boards)
+                if (FoundLethal)
                 {
-                    if (STOPNOW)
+                    doneEvent.Set();
+                    return;
+                }
+                if (wide > maxWidePerTree)
+                    break;
+                List<Action> actions = b.CalculateAvailableActions();
+                foreach (Action a in actions)
+                {
+                    if (FoundLethal)
+                    {
+                        doneEvent.Set();
+                        return;
+                    }
+                    if (wide > maxWidePerTree)
                         break;
 
+                    Board bb = b.ExecuteAction(a);
 
-                    widePerTree = maxWide / boards.Count;
-                    wideTree = 0;
-
-                    List<Action> actions = b.CalculateAvailableActions();
-                    foreach (Action a in actions)
+                    if (bb != null)
                     {
-                        if (STOPNOW)
-                            break;
-                        if (wide > maxWide)
-                            break;
-                        if (wideTree >= widePerTree)
-                            break;
-
-                        Board bb = b.ExecuteAction(a);
-
-                        if (bb != null)
+                        if (bb.GetValue() > 10000)
                         {
-                            if (bb.GetValue() > 10000)
+                            FoundLethal = true;
+                            bestBoard = bb;
+                            if (bestBoard != null)
                             {
-                                STOPNOW = true;
-                                bestBoard = bb;
-                                if (STOPNOW)
-                                    break;
+                                output.Add(bestBoard);
                             }
-                            if (tryToSkipEqualBoards)
+                            doneEvent.Set();
+                            return;
+                        }
+                        if (tryToSkipEqualBoards)
+                        {
+                            bool found = false;
+                            foreach (Board lol in output.ToArray())
                             {
-                                if (STOPNOW)
-                                    break;
-                                bool found = false;
-                                foreach (Board lol in childs)
+                              
+                                if (bb.Equals(lol))
                                 {
-                                    if (STOPNOW)
-                                        break;
-                                    if (bb.Equals(lol))
-                                    {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (STOPNOW)
+                                    found = true;
                                     break;
+                                }
+                            }
 
-                                if (!found)
-                                {
-                                    wideTree++;
-                                    wide++;
-                                    childs.Add(bb);
-                                }
-                                else
-                                {
-                                    skipped++;
-                                }
-                            }
-                            else
+                            if (!found)
                             {
-                                wideTree++;
                                 wide++;
                                 childs.Add(bb);
                             }
-                        }
-                    }
-                }
-
-
-                if (!foundearly)
-                {
-                    List<Board> bestBoards = new List<Board>();
-
-                    int limit = maxBoards;
-                    if (childs.Count < maxBoards)
-                        limit = childs.Count;
-
-                    childs.Sort((x, y) => y.GetValue().CompareTo(x.GetValue()));
-                    childs = new List<Board>(childs.GetRange(0, limit));
-
-                    foreach (Board baa in childs)
-                    {
-                        if (bestBoard == null)
-                        {
-                            bestBoard = baa;
-                            continue;
-                        }
-
-                        Board endBoard = Board.Clone(baa);
-                        endBoard.EndTurn();
-
-                        bestBoard.CalculateEnemyTurn();
-                        if (bestBoard.EnemyTurnWorseBoard != null)
-                        {
-                            endBoard.CalculateEnemyTurn();
-                            Board worstBoard = endBoard.EnemyTurnWorseBoard;
-
-                            if (worstBoard == null)
-                                worstBoard = endBoard;
-
-                            if (worstBoard.GetValue() > bestBoard.EnemyTurnWorseBoard.GetValue())
+                            else
                             {
-                                bestBoard = endBoard;
+                                skipped++;
                             }
-                            else if (worstBoard.GetValue() == bestBoard.EnemyTurnWorseBoard.GetValue())
-                            {
-                                if (endBoard.GetValue() > bestBoard.GetValue())
-                                {
-                                    bestBoard = endBoard;
-                                }
-                            }
-
                         }
                         else
                         {
-                            if (endBoard.GetValue() > bestBoard.GetValue())
-                            {
-                                bestBoard = endBoard;
-                            }
+                            wide++;
+                            childs.Add(bb);
                         }
                     }
                 }
-
-                boards.Clear();
-                boards = childs;
-                depth++;
             }
 
-            if(bestBoard != null)
-                output.Add(bestBoard);
+            foreach (Board b in childs)
+            {
+                if (b != null)
+                    output.Add(b);
+            }
             doneEvent.Set();
-        }
 
+        }
     }
 }

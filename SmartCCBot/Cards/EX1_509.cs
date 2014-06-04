@@ -14,7 +14,7 @@ public class EX1_509 : Card
         {
             
         }
-		
+		 
         public EX1_509(CardTemplate newTemplate, bool isFriend, int id) : base(newTemplate,isFriend,id)
         {
             
