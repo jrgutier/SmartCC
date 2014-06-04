@@ -91,7 +91,7 @@ namespace HREngine.Bots
             childss.Add(Board.Clone(this));
             Board worseBoard = null;
 
-            int maxWide = 20;
+            int maxWide = 50;
 
             int wide = 0;
             while (childss.Count != 0)
@@ -398,6 +398,196 @@ namespace HREngine.Bots
             return c;
         }
 
+        public void DoRandomDamage(int damage, bool FriendSide)
+        {
+            List<Card> KillableMinions = new List<Card>();
+            bool IsHeroKillable = false;
+
+            if (FriendSide)
+            {
+                foreach (Card c in MinionFriend)
+                {
+                    if (c.CurrentHealth <= damage)
+                        KillableMinions.Add(c);
+                }
+                if (HeroFriend.CurrentHealth + HeroFriend.CurrentArmor <= damage)
+                {
+                    IsHeroKillable = true;
+                }
+
+                if (IsHeroKillable)
+                {
+                    HeroFriend.CurrentHealth = 0;
+                    HeroFriend.CurrentArmor = 0;
+                }
+                else
+                {
+                    if (KillableMinions.Count > 0)
+                    {
+                        Card bestMinion = null;
+                        foreach (Card c in MinionFriend)
+                        {
+                            if (bestMinion == null)
+                            {
+                                bestMinion = c;
+                                continue;
+                            }
+
+                            if (bestMinion.GetValue(this) > c.GetValue(this))
+                                bestMinion = c;
+                        }
+                        if (bestMinion != null)
+                        {
+                            RemoveCardFromBoard(bestMinion.Id);
+                        }
+                    }
+                    else
+                    {
+                        if (MinionFriend.Count > 0)
+                        {
+                            Card bestMinion = null;
+                            foreach (Card c in MinionFriend)
+                            {
+                                if (bestMinion == null)
+                                {
+                                    bestMinion = c;
+                                    continue;
+                                }
+
+                                if (bestMinion.GetValue(this) < c.GetValue(this))
+                                    bestMinion = c;
+                            }
+                            if (bestMinion != null)
+                            {
+                                bestMinion.CurrentHealth -= damage;
+                            }
+                        }
+                        else
+                        {
+                            if (HeroFriend.CurrentArmor < 1)
+                            {
+                                HeroFriend.CurrentHealth -= damage;
+                            }
+                            else
+                            {
+                                int tmp = damage - HeroFriend.CurrentArmor;
+                                HeroFriend.CurrentArmor -= (damage - tmp);
+                                HeroFriend.CurrentHealth -= tmp;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (Card c in MinionEnemy)
+                {
+                    if (c.CurrentHealth <= damage)
+                        KillableMinions.Add(c);
+                }
+                if (HeroEnemy.CurrentHealth + HeroEnemy.CurrentArmor <= damage)
+                {
+                    IsHeroKillable = true;
+                }
+
+                if (!IsHeroKillable)
+                {
+                    if (MinionEnemy.Count - KillableMinions.Count > 0)
+                    {
+                        Card worstMinion = null;
+                        foreach (Card c in MinionEnemy)
+                        {
+                            if (KillableMinions.Contains(c))
+                                continue;
+                            if (worstMinion == null)
+                            {
+                                worstMinion = c;
+                                continue;
+                            }
+
+                            if (worstMinion.GetValue(this) > c.GetValue(this))
+                                worstMinion = c;
+                        }
+                        if (worstMinion != null)
+                        {
+                            worstMinion.CurrentHealth -= damage;
+                        }
+                    }
+                    else
+                    {
+                        if (HeroEnemy.CurrentArmor < 1)
+                        {
+                            HeroEnemy.CurrentHealth -= damage;
+                        }
+                        else
+                        {
+                            int tmp = damage - HeroEnemy.CurrentArmor;
+                            HeroFriend.CurrentArmor -= (damage - tmp);
+                            HeroFriend.CurrentHealth -= tmp;
+                        }
+                    }
+
+                }
+                else
+                {
+                    if (MinionEnemy.Count - KillableMinions.Count > 0)
+                    {
+                        Card worstMinion = null;
+                        foreach (Card c in MinionEnemy)
+                        {
+                            if (KillableMinions.Contains(c))
+                                continue;
+                            if (worstMinion == null)
+                            {
+                                worstMinion = c;
+                                continue;
+                            }
+
+                            if (worstMinion.GetValue(this) > c.GetValue(this))
+                                worstMinion = c;
+                        }
+                        if (worstMinion != null)
+                        {
+                            worstMinion.CurrentHealth -= damage;
+                        }
+                    }
+                    else if (KillableMinions.Count > 0)
+                    {
+
+                        Card bestMinion = null;
+                        foreach (Card c in KillableMinions)
+                        {
+                            if (bestMinion == null)
+                            {
+                                bestMinion = c;
+                                continue;
+                            }
+
+                            if (bestMinion.GetValue(this) < c.GetValue(this))
+                                bestMinion = c;
+                        }
+                        if (bestMinion != null)
+                        {
+                            RemoveCardFromBoard(bestMinion.Id);
+                        }
+                    }
+                    else
+                    {
+                        if (HeroEnemy.CurrentArmor < 1)
+                        {
+                            HeroEnemy.CurrentHealth -= damage;
+                        }
+                        else
+                        {
+                            int tmp = damage - HeroEnemy.CurrentArmor;
+                            HeroFriend.CurrentArmor -= (damage - tmp);
+                            HeroFriend.CurrentHealth -= tmp;
+                        }
+                    }
+                }
+            }
+        }
+
         public void PlayAbility()
         {
             ManaAvailable -= Ability.CurrentCost;
@@ -702,7 +892,7 @@ namespace HREngine.Bots
             if (taunts.Count == 0)
             {
                 int totalDamage = 0;
-                foreach(Card c in MinionFriend)
+                foreach (Card c in MinionFriend)
                 {
                     totalDamage += c.CurrentAtk;
                 }
@@ -882,7 +1072,7 @@ namespace HREngine.Bots
             foreach (Card c in Hand)
             {
                 bool alreadyCasted = false;
-                foreach(Card cc in castedCards)
+                foreach (Card cc in castedCards)
                 {
                     if (cc.template.Id == c.template.Id)
                         alreadyCasted = true;
@@ -1458,10 +1648,13 @@ namespace HREngine.Bots
             }
 
 
+            /*foreach (Action aa in availableActions)
+            {
+                if (aa.Type == Action.ActionType.CAST_MINION)
+                    Console.WriteLine("");
 
-           // Console.WriteLine("");
-         //   Console.ReadLine();
-
+            }
+            */
             return availableActions;
         }
 
