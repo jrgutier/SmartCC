@@ -816,7 +816,7 @@ namespace HREngine.Bots
                     child.Update();
                     foreach (Card c in child.GetAllMinionsOnBoard())
                     {
-                        if (a.Actor.Equals(c))
+                        if (a.Actor.Id == c.Id)
                             continue;
                         c.OnPlayOtherMinion(ref child, child.GetCard(a.Actor.Id));
                     }

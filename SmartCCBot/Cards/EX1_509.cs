@@ -39,8 +39,13 @@ public class EX1_509 : Card
         public override void OnPlayOtherMinion(ref Board board, Card Minion)
         {
             base.OnPlayOtherMinion(ref board, Minion);
-            if (Minion.Race == CRace.MURLOC)
-                board.GetCard(Id).currentAtk++;
+
+            if(Minion != null)
+            {
+                if (Minion.Race == CRace.MURLOC)
+                    board.GetCard(Id).currentAtk++;
+            }
+            
         }
 
         public override void OnCastSpell(ref Board board, Card Spell)
