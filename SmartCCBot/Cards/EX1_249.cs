@@ -8,16 +8,18 @@ using System.Text;
 namespace HREngine.Bots
 {
     [Serializable]
-public class EX1_249 : Card
+    public class EX1_249 : Card
     {
-		public EX1_249() : base()
+        public EX1_249()
+            : base()
         {
-            
+
         }
-		
-        public EX1_249(CardTemplate newTemplate, bool isFriend, int id) : base(newTemplate,isFriend,id)
+
+        public EX1_249(CardTemplate newTemplate, bool isFriend, int id)
+            : base(newTemplate, isFriend, id)
         {
-            
+
         }
 
         public override void Init()
@@ -28,25 +30,28 @@ public class EX1_249 : Card
         public override void OnEndTurn(Board board)
         {
             base.OnEndTurn(board);
-            foreach(Card c in board.MinionEnemy)
+            if (!IsSilenced)
             {
-                if (c.Id == Id)
-                    continue;
-                c.Damage(2, ref board);
+                foreach (Card c in board.MinionEnemy)
+                {
+                    if (c.Id == Id)
+                        continue;
+                    c.Damage(2, ref board);
+                }
+                foreach (Card c in board.MinionFriend)
+                {
+                    if (c.Id == Id)
+                        continue;
+                    c.Damage(2, ref board);
+                }
+                board.HeroEnemy.Damage(2, ref board);
+                board.HeroFriend.Damage(2, ref board);
             }
-            foreach(Card c in board.MinionFriend)
-            {
-                if (c.Id == Id)
-                    continue;
-                c.Damage(2, ref board);
-            }
-            board.HeroEnemy.Damage(2, ref board);
-            board.HeroFriend.Damage(2, ref board);
         }
 
-        public override void OnPlay(ref Board board, Card target = null,int index = 0,int choice = 0)
+        public override void OnPlay(ref Board board, Card target = null, int index = 0, int choice = 0)
         {
-            base.OnPlay(ref board, target,index);
+            base.OnPlay(ref board, target, index);
         }
 
         public override void OnDeath(ref Board board)
@@ -61,8 +66,8 @@ public class EX1_249 : Card
 
         public override void OnCastSpell(ref Board board, Card Spell)
         {
-		    base.OnCastSpell(ref board, Spell);
+            base.OnCastSpell(ref board, Spell);
         }
-		
+
     }
 }
