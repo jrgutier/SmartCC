@@ -29,8 +29,6 @@ namespace HREngine.Bots
 
         public Action GetNextAction()
         {
-            if (ActionStack.Count == 1 && ActionStack[0].Type == Action.ActionType.RESIMULATE)
-                ActionStack.Clear();
             if (ActionStack.Count == 0 && !NeedCalculation)
             {
                 NeedCalculation = true;

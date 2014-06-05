@@ -322,8 +322,6 @@ namespace HREngine.Bots
                         {
                             FriendCardDraw--;
                         }
-                        
-
                     }
                     ManaAvailable -= tmp[i].CurrentCost;
                     if (tmp[i].Type == Card.CType.WEAPON)
