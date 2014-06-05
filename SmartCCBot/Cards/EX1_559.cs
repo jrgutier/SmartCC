@@ -43,7 +43,7 @@ public class EX1_559 : Card
         public override void OnCastSpell(ref Board board, Card Spell)
         {
 		    base.OnCastSpell(ref board, Spell);
-            board.FriendCardDraw++;
+            board.Hand.Add(Card.Create("CS2_029", true, 888889));
             board.Resimulate();
         }
 		
