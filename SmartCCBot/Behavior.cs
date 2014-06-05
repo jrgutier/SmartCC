@@ -53,5 +53,9 @@ namespace HREngine.Bots
             return KILLPRIORITY.LOW;
         }
 
+        public virtual int GetHandValue(Board board)
+        {
+            return 0;
+        }
     }
 }

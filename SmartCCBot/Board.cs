@@ -79,6 +79,12 @@ namespace HREngine.Bots
             if (HeroFriend.CurrentHealth < 1)
                 value -= 100000;
 
+            foreach(Card c in Hand)
+            {
+                value += c.Behavior.GetHandValue(this);
+            }
+
+
             Value = value;
             return value;
         }
